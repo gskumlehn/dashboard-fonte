@@ -5,16 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Dashboard{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='favicon/logo.png') }}" type="image/png">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon/logo.png') }}">
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="{{ url_for('root_bp.index') }}">Home</a>
-            <a href="{{ url_for('login_bp.login') }}">Login</a>
-            <a href="{{ url_for('dashboard_bp.home') }}">Dashboard</a>
-        </nav>
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="logo-container">
+                <a href="{{ url_for('dashboard_bp.home') }}">
+                    <img src="{{ url_for('static', filename='images/logo-horizontal.png') }}" alt="Fonte Inc" class="logo-horizontal">
+                </a>
+            </div>
+            <nav class="header-nav">
+                <a href="{{ url_for('login_bp.logout') }}" class="logout-link">Logout</a>
+            </nav>
+        </div>
     </header>
 
     <main>

@@ -1,7 +1,206 @@
 {% extends 'base.html' %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
-<h1>Bem-vindo ao Dashboard</h1>
-<p>Olá, {{ current_user.id }}!</p>
-{% endblock %}
+<div class="dashboard-container">
+  <h1>Dashboard</h1>
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h2>Vendas (Linha)</h2>
+      <canvas id="chart-line"></canvas>
+    </div>
+    <div class="chart-card">
+      <h2>Usuários (Bar)</h2>
+      <canvas id="chart-bar"></canvas>
+    </div>
+    <div class="chart-card">
+      <h2>Distribuição (Doughnut)</h2>
+      <canvas id="chart-doughnut"></canvas>
+    </div>
+    <div class="chart-card">
+      <h2>Tendência (Radar)</h2>
+      <canvas id="chart-radar"></canvas>
+    </div>
+    <div class="chart-card">
+      <h2>Participação (Polar Area)</h2>
+      <canvas id="chart-polar"></canvas>
+    </div>
+    <div class="chart-card">
+      <h2>Bolhas (Bubble)</h2>
+      <canvas id="chart-bubble"></canvas>
+    </div>
+  </div>
+</div>
 
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+/* filepath: /Users/gabriel.kumlehn/PycharmProjects/dashboard-fonte/app/templates/dashboard.html (inline script) */
+(function () {
+  function getColorVar(name, fallback) {
+    const v = getComputedStyle(document.documentElement).getPropertyValue(name);
+    return (v || fallback).trim();
+  }
+
+  function hexToRgba(hex, alpha) {
+    if (!hex) return `rgba(0,0,0,${alpha})`;
+    let h = hex.replace('#','').trim();
+    if (h.length === 3) h = h.split('').map(c => c + c).join('');
+    const num = parseInt(h, 16);
+    const r = (num >> 16) & 255;
+    const g = (num >> 8) & 255;
+    const b = num & 255;
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+
+  const colors = [
+    getColorVar('--chart-color-1', '#c67440'),
+    getColorVar('--chart-color-2', '#31708f'),
+    getColorVar('--chart-color-3', '#4C7244'),
+    getColorVar('--chart-color-4', '#E0A458'),
+    getColorVar('--chart-color-5', '#6D6D6D'),
+    getColorVar('--chart-color-6', '#b56535'),
+    getColorVar('--chart-color-7', '#60a5fa'),
+  ];
+
+  function createLineChart(ctx) {
+    return new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul'],
+        datasets: [{
+          label: 'Receita',
+          data: [1200, 1500, 1700, 1600, 1900, 2200, 2400],
+          borderColor: colors[0],
+          backgroundColor: hexToRgba(colors[0], 0.12),
+          fill: true,
+          tension: 0.35,
+          pointRadius: 3
+        },{
+          label: 'Custo',
+          data: [800, 900, 1000, 950, 1050, 1100, 1150],
+          borderColor: colors[1],
+          backgroundColor: hexToRgba(colors[1], 0.08),
+          fill: true,
+          tension: 0.35,
+          pointRadius: 3
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false }
+    });
+  }
+
+  function createBarChart(ctx) {
+    return new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+        datasets: [
+          {
+            label: 'Novos usuários',
+            data: [12, 19, 8, 14, 23, 7, 10],
+            backgroundColor: colors[2],
+            borderRadius: 6
+          },
+          {
+            label: 'Ativos',
+            data: [5, 10, 6, 9, 15, 4, 8],
+            backgroundColor: colors[4],
+            borderRadius: 6
+          }
+        ]
+      },
+      options: { responsive: true, maintainAspectRatio: false }
+    });
+  }
+
+  function createDoughnutChart(ctx) {
+    return new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Orgânico','Pago','Indicação','Outros'],
+        datasets: [{
+          data: [55, 25, 12, 8],
+          backgroundColor: [colors[0], colors[3], colors[2], colors[4]]
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, cutout: '50%' }
+    });
+  }
+
+  function createRadarChart(ctx) {
+    return new Chart(ctx, {
+      type: 'radar',
+      data: {
+        labels: ['Velocidade','Estabilidade','UX','Funcionalidade','Segurança'],
+        datasets: [{
+          label: 'Pontuação',
+          data: [80, 65, 75, 90, 70],
+          backgroundColor: hexToRgba(colors[0], 0.14),
+          borderColor: colors[0],
+          pointBackgroundColor: colors[0]
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false }
+    });
+  }
+
+  function createPolarAreaChart(ctx) {
+    return new Chart(ctx, {
+      type: 'polarArea',
+      data: {
+        labels: ['Produto A','Produto B','Produto C','Produto D'],
+        datasets: [{
+          data: [11, 16, 7, 14],
+          backgroundColor: [colors[0], colors[1], colors[2], colors[3]]
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false }
+    });
+  }
+
+  function createBubbleChart(ctx) {
+    return new Chart(ctx, {
+      type: 'bubble',
+      data: {
+        datasets: [
+          {
+            label: 'Segmentos',
+            data: [
+              { x: 10, y: 20, r: 8 },
+              { x: 15, y: 10, r: 12 },
+              { x: 7, y: 25, r: 6 },
+              { x: 18, y: 15, r: 10 }
+            ],
+            backgroundColor: hexToRgba(colors[6], 0.6)
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: { beginAtZero: true },
+          y: { beginAtZero: true }
+        }
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const elLine = document.getElementById('chart-line');
+    const elBar = document.getElementById('chart-bar');
+    const elDoughnut = document.getElementById('chart-doughnut');
+    const elRadar = document.getElementById('chart-radar');
+    const elPolar = document.getElementById('chart-polar');
+    const elBubble = document.getElementById('chart-bubble');
+
+    if (elLine) createLineChart(elLine.getContext('2d'));
+    if (elBar) createBarChart(elBar.getContext('2d'));
+    if (elDoughnut) createDoughnutChart(elDoughnut.getContext('2d'));
+    if (elRadar) createRadarChart(elRadar.getContext('2d'));
+    if (elPolar) createPolarAreaChart(elPolar.getContext('2d'));
+    if (elBubble) createBubbleChart(elBubble.getContext('2d'));
+  });
+})();
+</script>
+{% endblock %}
