@@ -8,7 +8,7 @@ def create_app():
     app = Flask(__name__)
     load_dotenv()
 
-    app.secret_key = os.getenv("SECRET_KEY", "default_secret_key")  # Define a secret_key
+    app.secret_key = os.getenv("SECRET_KEY")
 
     login_manager = LoginManager()
     login_manager.init_app(app)
