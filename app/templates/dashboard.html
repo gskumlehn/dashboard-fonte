@@ -53,13 +53,12 @@
   }
 
   const colors = [
-    getColorVar('--chart-color-1', '#c67440'),
-    getColorVar('--chart-color-2', '#31708f'),
-    getColorVar('--chart-color-3', '#4C7244'),
-    getColorVar('--chart-color-4', '#E0A458'),
-    getColorVar('--chart-color-5', '#6D6D6D'),
-    getColorVar('--chart-color-6', '#b56535'),
-    getColorVar('--chart-color-7', '#60a5fa'),
+    getColorVar('--chart-color-1',
+    getColorVar('--chart-color-2',
+    getColorVar('--chart-color-3',
+    getColorVar('--chart-color-4',
+    getColorVar('--chart-color-5'),
+    getColorVar('--chart-color-6'),
   ];
 
   function createLineChart(ctx) {
@@ -171,7 +170,7 @@
               { x: 7, y: 25, r: 6 },
               { x: 18, y: 15, r: 10 }
             ],
-            backgroundColor: hexToRgba(colors[6], 0.6)
+            backgroundColor: hexToRgba(colors[5], 0.6)
           }
         ]
       },
