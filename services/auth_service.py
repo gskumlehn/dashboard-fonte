@@ -9,7 +9,8 @@ class AuthService:
         env_hash = os.getenv("APP_PASSWORD_HASH")
         if not env_user or not env_hash:
             return False
+
         user_ok = hmac.compare_digest(username, env_user)
         pass_ok = check_password_hash(env_hash, password)
-        return user_ok and pass_ok
 
+        return user_ok and pass_ok
