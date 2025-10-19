@@ -2,3 +2,4 @@ flask
 flask-login
 gunicorn
 pyodbc
+python-dotenv
