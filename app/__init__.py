@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder='static', static_url_path='/static')
     load_dotenv()
 
     app.secret_key = os.getenv("SECRET_KEY")
@@ -26,8 +26,10 @@ def create_app():
     from app.controllers.login_controller import login_bp
     from app.controllers.healthcheck_controller import healthcheck_bp
     from app.controllers.root_controller import root_bp
+    from app.controllers.dashboard_controller import dashboard_bp
     app.register_blueprint(login_bp)
     app.register_blueprint(healthcheck_bp)
     app.register_blueprint(root_bp)
+    app.register_blueprint(dashboard_bp)
 
     return app
