@@ -3,3 +3,4 @@ flask-login
 gunicorn
 pyodbc
 python-dotenv
+werkzeug>=2.0
