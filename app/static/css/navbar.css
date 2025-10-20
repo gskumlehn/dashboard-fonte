@@ -1,9 +1,17 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
 @import url('/static/css/colors.css');
 
 .site-header {
+  margin: 0;
   width: 100%;
-  background: transparent;
-  border-bottom: 1px solid rgba(0,0,0,0.04);
+  background-color: var(--card-bg);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 4px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
 }
 
 .header-inner {
