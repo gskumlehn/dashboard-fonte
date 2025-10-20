@@ -1,4 +1,5 @@
 @import url('/static/css/colors.css');
+@import url('/static/css/styles.css');
 
 :root {
   --card-bg: #ffffff;
