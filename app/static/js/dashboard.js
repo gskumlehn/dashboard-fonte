@@ -13,6 +13,36 @@
     danger: getColorVar('--danger', '#dc3545')
   };
 
+  function hexToRgba(hex, alpha) {
+    if (!hex) return `rgba(0,0,0,${alpha})`;
+    const h = hex.replace('#','').trim();
+    const full = h.length === 3 ? h.split('').map(c=>c+c).join('') : h;
+    const bigint = parseInt(full, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+
+  function safeCreateChart(createFn, id, name) {
+    try {
+      const el = document.getElementById(id);
+      if (!el) {
+        console.debug(`Canvas ${id} não encontrado — ignorando ${name}`);
+        return;
+      }
+      const ctx = el.getContext && el.getContext('2d');
+      if (!ctx) {
+        console.warn(`Context 2d não disponível para ${id}`);
+        return;
+      }
+      createFn(ctx);
+      console.debug(`${name} criado em ${id}`);
+    } catch (err) {
+      console.error(`Erro ao criar ${name} em ${id}:`, err);
+    }
+  }
+
   function createLineChart(ctx) {
     return new Chart(ctx, {
       type: 'line',
@@ -28,7 +58,7 @@
           pointRadius: 3
         }]
       },
-      options: { responsive: true, maintainAspectRatio: false }
+      options: { responsive: true, maintainAspectRatio: false, scales: { x: { grid: { display: false } }, y: { grid: { display: false } } } }
     });
   }
 
@@ -44,7 +74,7 @@
           borderRadius: 6
         }]
       },
-      options: { responsive: true, maintainAspectRatio: false }
+      options: { responsive: true, maintainAspectRatio: false, scales: { x: { grid: { display: false } }, y: { grid: { display: false } } } }
     });
   }
 
@@ -58,7 +88,7 @@
           backgroundColor: [colors.primary, colors.accent, colors.muted]
         }]
       },
-      options: { responsive: true, maintainAspectRatio: false }
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
     });
   }
 
@@ -75,29 +105,54 @@
           pointBackgroundColor: colors.primary
         }]
       },
+      options: { responsive: true, maintainAspectRatio: false, scales: { r: { grid: { display: false } } } }
+    });
+  }
+
+  function createPolarChart(ctx) {
+    return new Chart(ctx, {
+      type: 'polarArea',
+      data: {
+        labels: ['Produto A','Produto B','Produto C','Produto D'],
+        datasets: [{
+          data: [11, 16, 7, 14],
+          backgroundColor: [colors.primary, colors.secondary, colors.accent, colors.muted]
+        }]
+      },
       options: { responsive: true, maintainAspectRatio: false }
     });
   }
 
-  function hexToRgba(hex, alpha) {
-    const h = hex.replace('#','');
-    const bigint = parseInt(h.length === 3 ? h.split('').map(c=>c+c).join('') : h, 16);
-    const r = (bigint >> 16) & 255;
-    const g = (bigint >> 8) & 255;
-    const b = bigint & 255;
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  function createBubbleChart(ctx) {
+    return new Chart(ctx, {
+      type: 'bubble',
+      data: {
+        datasets: [{
+          label: 'Segmentos',
+          data: [
+            { x: 10, y: 20, r: 8 },
+            { x: 15, y: 10, r: 12 },
+            { x: 7, y: 25, r: 6 },
+            { x: 18, y: 15, r: 10 }
+          ],
+          backgroundColor: hexToRgba(colors.secondary, 0.6)
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, scales: { x: { grid: { display: false } }, y: { grid: { display: false } } } }
+    });
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    const elLine = document.getElementById('chart-line');
-    const elBar = document.getElementById('chart-bar');
-    const elDoughnut = document.getElementById('chart-doughnut');
-    const elRadar = document.getElementById('chart-radar');
+    if (typeof Chart === 'undefined') {
+      console.error('Chart.js não encontrado. Verifique se o CDN está carregado antes de dashboard.js');
+      return;
+    }
 
-    if (elLine) createLineChart(elLine.getContext('2d'));
-    if (elBar) createBarChart(elBar.getContext('2d'));
-    if (elDoughnut) createDoughnutChart(elDoughnut.getContext('2d'));
-    if (elRadar) createRadarChart(elRadar.getContext('2d'));
+    safeCreateChart(createLineChart, 'chart-line', 'LineChart');
+    safeCreateChart(createBarChart, 'chart-bar', 'BarChart');
+    safeCreateChart(createDoughnutChart, 'chart-doughnut', 'DoughnutChart');
+    safeCreateChart(createRadarChart, 'chart-radar', 'RadarChart');
+    safeCreateChart(createPolarChart, 'chart-polar', 'PolarAreaChart');
+    safeCreateChart(createBubbleChart, 'chart-bubble', 'BubbleChart');
   });
 })();
-
