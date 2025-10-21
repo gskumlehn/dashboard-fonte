@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import UserMixin, login_user, login_required, logout_user
-from services.auth_service import AuthService
+from app.services.auth_service import AuthService
 import os
 import hmac
 
