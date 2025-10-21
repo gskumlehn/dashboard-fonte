@@ -93,7 +93,10 @@ def get_foreign_keys(conn):
     return fks
 
 def build_metadata(conn):
-    exec_query(conn, "USE livework_fonte;")
+    sql = "SELECT name FROM sys.databases WHERE name = 'livework_fonte';"
+    if not exec_query(conn, sql):
+        raise Exception("Database 'livework_fonte' does not exist or is not accessible.")
+
     tables = list_tables(conn)
     metadata = {"database": "livework_fonte", "tables": {}, "foreign_keys": []}
     for t in tables:
@@ -146,4 +149,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
