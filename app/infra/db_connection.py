@@ -9,6 +9,7 @@ class Database:
         self.username = os.getenv("DB_USER")
         self.password = os.getenv("DB_PASSWORD")
         self.driver = os.getenv("DB_DRIVER", "ODBC Driver 18 for SQL Server")
+        self.tds_version = os.getenv("TDS_VERSION")
         self.connection = None
 
     def connect(self):
@@ -18,6 +19,7 @@ class Database:
             f"DATABASE={self.database};"
             f"UID={self.username};"
             f"PWD={self.password};"
+            f"TDS_Version={self.tds_version};"
             f"Encrypt=yes;"
             f"TrustServerCertificate=no;"
         )
