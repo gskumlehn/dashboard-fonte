@@ -1,5 +1,6 @@
 import json
 from app.infra.db_connection import Database
+from dotenv import load_dotenv
 
 def exec_query(conn, sql, params=None):
     cur = conn.cursor()
@@ -129,6 +130,8 @@ def generate_dot(metadata, out_path="schema.dot"):
         f.write("\n".join(lines))
 
 def main():
+    load_dotenv()
+
     db = Database()
     db.connect()
     try:
