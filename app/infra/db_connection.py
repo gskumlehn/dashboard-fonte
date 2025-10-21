@@ -15,7 +15,8 @@ class Database:
     def connect(self):
         connection_string = (
             f"DRIVER={{{self.driver}}};"
-            f"SERVER={self.server},{self.port};"
+            f"SERVER={self.server};"
+            f"PORT={self.port};"
             f"DATABASE={self.database};"
             f"UID={self.username};"
             f"PWD={self.password};"
