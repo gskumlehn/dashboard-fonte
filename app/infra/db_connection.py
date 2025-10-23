@@ -1,4 +1,3 @@
-import pyodbc
 import os
 
 class Database:
@@ -13,6 +12,14 @@ class Database:
         self.connection = None
 
     def connect(self):
+        try:
+            import pyodbc
+        except ImportError:
+            raise RuntimeError(
+                "pyodbc não encontrado. Instale as dependências do sistema (unixodbc + driver ODBC) "
+                "e o pacote Python pyodbc. Consulte o Dockerfile do projeto para exemplo de instalação."
+            )
+
         connection_string = (
             f"DRIVER={{{self.driver}}};"
             f"SERVER={self.server};"
@@ -51,4 +58,7 @@ class Database:
         except pyodbc.Error as e:
             raise RuntimeError(f"Erro ao executar a query: {e}")
         finally:
-            cursor.close()
+            try:
+                cursor.close()
+            except Exception:
+                pass

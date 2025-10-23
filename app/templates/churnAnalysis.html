@@ -1,0 +1,28 @@
+ {% extends 'base.html' %}
+
+{% block title %}Análise de Churn{% endblock %}
+
+{% block content %}
+<div class="churn-container">
+    <h1>Análise de Churn</h1>
+    <table id="churn-table">
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Última Operação</th>
+                <th>Dias Inativo</th>
+                <th>Volume Histórico (R$)</th>
+                <th>Risco de Churn</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dados serão preenchidos dinamicamente -->
+        </tbody>
+    </table>
+</div>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/churnAnalysis.css') }}">
+<script defer src="{{ url_for('static', filename='js/churnAnalysis.js') }}"></script>
+{% endblock %}
+</body>
+</html>

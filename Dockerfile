@@ -1,24 +1,22 @@
 FROM python:3.10-slim
 
-WORKDIR /app
+ENV ACCEPT_EULA=Y
 
-# Instala dependências do sistema
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    unixodbc \
+    unixodbc-dev \
     curl \
-    apt-transport-https \
-    gnupg && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    gnupg \
+    ca-certificates \
+    && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+    && curl https://packages.microsoft.com/config/debian/11/prod.list > /etc/apt/sources.list.d/mssql-release.list \
+    && apt-get update && ACCEPT_EULA=Y apt-get install -y msodbcsql18 \
+    && rm -rf /var/lib/apt/lists/*
 
-# Define variáveis de ambiente padrão
-ENV PORT=5000
-
-# Instala dependências Python
-COPY requirements.txt requirements.txt
+WORKDIR /app
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copia o código da aplicação
 COPY . .
-
-EXPOSE 5000
-# Comando para rodar o Gunicorn
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "wsgi:app"]
+CMD ["gunicorn", "wsgi:app", "--bind", "0.0.0.0:8000"]
