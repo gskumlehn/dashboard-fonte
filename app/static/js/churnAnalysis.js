@@ -1,7 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
     fetch('/comercial/churn-analysis/data')
         .then(response => response.json())
-        .then(data => renderTable(data))
+        .then(data => {
+            const formattedData = data.map(row => ({
+                cliente: row.cliente,
+                ultima_operacao: new Date(row.ultima_operacao).toLocaleDateString('pt-BR'),
+                dias_inativo: row.dias_inativo,
+                volume_historico: `R$ ${parseFloat(row.volume_historico).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`,
+                risco: row.risco
+            }));
+            renderTable(formattedData);
+        })
         .catch(error => console.error('Erro ao buscar dados:', error));
 });
 
@@ -19,7 +28,7 @@ function renderTable(data) {
 
         // Última Operação
         const ultimaOperacaoTd = document.createElement('td');
-        ultimaOperacaoTd.textContent = new Date(row.ultima_operacao).toLocaleDateString('pt-BR');
+        ultimaOperacaoTd.textContent = row.ultima_operacao;
         tr.appendChild(ultimaOperacaoTd);
 
         // Dias Inativo
@@ -29,18 +38,16 @@ function renderTable(data) {
 
         // Volume Histórico
         const volumeHistoricoTd = document.createElement('td');
-        const volumeHistorico = parseFloat(row.volume_historico); // Converte para número
-        if (!isNaN(volumeHistorico)) {
-            volumeHistoricoTd.textContent = `R$ ${volumeHistorico.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-        } else {
-            volumeHistoricoTd.textContent = 'N/A'; // Valor padrão caso seja inválido
-        }
+        volumeHistoricoTd.textContent = row.volume_historico;
         tr.appendChild(volumeHistoricoTd);
 
         // Risco de Churn
         const riscoTd = document.createElement('td');
         riscoTd.textContent = row.risco;
-        riscoTd.classList.add(getRiskClass(row.risco));
+        const riskClass = getRiskClass(row.risco);
+        if (riskClass) {
+            riscoTd.classList.add(riskClass); // Adiciona a classe apenas se não for vazia
+        }
         tr.appendChild(riscoTd);
 
         tableBody.appendChild(tr);
@@ -49,9 +56,9 @@ function renderTable(data) {
 
 function getRiskClass(riskLevel) {
     switch (riskLevel) {
-        case 'Alto Risco': return 'risk-high';
-        case 'Médio Risco': return 'risk-medium';
-        case 'Baixo Risco': return 'risk-low';
-        default: return '';
+        case 'Alto': return 'risk-high';
+        case 'Médio': return 'risk-medium';
+        case 'Baixo': return 'risk-low';
+        default: return null; // Retorna null em vez de uma string vazia
     }
 }
