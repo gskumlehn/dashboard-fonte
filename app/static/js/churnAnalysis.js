@@ -33,7 +33,7 @@ function populateTable(data) {
             <td>${new Date(row.ultima_operacao).toLocaleDateString('pt-BR')}</td>
             <td>${row.dias_inativo}</td>
             <td>R$ ${parseFloat(row.volume_historico).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
-            <td><span class="risk-badge risk-${row.risco.toLowerCase()}">${getRiskLabel(row.risco)}</span></td>
+            <td><span class="risk-badge risk-${getRiskLabel(row.risco.)}">${row.risco}</span></td>
         `;
         tbody.appendChild(tr);
     });
