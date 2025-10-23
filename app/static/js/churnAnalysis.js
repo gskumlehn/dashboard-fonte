@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    fetch('/api/churn-analysis')
+    fetch('/comercial/churn-analysis/data')
         .then(response => response.json())
         .then(data => renderTable(data))
         .catch(error => console.error('Erro ao buscar dados:', error));
