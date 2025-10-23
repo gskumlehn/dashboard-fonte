@@ -1,0 +1,3564 @@
+{
+  "total_fields": 463,
+  "total_tables": 151,
+  "priority_tables": [
+    "Titulo",
+    "TituloDetalhe",
+    "TituloHistorico",
+    "Operacao",
+    "OperacaoDetalhe",
+    "OperacaoTitulo",
+    "Cliente",
+    "Cedente",
+    "Sacado",
+    "CadastroBase",
+    "MovimentacaoFinanceira",
+    "Pagamento",
+    "Recebimento"
+  ],
+  "fields_by_table": {
+    "Agente": [
+      {
+        "table": "Agente",
+        "column": "UtilizaRecompra",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Agente",
+        "column": "UtilizaBaixaDeposito",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Agente",
+        "column": "TipoBaseCalculo",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "AgenteModalidade": [
+      {
+        "table": "AgenteModalidade",
+        "column": "ModalidadeId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "AgenteModalidade",
+        "column": "Utiliza",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "BaixaPorDeposito": [
+      {
+        "table": "BaixaPorDeposito",
+        "column": "Status",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "BaixaPorDepositoDepositoCredito": [
+      {
+        "table": "BaixaPorDepositoDepositoCredito",
+        "column": "Tipo",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "BaixaPorDepositoDetalhe": [
+      {
+        "table": "BaixaPorDepositoDetalhe",
+        "column": "TipoContexto",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "BaixaPorDepositoDetalhe",
+        "column": "TipoBaixaPorDepositoDetalhe",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "BaixaPorDepositoDetalhe",
+        "column": "TipoRecompra",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "BaixaPorDepositoDetalhe",
+        "column": "AnteciparDesagio",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "BaixaPorDepositoDocumentoDebito": [
+      {
+        "table": "BaixaPorDepositoDocumentoDebito",
+        "column": "Tipo",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "BaixaPorDepositoDocumentoDebito",
+        "column": "Recomprar",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "BaixaPorDepositoDocumentoDebito",
+        "column": "EhParaAntecipar",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "BaixaPorDepositoDocumentoDebito",
+        "column": "TipoRecompra",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "BancoAgencia": [
+      {
+        "table": "BancoAgencia",
+        "column": "Estado",
+        "data_type": "char",
+        "max_length": 2,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      }
+    ],
+    "BancoComando": [
+      {
+        "table": "BancoComando",
+        "column": "Tipo",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "BancoOcorrencia": [
+      {
+        "table": "BancoOcorrencia",
+        "column": "Motivo",
+        "data_type": "varchar",
+        "max_length": 3,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      },
+      {
+        "table": "BancoOcorrencia",
+        "column": "EntradaConfirmada",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "BancoOcorrencia",
+        "column": "BaixaConvencional",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "BancoOcorrencia",
+        "column": "EnviadoCartorio",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "BancoOcorrencia",
+        "column": "PagoCartorio",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "BancoOcorrencia",
+        "column": "RetiradoCartorio",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "BancoOcorrencia",
+        "column": "Protestado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "BancoOcorrencia",
+        "column": "SustacaoProtesto",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "BancoOcorrencia",
+        "column": "ProtestoCancelado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "BancoOcorrencia",
+        "column": "LancarPendencia",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "BancoOcorrencia",
+        "column": "RecompraConsultora",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "BancoOcorrencia",
+        "column": "DevolverRecompra",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "BancoOcorrencia",
+        "column": "DevolverTrustee",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "BancoOcorrencia",
+        "column": "IncluidoPEFIN",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "BancoOcorrencia",
+        "column": "PagtoChequeVinculado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "BancoTipoDoc": [
+      {
+        "table": "BancoTipoDoc",
+        "column": "TipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "CadastroBase": [
+      {
+        "table": "CadastroBase",
+        "column": "Estado",
+        "data_type": "char",
+        "max_length": 2,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      },
+      {
+        "table": "CadastroBase",
+        "column": "Status",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CadastroBase",
+        "column": "EmpresaSIMPLES",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CadastroBase",
+        "column": "EmRecuperacaoJudicial",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "CadastroBaseArquivo": [
+      {
+        "table": "CadastroBaseArquivo",
+        "column": "Confirmado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "CadastroBaseCOAF": [
+      {
+        "table": "CadastroBaseCOAF",
+        "column": "ParticipaOutraEmpresa",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CadastroBaseCOAF",
+        "column": "PessoaPoliticamenteExposta",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CadastroBaseCOAF",
+        "column": "DomicilioJurisdicaoAltoRisco",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "CadastroBaseConsultaSerpro": [
+      {
+        "table": "CadastroBaseConsultaSerpro",
+        "column": "Sucesso",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "CadastroBaseHistoricoStatus": [
+      {
+        "table": "CadastroBaseHistoricoStatus",
+        "column": "StatusAnterior",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CadastroBaseHistoricoStatus",
+        "column": "Origem",
+        "data_type": "varchar",
+        "max_length": 30,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      }
+    ],
+    "CaixaBanco": [
+      {
+        "table": "CaixaBanco",
+        "column": "Conciliado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "Cliente": [
+      {
+        "table": "Cliente",
+        "column": "ENovo",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Cliente",
+        "column": "Coobrigacao",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "ClienteBalanco": [
+      {
+        "table": "ClienteBalanco",
+        "column": "EAuditado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "ClienteBalanco",
+        "column": "SociosReais",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "ClienteCOAF": [
+      {
+        "table": "ClienteCOAF",
+        "column": "Sugerido",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "ClienteCOAF",
+        "column": "EnderecoRisco",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "ClienteCOAF",
+        "column": "PjSocio",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "ClienteCOAF",
+        "column": "ProcuradorNaoSocio",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "ClienteCOAF",
+        "column": "RepresentadaTerceiros",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "ClienteCOAF",
+        "column": "Art1res15",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "ClienteCOAF",
+        "column": "DiligenciasCobrancaIncompleta",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "ClienteConfMobile": [
+      {
+        "table": "ClienteConfMobile",
+        "column": "BeneficiarioEmpresaBoletos",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "ClienteConfMobile",
+        "column": "GerarBoletoProposta",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "ClienteConfMobile",
+        "column": "GerarRetornoMultiEmp",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "ClienteContaBancaria": [
+      {
+        "table": "ClienteContaBancaria",
+        "column": "EDefault",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "ClienteContabil": [
+      {
+        "table": "ClienteContabil",
+        "column": "TipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "ClienteContrato": [
+      {
+        "table": "ClienteContrato",
+        "column": "ModalidadeId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "ClienteOcorrencia": [
+      {
+        "table": "ClienteOcorrencia",
+        "column": "EPendencia",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "ClienteOutrosDados": [
+      {
+        "table": "ClienteOutrosDados",
+        "column": "DuplicataEndossada",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "ClienteParametro": [
+      {
+        "table": "ClienteParametro",
+        "column": "TipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "ClienteParametroTipoDoc": [
+      {
+        "table": "ClienteParametroTipoDoc",
+        "column": "TipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "ClienteRepresentante": [
+      {
+        "table": "ClienteRepresentante",
+        "column": "AssinaDuplicata",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "ClienteRepresentante",
+        "column": "AssinaDigital",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "ClienteTipoDoc": [
+      {
+        "table": "ClienteTipoDoc",
+        "column": "TipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "Comissao": [
+      {
+        "table": "Comissao",
+        "column": "Status",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "ComissaoDetalhe": [
+      {
+        "table": "ComissaoDetalhe",
+        "column": "TipoBaseCalculo",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "ComissaoDetalhe",
+        "column": "Estornado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "ComunicacaoObservacao": [
+      {
+        "table": "ComunicacaoObservacao",
+        "column": "Tipo",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "ComunicacaoObservacao",
+        "column": "TipoHistoricoOportunidade",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "Conciliacao": [
+      {
+        "table": "Conciliacao",
+        "column": "Conciliado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "ConciliacaoSerasaTemp": [
+      {
+        "table": "ConciliacaoSerasaTemp",
+        "column": "Status",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "ConciliacaoSerasaTemp",
+        "column": "TipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "Constatacao": [
+      {
+        "table": "Constatacao",
+        "column": "InformacoesComplementares",
+        "data_type": "varchar",
+        "max_length": -1,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      }
+    ],
+    "ConsultaCRM": [
+      {
+        "table": "ConsultaCRM",
+        "column": "Estado",
+        "data_type": "char",
+        "max_length": 2,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      }
+    ],
+    "ConsultaSerpro": [
+      {
+        "table": "ConsultaSerpro",
+        "column": "Sucesso",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "ContaBancaria": [
+      {
+        "table": "ContaBancaria",
+        "column": "EPadrao",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "ContaBancaria",
+        "column": "VerificaEndereco",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "ContaBancaria",
+        "column": "ExibirConta",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "ContaBancaria",
+        "column": "UsaChaveAlternativa",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "ContaBancariaEmpresa": [
+      {
+        "table": "ContaBancariaEmpresa",
+        "column": "EPadrao",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "ContaBancariaEmpresa",
+        "column": "EPadraoCobranca",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "ContaContabil": [
+      {
+        "table": "ContaContabil",
+        "column": "ExibirLancamentoManual",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "ContaContabilFixa": [
+      {
+        "table": "ContaContabilFixa",
+        "column": "TipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "ContabilidadeTemp": [
+      {
+        "table": "ContabilidadeTemp",
+        "column": "GeraArquivo",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "Controle": [
+      {
+        "table": "Controle",
+        "column": "CriarProtesto",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Controle",
+        "column": "Tranche",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "ControleModalidade": [
+      {
+        "table": "ControleModalidade",
+        "column": "ModalidadeId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "ControleTipoDoc": [
+      {
+        "table": "ControleTipoDoc",
+        "column": "TipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "Credito": [
+      {
+        "table": "Credito",
+        "column": "Padrao",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Credito",
+        "column": "FeatureConsulta",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Credito",
+        "column": "ConsultaSerasa5",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Credito",
+        "column": "SocioPJ",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Credito",
+        "column": "BVScore",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Credito",
+        "column": "BVInfEleitoral",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "CreditoProduto": [
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaScore",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaAnotacoesSPC",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaComprometimentoRenda",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaCapacidadePagamento",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaHistoricoPagamento",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaPontualidadePagamento",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaRendaEstimada",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaParticipacoes",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaLimiteCredito",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaGastoEstimadoPositivo",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaScorePositivo",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaPontualidadePagamentoPj",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaCapacidadeMensalPagamento",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaFaturamentoEstimadoPositivo",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaQsaAvancado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaQsaCompleto",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaAnotacoesSPCPj",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaRecomendacaoLimiteCredito",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaHistoricoPagamentoComercialAvancadoPj",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaHistoricoPagamentoFinanceiroAvancado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaPerfilFinanceiro",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaIndiceRelacionamentoMercadoSetorPj",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaRiscoNovasEmpresas",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaMaisAnotacoesPj",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaClassificacaoRisco",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaScoreFraudePj",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaScoreCustomizado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaIndicadoresRecebiveisSemConsentimento",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaDividasOrgaosPublicos",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaLocalizacaoPj",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaConsultasDetalhadasSerasa",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaScoreDeSocio",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaAnotacoesConsultasSpcSociosAdministradores",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaSituacaoFiscal",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaComportamentoPagamentoSetor",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaMosaicBusiness",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaScoreDeCreditoSetorial",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaAlertaCadSociosAdm",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaAlertaCadEmpresas",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaQuadroSocialAdministrativo",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaConsultasASerasa",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaAnotacoesCompletas",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaAnotacoesConsultasSpc",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaScoreCustomizadoPf",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaMaisAnotacoes",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaScoreFraudePf",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaIndiceRelacionamentoMercadoPf",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaLocalizacaoPf",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaScoreCurtoPrazo",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaAlertaObito",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaScorePositivoPf",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaParticipacaoSocietaria",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaAnotacoesCompletasPf",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "CreditoProduto",
+        "column": "ConsultaConsultasASerasaPf",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "DebentureResgateDetalhe": [
+      {
+        "table": "DebentureResgateDetalhe",
+        "column": "Tipo",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "DebentureResgateSolicitacao": [
+      {
+        "table": "DebentureResgateSolicitacao",
+        "column": "Tipo",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "DebentureResgateSolicitacao",
+        "column": "Status",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "Documento": [
+      {
+        "table": "Documento",
+        "column": "ECalculoInverso",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Documento",
+        "column": "MarcadoRecompra",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Documento",
+        "column": "ERecomprado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Documento",
+        "column": "TipoRecompra",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "Documento",
+        "column": "PagtoChequeVinculado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Documento",
+        "column": "TipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "Documento",
+        "column": "PefinInclui",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Documento",
+        "column": "EImportado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Documento",
+        "column": "FoiProcessadoLivecard",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "DocumentoBaixaRecompra": [
+      {
+        "table": "DocumentoBaixaRecompra",
+        "column": "EParcial",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoBaixaRecompra",
+        "column": "PagoCartorio",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoBaixaRecompra",
+        "column": "PagoProtesto",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoBaixaRecompra",
+        "column": "Estornado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoBaixaRecompra",
+        "column": "Motivo",
+        "data_type": "varchar",
+        "max_length": 10,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      },
+      {
+        "table": "DocumentoBaixaRecompra",
+        "column": "Antecipacao",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoBaixaRecompra",
+        "column": "TipoContexto",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "DocumentoBaixaRecompraAlerta": [
+      {
+        "table": "DocumentoBaixaRecompraAlerta",
+        "column": "Tipo",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "DocumentoCliente": [
+      {
+        "table": "DocumentoCliente",
+        "column": "TipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "DocumentoNaoLido": [
+      {
+        "table": "DocumentoNaoLido",
+        "column": "TipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "DocumentoNaoLido",
+        "column": "TipoErro",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "DocumentoNaoLido",
+        "column": "TipoErroAnalise",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "DocumentoStatus": [
+      {
+        "table": "DocumentoStatus",
+        "column": "Entrada",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "Aberto",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "Baixado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "Liquidado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "Descontado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "Devolvido",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "Perda",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "Recomprado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "Estornado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "Manual",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "Importado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "EmCobranca",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "Atrasado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "Parcial",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "Prorrogado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "Antecipado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "EmCartorio",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "Protestado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "Sustado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "Automatico",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "PorCessao",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "NaOperacao",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "Motivo",
+        "data_type": "varchar",
+        "max_length": 10,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "Tipo",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "DocumentoStatus",
+        "column": "BaixaPorDeposito",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "EmissaoDebentureSerie": [
+      {
+        "table": "EmissaoDebentureSerie",
+        "column": "RecompraOperacao",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmissaoDebentureSerie",
+        "column": "RecompraDocumento",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmissaoDebentureSerie",
+        "column": "Valoriza",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "Empresa": [
+      {
+        "table": "Empresa",
+        "column": "Estado",
+        "data_type": "char",
+        "max_length": 2,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      },
+      {
+        "table": "Empresa",
+        "column": "EPadrao",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Empresa",
+        "column": "TipoSecuritizacao",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "Empresa",
+        "column": "EPadraoLogoMobile",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Empresa",
+        "column": "ESelecionadaRelatorio",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "EmpresaArquivo": [
+      {
+        "table": "EmpresaArquivo",
+        "column": "BloqueiaOperacao",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "EmpresaConfCRM": [
+      {
+        "table": "EmpresaConfCRM",
+        "column": "ConsultaAutomaticaSerpro",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfCRM",
+        "column": "ConsultaAutomaticaSerasa",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "EmpresaConfCadastro": [
+      {
+        "table": "EmpresaConfCadastro",
+        "column": "VerificaBancoPracaCliente",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfCadastro",
+        "column": "SobrescreveEndereco",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfCadastro",
+        "column": "SobrescreveRazao",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfCadastro",
+        "column": "UsaLimiteGrupoEco",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfCadastro",
+        "column": "UsaLimiteClienteSacado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfCadastro",
+        "column": "DesativaSacadoDataProtesto",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfCadastro",
+        "column": "ConsultaAutomaticaSerpro",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "EmpresaConfCobrancaBancaria": [
+      {
+        "table": "EmpresaConfCobrancaBancaria",
+        "column": "GerarParcialPagtoMenorRet",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfCobrancaBancaria",
+        "column": "LancarDifEncargoMultaRet",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfCobrancaBancaria",
+        "column": "UsarDataCreditoRet",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfCobrancaBancaria",
+        "column": "LancarCaixaTarifaRet",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "EmpresaConfContabilidade": [
+      {
+        "table": "EmpresaConfContabilidade",
+        "column": "IsContraPartidaFixa",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "EmpresaConfEmail": [
+      {
+        "table": "EmpresaConfEmail",
+        "column": "EnableSsl",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "EmpresaConfFinanceiro": [
+      {
+        "table": "EmpresaConfFinanceiro",
+        "column": "PermissaoTotalCaixa",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "EmpresaConfLogin": [
+      {
+        "table": "EmpresaConfLogin",
+        "column": "Segunda",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfLogin",
+        "column": "Terca",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfLogin",
+        "column": "Quarta",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfLogin",
+        "column": "Quinta",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfLogin",
+        "column": "Sexta",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "EmpresaConfOperacao": [
+      {
+        "table": "EmpresaConfOperacao",
+        "column": "UsaBancoPadraoOperacao",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfOperacao",
+        "column": "FechaOpDataDiferente",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfOperacao",
+        "column": "PermiteDocsSemNumero",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfOperacao",
+        "column": "AvisaDocsSacadosDiferentes",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfOperacao",
+        "column": "RemoverZerosXML",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfOperacao",
+        "column": "SubstituirCaracteresEspeciais",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "EmpresaConfOperacaoAnalise": [
+      {
+        "table": "EmpresaConfOperacaoAnalise",
+        "column": "ConsultaAutomatica",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfOperacaoAnalise",
+        "column": "LiberarSemErro",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfOperacaoAnalise",
+        "column": "ConsultarSerpro",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "EmpresaConfOperacional": [
+      {
+        "table": "EmpresaConfOperacional",
+        "column": "UsaInstrucaoAutomatica",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfOperacional",
+        "column": "UsaInstrucaoAutomaticaCheque",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfOperacional",
+        "column": "DevolverPagamentoMaior",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfOperacional",
+        "column": "DesativarSacadoDevolucaoCheque",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfOperacional",
+        "column": "BaixaDataMaiorSistema",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfOperacional",
+        "column": "ProrrogarDocumentoCarteiraDesconto",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfOperacional",
+        "column": "GerarInstrucaoDeBaixaNoRetorno",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EmpresaConfOperacional",
+        "column": "GerarEncMultaAutomatico",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "EmpresaParametro": [
+      {
+        "table": "EmpresaParametro",
+        "column": "TipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "EmpresaParametroSecuritizacao": [
+      {
+        "table": "EmpresaParametroSecuritizacao",
+        "column": "ModalidadeId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "EmpresaParametroTipoDoc": [
+      {
+        "table": "EmpresaParametroTipoDoc",
+        "column": "TipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "EmpresaTipoDoc": [
+      {
+        "table": "EmpresaTipoDoc",
+        "column": "TipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "ErroInesperado": [
+      {
+        "table": "ErroInesperado",
+        "column": "FoiSolucionado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "EstatisticasLeituraDocumentosOperacao": [
+      {
+        "table": "EstatisticasLeituraDocumentosOperacao",
+        "column": "FoiImportado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "EstatisticasLeituraDocumentosOperacao",
+        "column": "TipoArquivo",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "EtapaUsuario": [
+      {
+        "table": "EtapaUsuario",
+        "column": "IsDefault",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "FechamentoDiario": [
+      {
+        "table": "FechamentoDiario",
+        "column": "status",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "Feriado": [
+      {
+        "table": "Feriado",
+        "column": "ERecorrente",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "Fluxograma": [
+      {
+        "table": "Fluxograma",
+        "column": "InserirDocumento",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Fluxograma",
+        "column": "ExcluirDocumento",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Fluxograma",
+        "column": "AlterarDocumento",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Fluxograma",
+        "column": "ConfigParamentro",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Fluxograma",
+        "column": "ImportarDocumento",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Fluxograma",
+        "column": "ImportarTrustee",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Fluxograma",
+        "column": "ImportarFIDC",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Fluxograma",
+        "column": "AnaliseOperacao",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Fluxograma",
+        "column": "CreditosDebitos",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Fluxograma",
+        "column": "Recompras",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Fluxograma",
+        "column": "Fechamento",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Fluxograma",
+        "column": "FecharOperacao",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Fluxograma",
+        "column": "InicioFluxograma",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Fluxograma",
+        "column": "FinalFluxograma",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Fluxograma",
+        "column": "Tipo",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "Fluxograma",
+        "column": "EAnalise",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Fluxograma",
+        "column": "EFechamento",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Fluxograma",
+        "column": "EPagamento",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Fluxograma",
+        "column": "AvisarUsuario",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Fluxograma",
+        "column": "AvancarAutomaticamente",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "FluxogramaUsuario": [
+      {
+        "table": "FluxogramaUsuario",
+        "column": "IsDefault",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "Funil": [
+      {
+        "table": "Funil",
+        "column": "Status",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "Gerente": [
+      {
+        "table": "Gerente",
+        "column": "UtilizaRecompra",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Gerente",
+        "column": "UtilizaBaixaDeposito",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Gerente",
+        "column": "TipoBaseCalculo",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "GerenteModalidade": [
+      {
+        "table": "GerenteModalidade",
+        "column": "ModalidadeId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "GerenteModalidade",
+        "column": "Utiliza",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "Importacao": [
+      {
+        "table": "Importacao",
+        "column": "FoiConcluida",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "ImportacaoAnalise": [
+      {
+        "table": "ImportacaoAnalise",
+        "column": "TipoErro",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "ImportacaoAnalise",
+        "column": "TipoErroAnalise",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "Indice": [
+      {
+        "table": "Indice",
+        "column": "Editavel",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Indice",
+        "column": "ConsultaAutomatica",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "InvestidorContaBancaria": [
+      {
+        "table": "InvestidorContaBancaria",
+        "column": "EDefault",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "ItemConciliacao": [
+      {
+        "table": "ItemConciliacao",
+        "column": "Conciliado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "LayoutDocs": [
+      {
+        "table": "LayoutDocs",
+        "column": "TipoHeader",
+        "data_type": "varchar",
+        "max_length": 3,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      },
+      {
+        "table": "LayoutDocs",
+        "column": "TipoDetalhe",
+        "data_type": "varchar",
+        "max_length": 3,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      },
+      {
+        "table": "LayoutDocs",
+        "column": "TipoTrailer",
+        "data_type": "varchar",
+        "max_length": 3,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      },
+      {
+        "table": "LayoutDocs",
+        "column": "EPadrao",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "LayoutDocs",
+        "column": "AlternativoBMP",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "LayoutDocs",
+        "column": "TipoPix",
+        "data_type": "varchar",
+        "max_length": 3,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      }
+    ],
+    "LayoutDocsTipoDoc": [
+      {
+        "table": "LayoutDocsTipoDoc",
+        "column": "TipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "LogSistema": [
+      {
+        "table": "LogSistema",
+        "column": "TipoAcao",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "LogSistema",
+        "column": "TipoContexto",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "Mensagem": [
+      {
+        "table": "Mensagem",
+        "column": "Lida",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Mensagem",
+        "column": "Processando",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Mensagem",
+        "column": "Importante",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "MensagemAppInvestidor": [
+      {
+        "table": "MensagemAppInvestidor",
+        "column": "MsgEnviada",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "Modalidade": [
+      {
+        "table": "Modalidade",
+        "column": "UsarFomento",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Modalidade",
+        "column": "UsarSecuritizacao",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Modalidade",
+        "column": "UsarFIDC",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Modalidade",
+        "column": "UsarESC",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "ModalidadeContaContabil": [
+      {
+        "table": "ModalidadeContaContabil",
+        "column": "ModalidadeId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "MotivoRecompra": [
+      {
+        "table": "MotivoRecompra",
+        "column": "ERecompra",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "Negociacao": [
+      {
+        "table": "Negociacao",
+        "column": "TipoDevedor",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "Negociacao",
+        "column": "TipoCredor",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "Negociacao",
+        "column": "Status",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "Negociacao",
+        "column": "StatusConclusao",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "Operacao": [
+      {
+        "table": "Operacao",
+        "column": "ModalidadeId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "Operacao",
+        "column": "Coobrigacao",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Operacao",
+        "column": "RecalculaOperacao",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Operacao",
+        "column": "OrigemProposta",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "Operacao",
+        "column": "DuplicataEndossada",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "OperacaoAnaliseHistorico": [
+      {
+        "table": "OperacaoAnaliseHistorico",
+        "column": "StatusLiberacao",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "OperacaoAnaliseHistorico",
+        "column": "IsLiberadoPorAlcada",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "OperacaoCliente": [
+      {
+        "table": "OperacaoCliente",
+        "column": "ModalidadeId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "OperacaoCliente",
+        "column": "OrigemProposta",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "OperacaoCliente",
+        "column": "RecalculaOperacao",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoCliente",
+        "column": "MotivoRejeicao",
+        "data_type": "varchar",
+        "max_length": -1,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      }
+    ],
+    "OperacaoCoaf": [
+      {
+        "table": "OperacaoCoaf",
+        "column": "Art12_1",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoCoaf",
+        "column": "Art12_2",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoCoaf",
+        "column": "Art12_3",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoCoaf",
+        "column": "Art12_4",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoCoaf",
+        "column": "Art12_5",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoCoaf",
+        "column": "Art12_6",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoCoaf",
+        "column": "Art12_7",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoCoaf",
+        "column": "Art12_8",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoCoaf",
+        "column": "Art12_9",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoCoaf",
+        "column": "Art12_10",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoCoaf",
+        "column": "Art12_11",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoCoaf",
+        "column": "Art12_12",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoCoaf",
+        "column": "Art12_13",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoCoaf",
+        "column": "Art12_14",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoCoaf",
+        "column": "Art12_15",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoCoaf",
+        "column": "Art13_1",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoCoaf",
+        "column": "Art13_2",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoCoaf",
+        "column": "Art13_3",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoCoaf",
+        "column": "Art13_4",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "OperacaoConfissaoDivida": [
+      {
+        "table": "OperacaoConfissaoDivida",
+        "column": "TipoContexto",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "OperacaoCredDebRec": [
+      {
+        "table": "OperacaoCredDebRec",
+        "column": "Antecipacao",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "OperacaoImportacao": [
+      {
+        "table": "OperacaoImportacao",
+        "column": "Status",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "OperacaoImportacaoRegistro": [
+      {
+        "table": "OperacaoImportacaoRegistro",
+        "column": "SacadoNovo",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoImportacaoRegistro",
+        "column": "TipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "OperacaoImportacaoRegistro",
+        "column": "ECalculoInverso",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoImportacaoRegistro",
+        "column": "Importou",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoImportacaoRegistro",
+        "column": "Erro",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoImportacaoRegistro",
+        "column": "Processando",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "OperacaoImportacaoTemp": [
+      {
+        "table": "OperacaoImportacaoTemp",
+        "column": "SacadoNovo",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoImportacaoTemp",
+        "column": "TipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "OperacaoImportacaoTemp",
+        "column": "ECalculoInverso",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoImportacaoTemp",
+        "column": "Importou",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoImportacaoTemp",
+        "column": "Erro",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "OperacaoImportacaoTemp",
+        "column": "Processando",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "OperacaoParametro": [
+      {
+        "table": "OperacaoParametro",
+        "column": "TipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "OperacaoParametroTipoDoc": [
+      {
+        "table": "OperacaoParametroTipoDoc",
+        "column": "TipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "OperacaoRegistroCERC": [
+      {
+        "table": "OperacaoRegistroCERC",
+        "column": "Status",
+        "data_type": "varchar",
+        "max_length": -1,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      },
+      {
+        "table": "OperacaoRegistroCERC",
+        "column": "StatusProcessamento",
+        "data_type": "varchar",
+        "max_length": -1,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      },
+      {
+        "table": "OperacaoRegistroCERC",
+        "column": "StatusAutorizacao",
+        "data_type": "varchar",
+        "max_length": -1,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      },
+      {
+        "table": "OperacaoRegistroCERC",
+        "column": "Tipo",
+        "data_type": "varchar",
+        "max_length": -1,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      }
+    ],
+    "OperacaoSingulareConf": [
+      {
+        "table": "OperacaoSingulareConf",
+        "column": "Coobrigacao",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "PagarReceber": [
+      {
+        "table": "PagarReceber",
+        "column": "CodigoOrigem",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "PagarReceberBaixa": [
+      {
+        "table": "PagarReceberBaixa",
+        "column": "EParcial",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "PagarReceberBaixa",
+        "column": "Estornado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "PagarReceberBaixa",
+        "column": "TipoContexto",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "Permission": [
+      {
+        "table": "Permission",
+        "column": "IsDefault",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "PreCRM": [
+      {
+        "table": "PreCRM",
+        "column": "Estado",
+        "data_type": "char",
+        "max_length": 2,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      }
+    ],
+    "RastreamentoProcessoEmSegundoPlano": [
+      {
+        "table": "RastreamentoProcessoEmSegundoPlano",
+        "column": "EstaProcessando",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "RastreamentoProcessoEmSegundoPlano",
+        "column": "FoiConcluido",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "RastreamentoProcessoEmSegundoPlano",
+        "column": "DeveSerMostrado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "Redesconto": [
+      {
+        "table": "Redesconto",
+        "column": "Status",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "RelatorioAssinatura": [
+      {
+        "table": "RelatorioAssinatura",
+        "column": "IsAnexo",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "Relatorios": [
+      {
+        "table": "Relatorios",
+        "column": "ExibeContrato",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "ExibeOperacao",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "ExibeCliente",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "ExibeRelatorio",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "ExibeCadastro",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "ExibeManutencaoDocumento",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "ExibeEnviarSacado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "ExibeEnviarCliente",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "OrdemPreferencia",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "ExibeOperacaoDocumentoMobile",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "ExibeOperacaoDetalheMobile",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "ExibeManutencaoDocumentoMobile",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "ExibeRelatorioMobile",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "OrdemPreferenciaMobile",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "ExibeDebenture",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "ExibeCaixaBanco",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "ExibeListaPadraoAssinaturaOperacao",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "MandarNoCorpoEmail",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "ExibeNoCorpoEmail",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "CrystalReports",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "ExibeComissaoComercial",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "TipoExclusivo",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "Relatorios",
+        "column": "ExibeNaRemessa",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "ExibeDesconto",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "ExibeOperacaoClienteMobile",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Relatorios",
+        "column": "ExibeResgateDebenture",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "RelatoriosModalidade": [
+      {
+        "table": "RelatoriosModalidade",
+        "column": "ModalidadeId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "RelatoriosRoles": [
+      {
+        "table": "RelatoriosRoles",
+        "column": "IsDefault",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "Retorno": [
+      {
+        "table": "Retorno",
+        "column": "Motivo",
+        "data_type": "varchar",
+        "max_length": 10,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      },
+      {
+        "table": "Retorno",
+        "column": "Importado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "Retorno",
+        "column": "Lido",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "RetornoCliente": [
+      {
+        "table": "RetornoCliente",
+        "column": "DocumentoTipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      },
+      {
+        "table": "RetornoCliente",
+        "column": "Motivo",
+        "data_type": "varchar",
+        "max_length": 3,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      }
+    ],
+    "RetornoLivecard": [
+      {
+        "table": "RetornoLivecard",
+        "column": "Status",
+        "data_type": "varchar",
+        "max_length": 50,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      }
+    ],
+    "Role": [
+      {
+        "table": "Role",
+        "column": "IsDefault",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "RolePermission": [
+      {
+        "table": "RolePermission",
+        "column": "IsDefault",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "RoleRulesPermission": [
+      {
+        "table": "RoleRulesPermission",
+        "column": "Tipo",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "Sacado": [
+      {
+        "table": "Sacado",
+        "column": "ENovo",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "SacadoConfiguracao": [
+      {
+        "table": "SacadoConfiguracao",
+        "column": "GeraPefin",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "SacadoConfiguracao",
+        "column": "ConfirmaTerceiros",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "SacadoConfiguracao",
+        "column": "PagaTerceiros",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "Simulacao": [
+      {
+        "table": "Simulacao",
+        "column": "ModalidadeId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "SimulacaoDocumento": [
+      {
+        "table": "SimulacaoDocumento",
+        "column": "ECalculoInverso",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "SimulacaoDocumento",
+        "column": "TipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "SimulacaoParametroTipoDoc": [
+      {
+        "table": "SimulacaoParametroTipoDoc",
+        "column": "TipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "Sistema": [
+      {
+        "table": "Sistema",
+        "column": "BloqueiaSelecaoEscopo",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "SistemaAppInvestidor": [
+      {
+        "table": "SistemaAppInvestidor",
+        "column": "ExibirResumoTermos",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "SistemaAppInvestidor",
+        "column": "ExibirTopSacadoCliente",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "SistemaConfMobile": [
+      {
+        "table": "SistemaConfMobile",
+        "column": "IsCendentePendenciaPagar",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "SistemaConfMobile",
+        "column": "IsCendentePendenciaReceber",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "SistemaConfMobile",
+        "column": "IsObrigatorioFantasia",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "SistemaConfMobile",
+        "column": "IsObrigatorioTelefone",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "SistemaConfMobile",
+        "column": "IsObrigatorioCelular",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "SistemaConfMobile",
+        "column": "IsObrigatorioEmail",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "SistemaConfMobile",
+        "column": "IsObrigatorioCEP",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "SistemaConfMobile",
+        "column": "IsObrigatorioEndereco",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "SistemaConfMobile",
+        "column": "IsObrigatorioNumero",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "SistemaConfMobile",
+        "column": "IsObrigatorioComplemento",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "SistemaConfMobile",
+        "column": "IsObrigatorioBairro",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "SistemaConfMobile",
+        "column": "IsObrigatorioCidade",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "SistemaConfMobile",
+        "column": "IsObrigatorioEstado",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "SistemaParametroSimulacao": [
+      {
+        "table": "SistemaParametroSimulacao",
+        "column": "TipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "SistemaParametroSimulacaoESC": [
+      {
+        "table": "SistemaParametroSimulacaoESC",
+        "column": "TipoDocId",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "Socio": [
+      {
+        "table": "Socio",
+        "column": "AssinaDigital",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "StatusControle": [
+      {
+        "table": "StatusControle",
+        "column": "Status",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "Tarefa": [
+      {
+        "table": "Tarefa",
+        "column": "Status",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "TipoDoc": [
+      {
+        "table": "TipoDoc",
+        "column": "ECheque",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "UserEmail": [
+      {
+        "table": "UserEmail",
+        "column": "EnableSsl1",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "UserRole": [
+      {
+        "table": "UserRole",
+        "column": "IsDefault",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "ValorizacaoSecDetalhe": [
+      {
+        "table": "ValorizacaoSecDetalhe",
+        "column": "NovoInicio",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      },
+      {
+        "table": "ValorizacaoSecDetalhe",
+        "column": "PodeSerExcluida",
+        "data_type": "bit",
+        "max_length": 1,
+        "reason": "Campo bit (boolean) - valores: 0/1"
+      }
+    ],
+    "VendaDebenture": [
+      {
+        "table": "VendaDebenture",
+        "column": "StatusSubscricao",
+        "data_type": "int",
+        "max_length": 4,
+        "reason": "Campo int com nome sugestivo de enum"
+      }
+    ],
+    "experianPFidentificationReport": [
+      {
+        "table": "experianPFidentificationReport",
+        "column": "statusDate",
+        "data_type": "varchar",
+        "max_length": 10,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      }
+    ],
+    "experianPFpartner": [
+      {
+        "table": "experianPFpartner",
+        "column": "companyStatus",
+        "data_type": "varchar",
+        "max_length": 50,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      },
+      {
+        "table": "experianPFpartner",
+        "column": "companyStatusCode",
+        "data_type": "varchar",
+        "max_length": 10,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      },
+      {
+        "table": "experianPFpartner",
+        "column": "companyStatusDate",
+        "data_type": "varchar",
+        "max_length": 10,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      }
+    ],
+    "experianQSAReport": [
+      {
+        "table": "experianQSAReport",
+        "column": "informationUpdateDate",
+        "data_type": "varchar",
+        "max_length": 10,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      }
+    ],
+    "experianQSAReport_directorsList": [
+      {
+        "table": "experianQSAReport_directorsList",
+        "column": "status",
+        "data_type": "varchar",
+        "max_length": 30,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      },
+      {
+        "table": "experianQSAReport_directorsList",
+        "column": "informationUpdateDate",
+        "data_type": "varchar",
+        "max_length": 10,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      }
+    ],
+    "experianQSAReport_partnersList": [
+      {
+        "table": "experianQSAReport_partnersList",
+        "column": "status",
+        "data_type": "varchar",
+        "max_length": 30,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      }
+    ],
+    "experiancompanyParticipationsReport": [
+      {
+        "table": "experiancompanyParticipationsReport",
+        "column": "statusCompany",
+        "data_type": "varchar",
+        "max_length": 50,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      }
+    ],
+    "experianevolutionCommitmentsSuppliers": [
+      {
+        "table": "experianevolutionCommitmentsSuppliers",
+        "column": "segmentInformation",
+        "data_type": "varchar",
+        "max_length": 20,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      }
+    ],
+    "experianidentificationReport": [
+      {
+        "table": "experianidentificationReport",
+        "column": "statusCode",
+        "data_type": "varchar",
+        "max_length": 2,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      },
+      {
+        "table": "experianidentificationReport",
+        "column": "statusCodeDescription",
+        "data_type": "varchar",
+        "max_length": 50,
+        "reason": "Campo varchar curto com nome sugestivo de enum"
+      }
+    ]
+  }
+}
