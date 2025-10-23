@@ -3,7 +3,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      platform: linux/arm64  # Define a arquitetura como ARM64 para o Raspberry Pi
     container_name: app
     ports:
       - "5000:5000"
