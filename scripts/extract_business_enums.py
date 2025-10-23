@@ -468,7 +468,6 @@ def main():
         # Salvar resultados
         print("\n💾 Salvando resultados...")
         output_dir = 'analisys'
-        output_dir.mkdir(parents=True, exist_ok=True)
 
         # JSON
         json_file = output_dir / 'business_enums_extracted.json'
