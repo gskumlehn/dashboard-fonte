@@ -1,7 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     fetch('/comercial/churn-analysis/data')
         .then(response => response.json())
-        .then(data => renderTable(data))
+        .then(data => {
+            if (!Array.isArray(data)) {
+                console.error("Erro ao buscar dados: 'data' não é um array", data);
+                return;
+            }
+            renderTable(data);
+        })
         .catch(error => console.error('Erro ao buscar dados:', error));
 });
 
@@ -51,4 +57,3 @@ function getRiskClass(riskLevel) {
         default: return '';
     }
 }
-
