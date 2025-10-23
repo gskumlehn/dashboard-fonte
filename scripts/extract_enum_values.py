@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 
 def load_enum_candidates():
-    enum_file = 'scripts/enum_candidates.json'
+    enum_file = 'analisys/enum_candidates.json'
     with open(enum_file, 'r', encoding='utf-8') as f:
         return json.load(f)
 
