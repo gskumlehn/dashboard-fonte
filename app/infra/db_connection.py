@@ -1,4 +1,5 @@
 import os
+import pyodbc  # Importação explícita para evitar erro "name 'pyodbc' is not defined"
 
 class Database:
     def __init__(self):
@@ -12,13 +13,6 @@ class Database:
         self.connection = None
 
     def connect(self):
-        try:
-            import pyodbc
-        except ImportError:
-            raise RuntimeError(
-                "pyodbc não encontrado. Instale as dependências do sistema (unixodbc + driver ODBC) "
-                "e o pacote Python pyodbc. Consulte o Dockerfile do projeto para exemplo de instalação."
-            )
 
         connection_string = (
             f"DRIVER={{{self.driver}}};"
