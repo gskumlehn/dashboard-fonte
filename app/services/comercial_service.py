@@ -2,9 +2,18 @@ from app.infra.db_connection import Database
 
 class ComercialService:
     @staticmethod
-    def get_churn_data():
-        # SQL para buscar os dados de churn
-        query = """
+    def get_churn_data(page=1, items_per_page=10, sort_column="VolumeHistorico", sort_direction="DESC"):
+        # Validação de entrada para evitar SQL Injection
+        valid_sort_columns = ["ClienteNome", "UltimaData", "DiasInativo", "VolumeHistorico"]
+        if sort_column not in valid_sort_columns:
+            raise ValueError(f"Coluna de ordenação inválida: {sort_column}")
+        if sort_direction.upper() not in ["ASC", "DESC"]:
+            raise ValueError(f"Direção de ordenação inválida: {sort_direction}")
+
+        offset = (page - 1) * items_per_page
+
+        # SQL para buscar os dados de churn com paginação e ordenação
+        query = f"""
         WITH UltimaOperacao AS (
             SELECT 
                 ClienteId,
@@ -32,13 +41,14 @@ class ComercialService:
                 DATEDIFF(DAY, uo.UltimaData, GETDATE()) > 90
                 AND cb.IsDeleted = 0
         )
-        SELECT TOP 10
+        SELECT 
             ClienteNome,
             UltimaData,
             DiasInativo,
             VolumeHistorico
         FROM ClientesInativos
-        ORDER BY VolumeHistorico DESC;
+        ORDER BY {sort_column} {sort_direction}
+        OFFSET {offset} ROWS FETCH NEXT {items_per_page} ROWS ONLY;
         """
 
         # Conecta ao banco e executa a query

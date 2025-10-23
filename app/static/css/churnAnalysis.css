@@ -1,19 +1,8 @@
 @import url('./colors.css');
-{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background-color: #f5f5f5;
-    color: #222;
-    line-height: 1.6;
-}
+@import url('./styles.css');
 
 .header {
-    background-color: #ffffff;
+    background-color: var(--card-bg);
     border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     padding: 1rem 1.5rem;
     display: flex;
@@ -36,7 +25,7 @@ body {
 }
 
 .logout-btn:hover {
-    color: #C86A3C;
+    color: var(--primary);
 }
 
 .churn-container {
@@ -47,20 +36,21 @@ body {
 
 .churn-container h1 {
     font-size: 2rem;
-    font-weight: 600;
-    color: #222;
     margin-bottom: 1.5rem;
+}
+
+.table-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+    overflow-x: auto;
 }
 
 #churn-table {
     width: 100%;
     border-collapse: collapse;
-
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 8px;
-    padding: 1rem;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.03);
 }
 
 #churn-table thead {
@@ -70,10 +60,33 @@ body {
 #churn-table th {
     text-align: left;
     padding: 0.75rem;
-    font-weight: 600;
-    color: #222;
     font-size: 0.875rem;
     background-color: transparent;
+}
+
+#churn-table th.sortable {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s;
+    position: relative;
+}
+
+#churn-table th.sortable:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+#churn-table th.sortable.active {
+    color: var(--primary);
+}
+
+.sort-indicator {
+    margin-left: 0.25rem;
+    font-size: 0.7rem;
+    opacity: 0.3;
+}
+
+#churn-table th.sortable.active .sort-indicator {
+    opacity: 1;
 }
 
 #churn-table td {
@@ -81,7 +94,6 @@ body {
     padding: 0.75rem;
     border-bottom: 1px solid rgba(0, 0, 0, 0.04);
     font-size: 0.875rem;
-    color: #444;
 }
 
 #churn-table tbody tr {
@@ -105,18 +117,62 @@ body {
 }
 
 .risk-high {
-    background-color: #fee;
-    color: #c00;
+    background-color: var(--error-bg);
+    color: var(--error-text);
 }
 
 .risk-medium {
-    background-color: #fef8e7;
-    color: #d68910;
+    background-color: var(--warning-bg);
+    color: var(--warning-text);
 }
 
 .risk-low {
-    background-color: #e8f5e9;
-    color: #2e7d32;
+    background-color: var(--success-bg);
+    color: var(--success-text);
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.pagination-btn {
+    background: none;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: var(--text);
+    font-size: 1.25rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background-color: rgba(0, 0, 0, 0.02);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.pagination-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.pagination-info {
+    font-size: 0.875rem;
+    color: var(--text);
+    min-width: 80px;
+    text-align: center;
 }
 
 @media (max-width: 768px) {
@@ -132,5 +188,9 @@ body {
     #churn-table td {
         padding: 0.5rem;
         font-size: 0.8rem;
+    }
+
+    .pagination {
+        gap: 0.5rem;
     }
 }

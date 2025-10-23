@@ -1,28 +1,47 @@
- {% extends 'base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}Análise de Churn{% endblock %}
 
 {% block content %}
 <div class="churn-container">
     <h1>Análise de Churn</h1>
-    <table id="churn-table">
-        <thead>
-            <tr>
-                <th>Cliente</th>
-                <th>Última Operação</th>
-                <th>Dias Inativo</th>
-                <th>Volume Histórico (R$)</th>
-                <th>Risco de Churn</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Dados serão preenchidos dinamicamente -->
-        </tbody>
-    </table>
+
+    <div class="table-card">
+        <table id="churn-table">
+            <thead>
+                <tr>
+                    <th class="sortable" data-sort="ClienteNome">
+                        Cliente
+                        <span class="sort-indicator"></span>
+                    </th>
+                    <th class="sortable" data-sort="UltimaData">
+                        Última Operação
+                        <span class="sort-indicator"></span>
+                    </th>
+                    <th class="sortable" data-sort="DiasInativo">
+                        Dias Inativo
+                        <span class="sort-indicator"></span>
+                    </th>
+                    <th class="sortable active desc" data-sort="VolumeHistorico">
+                        Volume Histórico (R$)
+                        <span class="sort-indicator">▼</span>
+                    </th>
+                    <th>Risco de Churn</th>
+                </tr>
+            </thead>
+            <tbody id="churn-tbody">
+                <!-- Dados serão preenchidos dinamicamente -->
+            </tbody>
+        </table>
+
+        <div class="pagination">
+            <button class="pagination-btn" id="prev-btn" disabled>‹</button>
+            <span class="pagination-info" id="pagination-info">1 de 1</span>
+            <button class="pagination-btn" id="next-btn" disabled>›</button>
+        </div>
+    </div>
 </div>
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/churnAnalysis.css') }}">
 <script defer src="{{ url_for('static', filename='js/churnAnalysis.js') }}"></script>
 {% endblock %}
-</body>
-</html>
