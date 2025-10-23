@@ -42,6 +42,7 @@ class ComercialService:
                 AND cb.IsDeleted = 0
         )
         SELECT 
+            COUNT(*) OVER() AS TotalCount,
             ClienteNome,
             UltimaData,
             DiasInativo,
@@ -57,8 +58,10 @@ class ComercialService:
             results = db.execute_query(query)
             # Processa os resultados para adicionar o risco de churn
             churn_data = []
+            total_count = 0
             for row in results:
-                cliente_nome, ultima_data, dias_inativo, volume_historico = row
+                total_count = row[0]  # TotalCount é retornado na primeira coluna
+                cliente_nome, ultima_data, dias_inativo, volume_historico = row[1:]
                 if dias_inativo > 180:
                     risco = "Alto"
                 elif dias_inativo > 120:
@@ -72,7 +75,7 @@ class ComercialService:
                     "volume_historico": volume_historico,
                     "risco": risco
                 })
-            return churn_data
+            return {"data": churn_data, "total_count": total_count}
         except Exception as e:
             raise RuntimeError(f"Erro ao buscar dados de churn: {e}")
         finally:

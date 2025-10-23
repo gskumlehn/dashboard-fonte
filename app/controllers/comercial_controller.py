@@ -18,12 +18,12 @@ def fetch_churn_data():
         sort_column = request.args.get('sort_column', 'VolumeHistorico')
         sort_direction = request.args.get('sort_direction', 'DESC').upper()
 
-        churn_data = ComercialService.get_churn_data(
+        result = ComercialService.get_churn_data(
             page=page,
             items_per_page=items_per_page,
             sort_column=sort_column,
             sort_direction=sort_direction
         )
-        return jsonify(churn_data), 200
+        return jsonify(result), 200
     except Exception as e:
         return jsonify({"error": f"Erro ao buscar dados de churn: {str(e)}"}), 500

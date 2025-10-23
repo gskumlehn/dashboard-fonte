@@ -1,6 +1,6 @@
-const itemsPerPage = 10;
+const itemsPerPage = 5;
 let currentPage = 1;
-let sortColumn = 'VolumeHistorico';
+let sortColumn = 'volumeHistorico';
 let sortDirection = 'desc';
 
 function getRiskLabel(risk) {
@@ -52,8 +52,7 @@ function updateSortIndicators() {
     }
 }
 
-function updatePaginationInfo(data) {
-    const totalPages = getTotalPages(data);
+function updatePaginationInfo(totalPages) {
     const paginationInfo = document.getElementById('pagination-info');
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
@@ -72,13 +71,32 @@ function populateTable(data) {
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>${row.cliente}</td>
-            <td>${new Date(row.ultima_operacao).toLocaleDateString('pt-BR')}</td>
-            <td>${row.dias_inativo}</td>
-            <td>R$ ${parseFloat(row.volume_historico).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
-            <td><span class="risk-badge risk-${row.risco.toLowerCase()}">${row.risco}</span></td>
+            <td>${row.ultimaOperacao}</td>
+            <td>${row.diasInativo}</td>
+            <td>${row.volumeHistoricoFormatted}</td>
+            <td><span class="risk-badge risk-${row.risco}">${getRiskLabel(row.risco)}</span></td>
         `;
         tbody.appendChild(tr);
     });
+}
+
+function fetchChurnData() {
+    const params = new URLSearchParams({
+        page: currentPage,
+        items_per_page: itemsPerPage,
+        sort_column: sortColumn,
+        sort_direction: sortDirection
+    });
+
+    fetch(`/comercial/churn-analysis/data?${params.toString()}`)
+        .then(response => response.json())
+        .then(result => {
+            const { data, total_count } = result;
+            const totalPages = Math.ceil(total_count / itemsPerPage);
+            populateTable(data);
+            updatePaginationInfo(totalPages);
+        })
+        .catch(error => console.error('Erro ao buscar dados:', error));
 }
 
 function handleSort(column) {
@@ -88,6 +106,7 @@ function handleSort(column) {
         sortColumn = column;
         sortDirection = 'desc';
     }
+
     currentPage = 1;
     fetchChurnData();
 }
@@ -113,22 +132,6 @@ function setupPaginationHandlers() {
         currentPage++;
         fetchChurnData();
     });
-}
-
-function fetchChurnData() {
-    const params = new URLSearchParams({
-        page: currentPage,
-        items_per_page: itemsPerPage,
-        sort_column: sortColumn,
-        sort_direction: sortDirection
-    });
-
-    fetch(`/comercial/churn-analysis/data?${params.toString()}`)
-        .then(response => response.json())
-        .then(data => {
-            populateTable(data);
-        })
-        .catch(error => console.error('Erro ao buscar dados:', error));
 }
 
 document.addEventListener('DOMContentLoaded', () => {
