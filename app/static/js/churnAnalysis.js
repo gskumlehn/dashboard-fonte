@@ -1,55 +1,15 @@
 const itemsPerPage = 5;
 let currentPage = 1;
-let sortColumn = 'volumeHistorico';
-let sortDirection = 'desc';
+let sortColumn = 'DiasInativo';
+let sortDirection = 'asc';
 
 function getRiskLabel(risk) {
     const labels = {
-        high: 'Alto',
-        medium: 'Médio',
-        low: 'Baixo'
+        'Alto': 'high',
+        'Médio': 'medium',
+        'Baixo': 'low'
     };
     return labels[risk] || risk;
-}
-
-function sortData(data, column, direction) {
-    return [...data].sort((a, b) => {
-        let valueA = a[column];
-        let valueB = b[column];
-
-        if (column === 'ultimaOperacao') {
-            valueA = a.ultimaOperacaoDate;
-            valueB = b.ultimaOperacaoDate;
-        }
-
-        if (valueA < valueB) return direction === 'asc' ? -1 : 1;
-        if (valueA > valueB) return direction === 'asc' ? 1 : -1;
-        return 0;
-    });
-}
-
-function paginateData(data, page) {
-    const start = (page - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    return data.slice(start, end);
-}
-
-function getTotalPages(data) {
-    return Math.ceil(data.length / itemsPerPage);
-}
-
-function updateSortIndicators() {
-    document.querySelectorAll('th.sortable').forEach(th => {
-        th.classList.remove('active', 'asc', 'desc');
-        th.querySelector('.sort-indicator').textContent = '';
-    });
-
-    const activeHeader = document.querySelector(`th[data-sort="${sortColumn}"]`);
-    if (activeHeader) {
-        activeHeader.classList.add('active', sortDirection);
-        const indicator = activeHeader.querySelector('.sort-indicator');
-        indicator.textContent = sortDirection === 'asc' ? '▲' : '▼';
-    }
 }
 
 function updatePaginationInfo(totalPages) {
@@ -58,7 +18,6 @@ function updatePaginationInfo(totalPages) {
     const nextBtn = document.getElementById('next-btn');
 
     paginationInfo.textContent = `${currentPage} de ${totalPages}`;
-
     prevBtn.disabled = currentPage === 1;
     nextBtn.disabled = currentPage === totalPages;
 }
@@ -71,10 +30,10 @@ function populateTable(data) {
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>${row.cliente}</td>
-            <td>${row.ultimaOperacao}</td>
-            <td>${row.diasInativo}</td>
-            <td>${row.volumeHistoricoFormatted}</td>
-            <td><span class="risk-badge risk-${row.risco}">${getRiskLabel(row.risco)}</span></td>
+            <td>${new Date(row.ultima_operacao).toLocaleDateString('pt-BR')}</td>
+            <td>${row.dias_inativo}</td>
+            <td>R$ ${parseFloat(row.volume_historico).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+            <td><span class="risk-badge risk-${row.risco.toLowerCase()}">${getRiskLabel(row.risco)}</span></td>
         `;
         tbody.appendChild(tr);
     });
