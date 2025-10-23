@@ -470,13 +470,13 @@ def main():
         output_dir = 'analisys'
 
         # JSON
-        json_file = output_dir / 'business_enums_extracted.json'
+        json_file = output_dir + '/business_enums_extracted.json'
         with open(json_file, 'w', encoding='utf-8') as f:
             json.dump(results, f, indent=2, ensure_ascii=False)
         print(f"✓ JSON salvo: {json_file}")
 
         # Markdown
-        md_file = output_dir / 'Business_Enums_Report.md'
+        md_file = output_dir + '/Business_Enums_Report.md'
         generate_markdown_report(results, md_file)
         print(f"✓ Relatório Markdown: {md_file}")
 
