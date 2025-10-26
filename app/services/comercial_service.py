@@ -3,7 +3,6 @@ from app.infra.db_connection import Database
 class ComercialService:
     @staticmethod
     def get_churn_data(page=1, items_per_page=10, sort_column="VolumeHistorico", sort_direction="DESC"):
-        # Validação de entrada para evitar SQL Injection
         valid_sort_columns = ["ClienteNome", "UltimaData", "DiasInativo", "VolumeHistorico"]
         if sort_column not in valid_sort_columns:
             raise ValueError(f"Coluna de ordenação inválida: {sort_column}")
@@ -12,7 +11,6 @@ class ComercialService:
 
         offset = (page - 1) * items_per_page
 
-        # SQL para buscar os dados de churn com paginação e ordenação
         query = f"""
         WITH UltimaOperacao AS (
             SELECT 
@@ -38,7 +36,7 @@ class ComercialService:
             INNER JOIN UltimaOperacao uo ON c.Id = uo.ClienteId
             INNER JOIN dbo.CadastroBase cb ON c.CadastroBaseId = cb.Id
             WHERE 
-                DATEDIFF(DAY, uo.UltimaData, GETDATE()) > 90
+                DATEDIFF(DAY, uo.UltimaData, GETDATE()) > 30
                 AND cb.IsDeleted = 0
         )
         SELECT 
@@ -62,9 +60,11 @@ class ComercialService:
             for row in results:
                 total_count = row[0]  # TotalCount é retornado na primeira coluna
                 cliente_nome, ultima_data, dias_inativo, volume_historico = row[1:]
-                if dias_inativo > 180:
+                if dias_inativo > 120:
+                    risco = "Consumado"
+                elif dias_inativo > 90:
                     risco = "Alto"
-                elif dias_inativo > 120:
+                elif dias_inativo > 60:
                     risco = "Médio"
                 else:
                     risco = "Baixo"
