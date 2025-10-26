@@ -6,6 +6,17 @@
 <div class="churn-container">
     <h1>Análise de Churn</h1>
 
+    <div class="filters">
+        <label for="risk-filter">Filtrar por Risco de Churn:</label>
+        <select id="risk-filter">
+            <option value="">Todos</option>
+            <option value="Consumado">Consumado</option>
+            <option value="Alto">Alto</option>
+            <option value="Médio">Médio</option>
+            <option value="Baixo">Baixo</option>
+        </select>
+    </div>
+
     <div class="table-card">
         <table id="churn-table">
             <thead>

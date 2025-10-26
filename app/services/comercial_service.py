@@ -2,7 +2,7 @@ from app.infra.db_connection import Database
 
 class ComercialService:
     @staticmethod
-    def get_churn_data(page=1, items_per_page=10, sort_column="VolumeHistorico", sort_direction="DESC"):
+    def get_churn_data(page=1, items_per_page=10, sort_column="VolumeHistorico", sort_direction="DESC", risk_filter=""):
         valid_sort_columns = ["ClienteNome", "UltimaData", "DiasInativo", "VolumeHistorico"]
         if sort_column not in valid_sort_columns:
             raise ValueError(f"Coluna de ordenação inválida: {sort_column}")
@@ -10,6 +10,14 @@ class ComercialService:
             raise ValueError(f"Direção de ordenação inválida: {sort_direction}")
 
         offset = (page - 1) * items_per_page
+
+        risk_conditions = {
+            "Consumado": "DiasInativo > 120",
+            "Alto": "DiasInativo BETWEEN 91 AND 120",
+            "Médio": "DiasInativo BETWEEN 61 AND 90",
+            "Baixo": "DiasInativo <= 60"
+        }
+        risk_condition = risk_conditions.get(risk_filter, "1=1")
 
         query = f"""
         WITH UltimaOperacao AS (
@@ -46,6 +54,7 @@ class ComercialService:
             DiasInativo,
             VolumeHistorico
         FROM ClientesInativos
+        WHERE {risk_condition}
         ORDER BY {sort_column} {sort_direction}
         OFFSET {offset} ROWS FETCH NEXT {items_per_page} ROWS ONLY;
         """

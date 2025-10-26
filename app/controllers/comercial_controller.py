@@ -17,12 +17,14 @@ def fetch_churn_data():
         items_per_page = int(request.args.get('items_per_page', 10))
         sort_column = request.args.get('sort_column', 'VolumeHistorico')
         sort_direction = request.args.get('sort_direction', 'DESC').upper()
+        risk_filter = request.args.get('risk_filter', '')
 
         result = ComercialService.get_churn_data(
             page=page,
             items_per_page=items_per_page,
             sort_column=sort_column,
-            sort_direction=sort_direction
+            sort_direction=sort_direction,
+            risk_filter=risk_filter
         )
         return jsonify(result), 200
     except Exception as e:

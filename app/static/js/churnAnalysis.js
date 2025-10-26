@@ -2,6 +2,7 @@ const itemsPerPage = 10;
 let currentPage = 1;
 let sortColumn = 'DiasInativo';
 let sortDirection = 'asc';
+let riskFilter = '';
 
 function getRiskLabel(risk) {
     const labels = {
@@ -59,7 +60,8 @@ function fetchChurnData() {
         page: currentPage,
         items_per_page: itemsPerPage,
         sort_column: sortColumn,
-        sort_direction: sortDirection
+        sort_direction: sortDirection,
+        risk_filter: riskFilter
     });
 
     fetch(`/comercial/churn-analysis/data?${params.toString()}`)
@@ -109,8 +111,18 @@ function setupPaginationHandlers() {
     });
 }
 
+function setupRiskFilterHandler() {
+    const riskFilterSelect = document.getElementById('risk-filter');
+    riskFilterSelect.addEventListener('change', () => {
+        riskFilter = riskFilterSelect.value;
+        currentPage = 1;
+        fetchChurnData();
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     setupSortHandlers();
     setupPaginationHandlers();
+    setupRiskFilterHandler();
     fetchChurnData();
 });
