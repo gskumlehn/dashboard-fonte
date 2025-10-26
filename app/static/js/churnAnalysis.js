@@ -5,6 +5,7 @@ let sortDirection = 'asc';
 
 function getRiskLabel(risk) {
     const labels = {
+        'Cunsumado': 'churned',
         'Alto': 'high',
         'Médio': 'medium',
         'Baixo': 'low'

@@ -92,6 +92,11 @@
     font-weight: 600;
 }
 
+.risk-churned {
+    background-color: var(--primary-dark);
+    color: var(--white);
+}
+
 .risk-high {
     background-color: var(--error-bg);
     color: var(--error-text);
