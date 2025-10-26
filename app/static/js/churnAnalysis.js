@@ -6,7 +6,7 @@ let riskFilter = '';
 
 function getRiskLabel(risk) {
     const labels = {
-        'Cunsumado': 'churned',
+        'Consumado': 'churned',
         'Alto': 'high',
         'Médio': 'medium',
         'Baixo': 'low'
