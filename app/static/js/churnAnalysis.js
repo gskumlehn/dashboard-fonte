@@ -1,4 +1,4 @@
-const itemsPerPage = 5;
+const itemsPerPage = 10;
 let currentPage = 1;
 let sortColumn = 'DiasInativo';
 let sortDirection = 'asc';
