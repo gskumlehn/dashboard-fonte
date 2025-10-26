@@ -12,6 +12,20 @@ function getRiskLabel(risk) {
     return labels[risk] || risk;
 }
 
+function updateSortIndicators() {
+    document.querySelectorAll('th.sortable').forEach(th => {
+        th.classList.remove('active', 'asc', 'desc');
+        th.querySelector('.sort-indicator').textContent = '';
+    });
+
+    const activeHeader = document.querySelector(`th[data-sort="${sortColumn}"]`);
+    if (activeHeader) {
+        activeHeader.classList.add('active', sortDirection);
+        const indicator = activeHeader.querySelector('.sort-indicator');
+        indicator.textContent = sortDirection === 'asc' ? '▲' : '▼';
+    }
+}
+
 function updatePaginationInfo(totalPages) {
     const paginationInfo = document.getElementById('pagination-info');
     const prevBtn = document.getElementById('prev-btn');
@@ -54,6 +68,7 @@ function fetchChurnData() {
             const totalPages = Math.ceil(total_count / itemsPerPage);
             populateTable(data);
             updatePaginationInfo(totalPages);
+            updateSortIndicators();
         })
         .catch(error => console.error('Erro ao buscar dados:', error));
 }
