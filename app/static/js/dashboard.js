@@ -315,11 +315,13 @@ function renderVolumeChart(rows) {
                     titleColor: textColor,
                     bodyColor: textColor,
                     callbacks: {
-                        // NEW: format tooltip title for month periods as "Outubro de 2025"
+                        // format tooltip title for different periods
                         title: function(items) {
                             if (!items || items.length === 0) return '';
                             const idx = items[0].dataIndex;
                             const raw = chartDataObj.rawPeriods[idx] || chartDataObj.labels[idx] || '';
+
+                            // month aggregated by month -> "Outubro de 2025"
                             if (currentPeriod === 'year_month') {
                                 const parts = String(raw).split('-');
                                 if (parts.length >= 2) {
@@ -330,7 +332,29 @@ function renderVolumeChart(rows) {
                                     return [ `${capitalize(monthName)} de ${y}` ];
                                 }
                             }
-                            // fallback: show the formatted label
+
+                            // month_day (daily) -> "1 Outubro de 2025" (parsing direto para evitar timezone)
+                            if (currentPeriod === 'month_day') {
+                                // expect 'YYYY-MM-DD'
+                                const parts = String(raw).split('-');
+                                if (parts.length >= 3) {
+                                    const y = parts[0];
+                                    const m = parts[1].padStart(2, '0');
+                                    const d = String(parseInt(parts[2], 10)); // remove leading zeros
+                                    const mi = parseInt(m, 10) - 1;
+                                    const monthName = monthNamesFull[mi] || m;
+                                    return [ `${d} ${capitalize(monthName)} de ${y}` ];
+                                }
+                            }
+
+                            // quarter_week -> show "semana X/mesAno" fallback
+                            if (currentPeriod === 'quarter_week') {
+                                // raw expected 'YYYY-MM-W<week>'; reuse weekOfMonthFromRaw for label
+                                const weekLabel = weekOfMonthFromRaw(raw);
+                                return [ weekLabel ];
+                            }
+
+                            // fallback: show formatted label or raw
                             return [ chartDataObj.labels[idx] || String(raw) ];
                         },
                         label: function(context) {
