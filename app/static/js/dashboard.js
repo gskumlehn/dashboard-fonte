@@ -47,30 +47,76 @@ function buildChartData(rows) {
         return { labels: [], rawPeriods: [], data: [] };
     }
 
-    // detecta se são datas ISO (YYYY-MM-DD)
-    const rawPeriods = rows.map(r => String(r.period || ''));
-    const allIsoDates = rawPeriods.every(p => /^\d{4}-\d{2}-\d{2}$/.test(p));
+    // helper: parse period strings into a UTC timestamp (ms) when possible
+    function periodToTimestamp(p) {
+        if (!p) return null;
+        // YYYY-MM-DD
+        const isoDate = /^\d{4}-\d{2}-\d{2}$/;
+        const yearMonth = /^\d{4}-\d{2}$/;
+        const weekRaw = /^(\d{4})-(\d{2})-W(\d+)$/; // YYYY-MM-W<weekOfYear>
 
-    let sortedRows = rows.slice();
-
-    if (allIsoDates) {
-        // ordena cronologicamente pela string ISO (evita problemas de timezone)
-        sortedRows.sort((a, b) => String(a.period).localeCompare(String(b.period)));
-    } else {
-        // tentativa geral de ordenação por period
-        try {
-            sortedRows.sort((a, b) => {
-                const pa = a.period || '';
-                const pb = b.period || '';
-                if (pa < pb) return -1;
-                if (pa > pb) return 1;
-                return 0;
-            });
-        } catch (e) {
-            // keep original order on error
+        if (isoDate.test(p)) {
+            const parts = p.split('-').map(x => parseInt(x, 10));
+            return Date.UTC(parts[0], parts[1] - 1, parts[2]);
         }
+        if (yearMonth.test(p)) {
+            const parts = p.split('-').map(x => parseInt(x, 10));
+            return Date.UTC(parts[0], parts[1] - 1, 1);
+        }
+        const m = p.match(weekRaw);
+        if (m) {
+            const year = parseInt(m[1], 10);
+            const month = parseInt(m[2], 10);
+            const weekOfYear = parseInt(m[3], 10);
+
+            // compute iso week of first day of month (UTC) and approximate week-of-month
+            const firstDay = new Date(Date.UTC(year, month - 1, 1));
+            const weekFirst = getISOWeekNumber(firstDay); // uses UTC internally
+            let wom = weekOfYear - weekFirst + 1;
+            if (wom < 1) wom = 1;
+            // approximate day: first day + (wom-1)*7
+            const approxDay = 1 + (wom - 1) * 7;
+            // clamp to last day of month
+            const lastDay = new Date(Date.UTC(year, month, 0)).getUTCDate();
+            const day = Math.min(approxDay, lastDay);
+            return Date.UTC(year, month - 1, day);
+        }
+
+        // fallback: try Date.parse safely by splitting numeric parts (last resort)
+        const parsed = Date.parse(p);
+        return isNaN(parsed) ? null : parsed;
     }
 
+    // build array with timestamp keys
+    const items = rows.map(r => {
+        const ts = periodToTimestamp(String(r.period || ''));
+        return { r, ts };
+    });
+
+    // if at least one timestamp exists, sort by ts when possible; otherwise fallback to string sort
+    const hasSomeTs = items.some(it => it.ts !== null);
+    if (hasSomeTs) {
+        items.sort((a, b) => {
+            if (a.ts === null && b.ts === null) {
+                const pa = String(a.r.period || '');
+                const pb = String(b.r.period || '');
+                return pa.localeCompare(pb);
+            }
+            if (a.ts === null) return 1;
+            if (b.ts === null) return -1;
+            return a.ts - b.ts;
+        });
+    } else {
+        // fallback alphabetical
+        items.sort((a, b) => {
+            const pa = String(a.r.period || '');
+            const pb = String(b.r.period || '');
+            return pa.localeCompare(pb);
+        });
+    }
+
+    // produce arrays in sorted order
+    const sortedRows = items.map(it => it.r);
     const formatted = sortedRows.map(r => r.period_formatted);
     const raw = sortedRows.map(r => r.period);
     const data = sortedRows.map(r => Number(r.total_volume) || 0);
