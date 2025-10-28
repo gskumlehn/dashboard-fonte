@@ -234,6 +234,65 @@ async function applyFiltersAndRender(override = null) {
     renderVolumeChart(rows);
 }
 
+// --- Funções de preenchimento de selects ---
+function populateYearSelect(yearsBack = 5) {
+    const yearSelect = document.getElementById('year-select');
+    const currentYear = new Date().getFullYear();
+
+    for (let i = 0; i <= yearsBack; i++) {
+        const year = currentYear - i;
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        yearSelect.appendChild(option);
+    }
+
+    yearSelect.addEventListener('change', () => {
+        const monthSelect = document.getElementById('month-select');
+        monthSelect.disabled = !yearSelect.value;
+        monthSelect.setAttribute('aria-disabled', !yearSelect.value);
+    });
+}
+
+function populateMonthSelect() {
+    const monthSelect = document.getElementById('month-select');
+    const months = DateUtils.monthNamesFull;
+
+    months.forEach((month, index) => {
+        const option = document.createElement('option');
+        option.value = String(index + 1).padStart(2, '0'); // Valores no formato "01", "02", etc.
+        option.textContent = month.charAt(0).toUpperCase() + month.slice(1); // Capitaliza o nome do mês
+        monthSelect.appendChild(option);
+    });
+}
+
+// --- Funções de inicialização de botões rápidos ---
+function setupQuickButtons() {
+    document.getElementById('btn-last-month').addEventListener('click', async () => {
+        const today = new Date();
+        const lastMonth = DateUtils.addMonths(today, -1);
+        const start = DateUtils.formatDateYYYYMMDD(lastMonth);
+        const end = DateUtils.formatDateYYYYMMDD(today);
+        await applyFiltersAndRender({ period: 'month_day', start_date: start, end_date: end });
+    });
+
+    document.getElementById('btn-last-quarter').addEventListener('click', async () => {
+        const today = new Date();
+        const threeMonthsAgo = DateUtils.addMonths(today, -3);
+        const start = DateUtils.formatDateYYYYMMDD(threeMonthsAgo);
+        const end = DateUtils.formatDateYYYYMMDD(today);
+        await applyFiltersAndRender({ period: 'quarter_week', start_date: start, end_date: end });
+    });
+
+    document.getElementById('btn-last-year').addEventListener('click', async () => {
+        const today = new Date();
+        const lastYear = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
+        const start = DateUtils.formatDateYYYYMMDD(lastYear);
+        const end = DateUtils.formatDateYYYYMMDD(today);
+        await applyFiltersAndRender({ period: 'year_month', start_date: start, end_date: end });
+    });
+}
+
 // --- Inicialização ---
 document.addEventListener('DOMContentLoaded', async () => {
     populateYearSelect(5);
