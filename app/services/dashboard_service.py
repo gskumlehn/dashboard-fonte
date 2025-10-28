@@ -16,7 +16,7 @@ class DashboardService:
           - 'all'             : todo o período (retorna uma linha agregada)
           - 'year'            : agregado por ano
           - 'year_month'      : ano agregado por mês (yyyy-MM)
-          - 'quarter_week'    : trimestre agregado por semana (YYYY-Qn-Ww)
+          - 'quarter_week'    : trimestre agregado por semana (YYYY-MM-Ww)
           - 'month_day'       : mês agregado por dia (data)
           - 'month' (default) : formato yyyy-MM (mês)
           - 'day'             : agregado por dia
@@ -36,8 +36,8 @@ class DashboardService:
             agg_field = "FORMAT(Data, 'yyyy-MM')"
             period_format_expr = "Period"
         elif p == "quarter_week":
-            # CONCAT YEAR, QUARTER and WEEK to represent week inside quarter/year
-            agg_field = "CONCAT(YEAR(Data), '-Q', DATEPART(QUARTER, Data), '-W', DATEPART(WEEK, Data))"
+            # include month so frontend can compute week-of-month: 'YYYY-MM-Ww'
+            agg_field = "CONCAT(YEAR(Data), '-', FORMAT(Data, 'MM'), '-W', DATEPART(WEEK, Data))"
             period_format_expr = "Period"
         elif p == "month_day":
             agg_field = "CAST(Data AS DATE)"

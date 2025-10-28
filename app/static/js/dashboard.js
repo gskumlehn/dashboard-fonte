@@ -75,17 +75,45 @@ function formatMonthLabelFromPeriod(periodValue) {
     return `${mon}/${yy}`;
 }
 
-// formata label do eixo X para month_day (dd/MM)
+// formata label do eixo X para month_day (dia -> apenas número)
 function formatDayLabelFromPeriod(periodValue) {
-    // aceita 'YYYY-MM-DD' ou Date-like
     if (!periodValue) return '';
     const parts = String(periodValue).split('-');
     if (parts.length >= 3) {
-        const dd = parts[2].padStart(2,'0');
-        const mm = parts[1].padStart(2,'0');
-        return `${dd}/${mm}`;
+        const dd = parseInt(parts[2], 10);
+        return String(dd); // apenas o número do dia
     }
+    // fallback: try to parse date
+    const d = new Date(periodValue);
+    if (!isNaN(d)) return String(d.getDate());
     return periodValue;
+}
+
+// retorna número de semana ISO para uma Date (1-53)
+function getISOWeekNumber(d) {
+    const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    const dayNum = date.getUTCDay() || 7;
+    date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+    const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+    return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+}
+
+// calcula week-of-month a partir de raw 'YYYY-MM-Ww' (w = week-of-year)
+// aproximação: weekOfMonth = weekOfYear(raw) - weekOfYear(firstDayOfMonth) + 1
+function weekOfMonthFromRaw(raw) {
+    if (!raw) return '';
+    // expected format 'YYYY-MM-W<week>'
+    const m = String(raw).match(/^(\d{4})-(\d{2})-W(\d+)$/);
+    if (!m) return raw;
+    const year = parseInt(m[1], 10);
+    const month = parseInt(m[2], 10);
+    const weekOfYear = parseInt(m[3], 10);
+
+    const firstDay = new Date(year, month - 1, 1);
+    const weekFirst = getISOWeekNumber(firstDay);
+    let wom = weekOfYear - weekFirst + 1;
+    if (wom < 1) wom = 1;
+    return `${wom}/${month}`; // exemplo: '1/4'
 }
 
 function renderVolumeChart(rows) {
@@ -132,6 +160,9 @@ function renderVolumeChart(rows) {
         if (currentPeriod === 'month_day' || currentPeriod === 'day') {
             return formatDayLabelFromPeriod(raw);
         }
+        if (currentPeriod === 'quarter_week') {
+            return weekOfMonthFromRaw(raw);
+        }
         // default: usa formatted (labels já amigáveis)
         return chartDataObj.labels[index] || value;
     }
@@ -139,7 +170,6 @@ function renderVolumeChart(rows) {
     const config = {
         type: 'line',
         data: {
-            // usar rawPeriods como labels fonte para indexação, Chart.js mostrará o resultado do callback
             labels: chartDataObj.rawPeriods.length ? chartDataObj.rawPeriods : chartDataObj.labels,
             datasets: [{
                 label: 'Volume Total',
@@ -224,13 +254,26 @@ function renderVolumeChart(rows) {
 
 function populateYearSelect(rangeYears = 5) {
     const sel = document.getElementById('year-select');
-    sel.innerHTML = '';
+    sel.innerHTML = '<option value="">—</option>';
     const now = new Date();
     const currentYear = now.getFullYear();
     for (let y = currentYear; y >= currentYear - rangeYears; y--) {
         const opt = document.createElement('option');
         opt.value = String(y);
         opt.textContent = String(y);
+        sel.appendChild(opt);
+    }
+}
+
+function populateMonthSelect() {
+    const sel = document.getElementById('month-select');
+    sel.innerHTML = '<option value="">—</option>';
+    const monthNames = ['01 - Jan','02 - Fev','03 - Mar','04 - Abr','05 - Mai','06 - Jun','07 - Jul','08 - Ago','09 - Set','10 - Out','11 - Nov','12 - Dez'];
+    for (let i = 0; i < 12; i++) {
+        const val = String(i+1).padStart(2,'0');
+        const opt = document.createElement('option');
+        opt.value = val;
+        opt.textContent = monthNames[i];
         sel.appendChild(opt);
     }
 }
@@ -254,20 +297,18 @@ function addMonths(date, months) {
     return d;
 }
 
-/* Computa período a partir dos inputs (month > year > fallback último mês) */
+/* Computa período a partir dos selects (month-select > year-select > fallback último mês) */
 function computePeriodFromInputs() {
-    const monthVal = document.getElementById('month-input').value; // YYYY-MM or ''
-    const yearVal = document.getElementById('year-select').value; // YYYY or ''
+    const monthVal = document.getElementById('month-select').value; // '01'..'12' or ''
+    const yearVal = document.getElementById('year-select').value; // 'YYYY' or ''
     const today = new Date();
     let period = 'year_month';
     let start = null;
     let end = formatDateYYYYMMDD(today);
 
-    if (monthVal) {
-        // Mês específico -> agregação por dia
-        const parts = monthVal.split('-');
-        const y = parseInt(parts[0], 10);
-        const mo = parseInt(parts[1], 10) - 1;
+    if (monthVal && yearVal) {
+        const y = parseInt(yearVal, 10);
+        const mo = parseInt(monthVal, 10) - 1;
         const first = new Date(y, mo, 1);
         const last = new Date(y, mo + 1, 0);
         start = formatDateYYYYMMDD(first);
@@ -317,56 +358,106 @@ function debounce(fn, wait = 300) {
 
 /* Quick buttons: aplicam override direto */
 function setupQuickButtons() {
+    const monthSel = document.getElementById('month-select');
+    const yearSel = document.getElementById('year-select');
+
     document.getElementById('btn-last-month').addEventListener('click', async () => {
         const today = new Date();
         const start = formatDateYYYYMMDD(addMonths(today, -1));
         const end = formatDateYYYYMMDD(today);
-        // clear explicit month/year inputs to reflect override
-        document.getElementById('month-input').value = '';
-        document.getElementById('year-select').value = '';
+        yearSel.value = '';
+        monthSel.value = '';
+        monthSel.disabled = true;
+        monthSel.style.opacity = '0.6';
         await applyFiltersAndRender({ period: 'month_day', start_date: start, end_date: end });
     });
     document.getElementById('btn-last-quarter').addEventListener('click', async () => {
         const today = new Date();
         const start = formatDateYYYYMMDD(addMonths(today, -3));
         const end = formatDateYYYYMMDD(today);
-        document.getElementById('month-input').value = '';
-        document.getElementById('year-select').value = '';
+        yearSel.value = '';
+        monthSel.value = '';
+        monthSel.disabled = true;
+        monthSel.style.opacity = '0.6';
         await applyFiltersAndRender({ period: 'quarter_week', start_date: start, end_date: end });
     });
     document.getElementById('btn-last-year').addEventListener('click', async () => {
         const today = new Date();
         const start = formatDateYYYYMMDD(addMonths(today, -12));
         const end = formatDateYYYYMMDD(today);
-        document.getElementById('month-input').value = '';
-        document.getElementById('year-select').value = '';
+        yearSel.value = '';
+        monthSel.value = '';
+        monthSel.disabled = true;
+        monthSel.style.opacity = '0.6';
         await applyFiltersAndRender({ period: 'year_month', start_date: start, end_date: end });
     });
 }
 
 /* Inicialização */
 document.addEventListener('DOMContentLoaded', async () => {
+    // apply chart typography from CSS variables
+    const chartFontFamily = getCssVar('--font-family', getComputedStyle(document.body).fontFamily);
+    const chartFontSize = parseInt(getCssVar('--chart-font-size', '13'), 10) || 13;
+    const chartFontWeight = getCssVar('--chart-font-weight', '600');
+    const chartColor = getCssVar('--text', '#3d3d3d');
+
+    if (window.Chart) {
+        Chart.defaults.font.family = chartFontFamily;
+        Chart.defaults.font.size = chartFontSize;
+        Chart.defaults.font.weight = chartFontWeight;
+        Chart.defaults.color = chartColor;
+        // ensure legend/tooltips inherit color
+        if (Chart.defaults.plugins && Chart.defaults.plugins.legend) {
+            Chart.defaults.plugins.legend.labels = Chart.defaults.plugins.legend.labels || {};
+            Chart.defaults.plugins.legend.labels.color = chartColor;
+            Chart.defaults.plugins.legend.labels.font = { family: chartFontFamily, size: chartFontSize, weight: chartFontWeight };
+        }
+        if (Chart.defaults.plugins && Chart.defaults.plugins.tooltip) {
+            Chart.defaults.plugins.tooltip.titleColor = chartColor;
+            Chart.defaults.plugins.tooltip.bodyColor = chartColor;
+            Chart.defaults.plugins.tooltip.titleFont = { family: chartFontFamily, size: chartFontSize, weight: chartFontWeight };
+            Chart.defaults.plugins.tooltip.bodyFont = { family: chartFontFamily, size: chartFontSize, weight: chartFontWeight };
+        }
+    }
+
     // Setup UI controls
     populateYearSelect(5);
+    populateMonthSelect();
 
-    // set default month input to previous month for convenience
-    const today = new Date();
-    const prev = addMonths(today, -1);
-    const prevMonthStr = `${prev.getFullYear()}-${String(prev.getMonth() + 1).padStart(2, '0')}`;
-    document.getElementById('month-input').value = prevMonthStr;
+    const monthSel = document.getElementById('month-select');
+    const yearSel = document.getElementById('year-select');
 
-    // auto apply when month or year changes (debounced)
+    // set default selects: no year selected, month disabled (visible but with lower opacity)
+    yearSel.value = '';
+    monthSel.value = '';
+    monthSel.disabled = true;
+    monthSel.style.opacity = '0.6';
+
+    // auto apply when year or month changes (debounced)
     const autoApply = debounce(async () => { await applyFiltersAndRender(); }, 250);
-    document.getElementById('month-input').addEventListener('change', autoApply);
-    document.getElementById('year-select').addEventListener('change', autoApply);
-
-    // apply button fallback
-    document.getElementById('apply-filters').addEventListener('click', async () => {
-        await applyFiltersAndRender();
+    yearSel.addEventListener('change', async (e) => {
+        const y = e.target.value;
+        if (y) {
+            monthSel.disabled = false;
+            monthSel.style.opacity = '1';
+        } else {
+            monthSel.value = '';
+            monthSel.disabled = true;
+            monthSel.style.opacity = '0.6';
+        }
+        autoApply();
     });
+    monthSel.addEventListener('change', autoApply);
 
     setupQuickButtons();
 
-    // Initial render: mês anterior (month input already set)
-    await applyFiltersAndRender();
+    // Initial render: mês anterior (simulate quick last month)
+    const today = new Date();
+    const start = formatDateYYYYMMDD(addMonths(today, -1));
+    const end = formatDateYYYYMMDD(today);
+    // keep month select disabled in UI since this is a quick override
+    monthSel.value = '';
+    monthSel.disabled = true;
+    monthSel.style.opacity = '0.6';
+    await applyFiltersAndRender({ period: 'month_day', start_date: start, end_date: end });
 });

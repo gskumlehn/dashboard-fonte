@@ -4,18 +4,23 @@
 <h1>Volume de Operações</h1>
 
 <div class="filters">
-    <label for="month-input" style="margin-bottom:0">Mês:</label>
-    <input type="month" id="month-input" />
-
-    <label for="year-select" style="margin-bottom:0">Ano:</label>
-    <select id="year-select"></select>
-
-    <!-- Botões rápidos (último mês/trimestre/ano) -->
+    <!-- Botões rápidos primeiro -->
     <button id="btn-last-month" class="btn" type="button">Último mês</button>
     <button id="btn-last-quarter" class="btn" type="button">Último trimestre</button>
     <button id="btn-last-year" class="btn" type="button">Último ano</button>
 
-    <button id="apply-filters" class="btn">Aplicar</button>
+    <!-- Separador visual opcional -->
+    <div style="width:1px;height:32px;background:rgba(0,0,0,0.04);margin:0 12px;"></div>
+
+    <!-- Selects: ano e mês (mês VISÍVEL, mas DESATIVADO até o ano ser selecionado) -->
+    <label for="year-select" style="margin-bottom:0">Ano:</label>
+    <select id="year-select"></select>
+
+    <label for="month-select" style="margin-bottom:0">Mês:</label>
+    <select id="month-select" disabled aria-disabled="true">
+        <option value="">—</option>
+        <!-- meses populados pelo JS -->
+    </select>
 </div>
 
 <div class="table-card">
