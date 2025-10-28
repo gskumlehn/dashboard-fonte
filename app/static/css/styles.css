@@ -58,3 +58,93 @@ button, .btn, .logout-link {
 .chart-card #chart-error {
     margin-top: 1rem;
 }
+
+/* ===== filtros (copiado de churnAnalysis.css) ===== */
+/* Shared filter card used by churn and dashboard pages */
+.filters {
+    background: var(--card-bg, #ffffff);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.filters label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+/* selects and inputs inside filters */
+.filters select,
+.filters input[type="date"],
+.filters input[type="text"],
+.filters input[type="number"] {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    background-color: var(--white, #ffffff);
+    color: var(--text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.filters select:focus,
+.filters input[type="date"]:focus,
+.filters input[type="text"]:focus,
+.filters input[type="number"]:focus {
+    border-color: var(--primary, #0066cc);
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.12);
+    outline: none;
+}
+
+.filters select:hover,
+.filters input[type="date"]:hover,
+.filters input[type="text"]:hover,
+.filters input[type="number"]:hover {
+    border-color: var(--primary, #0066cc);
+}
+
+/* button styling for .btn */
+.btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    background-color: var(--primary, #0066cc);
+    color: var(--white, #ffffff);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.15s, transform 0.08s;
+}
+
+.btn:hover {
+    background-color: var(--primary-dark, #005bb5);
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* responsive tweaks for filters */
+@media (max-width: 768px) {
+    .filters {
+        padding: 0.75rem;
+        gap: 0.5rem;
+    }
+    .filters label {
+        width: 100%;
+    }
+    .filters select,
+    .filters input[type="date"],
+    .filters input[type="text"],
+    .filters input[type="number"],
+    .btn {
+        width: 100%;
+    }
+}
