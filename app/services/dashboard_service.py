@@ -33,17 +33,17 @@ class DashboardService:
             period_format_expr = "CAST(Period AS VARCHAR(4))"
         elif p == "year_month":
             agg_field = "FORMAT(Data, 'yyyy-MM')"
-            period_format_expr = "Periodo"
+            period_format_expr = "Period"
         elif p == "quarter_week":
             # CONCAT YEAR, QUARTER and WEEK to represent week inside quarter/year
             agg_field = "CONCAT(YEAR(Data), '-Q', DATEPART(QUARTER, Data), '-W', DATEPART(WEEK, Data))"
-            period_format_expr = "Periodo"
+            period_format_expr = "Period"
         elif p == "month_day":
             agg_field = "CAST(Data AS DATE)"
             period_format_expr = "CONVERT(varchar(10), Period, 23)"
         else:  # default to month
             agg_field = "FORMAT(Data, 'yyyy-MM')"
-            period_format_expr = "Periodo"
+            period_format_expr = "Period"
 
         # Build period filter
         filters = []
