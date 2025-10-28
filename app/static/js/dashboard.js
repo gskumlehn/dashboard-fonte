@@ -54,8 +54,8 @@ function buildChartData(rows) {
     let sortedRows = rows.slice();
 
     if (allIsoDates) {
-        // ordena cronologicamente (asc)
-        sortedRows.sort((a, b) => new Date(a.period) - new Date(b.period));
+        // ordena cronologicamente pela string ISO (evita problemas de timezone)
+        sortedRows.sort((a, b) => String(a.period).localeCompare(String(b.period)));
     } else {
         // tentativa geral de ordenação por period
         try {
@@ -150,6 +150,19 @@ function weekOfMonthFromRaw(raw) {
     return `${wom}/${mon}`;
 }
 
+// Novo helper: converte número para ordinal em PT-BR (1 -> 'Primeira', 2 -> 'Segunda', ...)
+function ordinalPortuguese(n) {
+    const ord = {
+        1: 'Primeira',
+        2: 'Segunda',
+        3: 'Terceira',
+        4: 'Quarta',
+        5: 'Quinta',
+        6: 'Sexta'
+    };
+    return ord[n] || `${n}ª`;
+}
+
 function renderVolumeChart(rows) {
     const ctx = document.getElementById('volumeChart').getContext('2d');
     const chartDataObj = buildChartData(rows);
@@ -185,20 +198,31 @@ function renderVolumeChart(rows) {
         return `${v.toLocaleString('pt-BR', { maximumFractionDigits: digits, minimumFractionDigits: 0 })}${suffix}`;
     }
 
-    // decide labels a serem usadas no Chart: para month_day usar labels numéricas (1..N)
-    const chartLabels = (currentPeriod === 'month_day') ? chartDataObj.labels : (chartDataObj.rawPeriods.length ? chartDataObj.rawPeriods : chartDataObj.labels);
+    // decide labels a serem usadas no Chart:
+    // - para month_day usamos os dias extraídos de rawPeriods (1..31) em ordem crescente
+    let chartLabels;
+    if (currentPeriod === 'month_day') {
+        chartLabels = chartDataObj.rawPeriods.map(p => {
+            if (!p) return '';
+            const parts = String(p).split('-');
+            if (parts.length >= 3) return String(parseInt(parts[2], 10)); // remove leading zeros
+            return p;
+        });
+    } else {
+        chartLabels = (chartDataObj.rawPeriods.length ? chartDataObj.rawPeriods : chartDataObj.labels);
+    }
 
     // decide formatter do eixo X baseado no período atual e usa rawPeriods como fonte quando necessário
     function xTickFormatter(value, index) {
         if (currentPeriod === 'month_day') {
-            // value já é a label numérica (ex: "1","2",...), retornamos como está
+            // value já é o dia (ex: "1","2",...), retornamos como está
             return String(value);
         }
         const raw = chartDataObj.rawPeriods[index] || value;
         if (currentPeriod === 'year_month' || currentPeriod === 'year') {
             return formatMonthLabelFromPeriod(raw);
         }
-        if (currentPeriod === 'month_day' || currentPeriod === 'day') {
+        if (currentPeriod === 'day') {
             return formatDayLabelFromPeriod(raw);
         }
         if (currentPeriod === 'quarter_week') {
@@ -215,20 +239,6 @@ function renderVolumeChart(rows) {
         if (!s) return s;
         return s.charAt(0).toUpperCase() + s.slice(1);
     }
-
-    // determine x axis title based on currentPeriod
-    let xAxisTitle = 'Mês';
-    if (currentPeriod === 'month_day' || currentPeriod === 'day') {
-        xAxisTitle = 'Dia';
-    } else if (currentPeriod === 'quarter_week') {
-        xAxisTitle = 'Semana';
-    } else {
-        xAxisTitle = 'Mês';
-    }
-
-    const chartFontFamily = getCssVar('--font-family', getComputedStyle(document.body).fontFamily);
-    const chartFontSize = parseInt(getCssVar('--chart-font-size', '13'), 10) || 13;
-    const chartFontWeight = getCssVar('--chart-font-weight', '600');
 
     const config = {
         type: 'line',
@@ -255,7 +265,7 @@ function renderVolumeChart(rows) {
                     display: true,
                     title: {
                         display: true,
-                        text: xAxisTitle,
+                        text: 'Mês',
                         color: textColor,
                         font: { family: chartFontFamily, size: chartFontSize, weight: chartFontWeight }
                     },
@@ -325,9 +335,23 @@ function renderVolumeChart(rows) {
                             }
 
                             if (currentPeriod === 'quarter_week') {
-                                const weekLabel = weekOfMonthFromRaw(raw); // now returns "1/out"
-                                // show with "Semana" in tooltip title for clarity
-                                return [ `Semana ${weekLabel}` ];
+                                // expected raw: 'YYYY-MM-W<week>'
+                                const m = String(raw).match(/^(\d{4})-(\d{2})-W(\d+)$/);
+                                if (m) {
+                                    const year = parseInt(m[1], 10);
+                                    const month = parseInt(m[2], 10);
+                                    const weekOfYear = parseInt(m[3], 10);
+                                    const firstDay = new Date(year, month - 1, 1);
+                                    const weekFirst = getISOWeekNumber(firstDay);
+                                    let wom = weekOfYear - weekFirst + 1;
+                                    if (wom < 1) wom = 1;
+                                    const ordinal = ordinalPortuguese(wom);
+                                    const monthName = monthNamesFull[(month - 1) % 12] || String(month);
+                                    return [ `${ordinal} semana de ${capitalize(monthName)}` ];
+                                }
+                                // fallback: use previous compact label if parse fails
+                                const wlabel = weekOfMonthFromRaw(raw);
+                                return [ `Semana ${wlabel}` ];
                             }
 
                             return [ chartDataObj.labels[idx] || String(raw) ];

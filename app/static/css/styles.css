@@ -78,13 +78,55 @@ button, .btn, .logout-link {
     display: flex;
     align-items: center;
     gap: 1rem;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* primary row layout */
+    justify-content: space-between; /* left buttons / right selects */
 }
 
-.filters label {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--text);
+/* left and right groups inside filters */
+.filters-left,
+.filters-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* keep small divider spacing if present */
+.filters-left > .divider,
+.filters-right > .divider {
+    width: 1px;
+    height: 32px;
+    background: rgba(0,0,0,0.04);
+    margin: 0 12px;
+}
+
+/* ensure selects are aligned to right group */
+.filters-right {
+    margin-left: auto;
+}
+
+/* Visual cue for disabled month select */
+#month-select[disabled] {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Responsive: stack controls on small screens */
+@media (max-width: 768px) {
+    .filters {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+    .filters-left,
+    .filters-right {
+        justify-content: flex-start;
+        gap: 0.5rem;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+    .filters-right {
+        margin-left: 0;
+    }
 }
 
 /* selects and inputs inside filters */
