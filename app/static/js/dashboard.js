@@ -212,7 +212,7 @@ function renderVolumeChart(rows) {
         chartLabels = (chartDataObj.rawPeriods.length ? chartDataObj.rawPeriods : chartDataObj.labels);
     }
 
-    // decide formatter do eixo X baseado no período atual e usa rawPeriods como fonte quando necessário
+    // decide formatter do eixo X baseado no período atual and other helpers
     function xTickFormatter(value, index) {
         if (currentPeriod === 'month_day') {
             // value já é o dia (ex: "1","2",...), retornamos como está
@@ -239,6 +239,12 @@ function renderVolumeChart(rows) {
         if (!s) return s;
         return s.charAt(0).toUpperCase() + s.slice(1);
     }
+
+    // --- ADDED: ensure typography variables are available inside renderVolumeChart ---
+    const chartFontFamily = getCssVar('--font-family', getComputedStyle(document.body).fontFamily);
+    const chartFontSize = parseInt(getCssVar('--chart-font-size', '13'), 10) || 13;
+    const chartFontWeight = getCssVar('--chart-font-weight', '600');
+    // -------------------------------------------------------------------------
 
     const config = {
         type: 'line',
