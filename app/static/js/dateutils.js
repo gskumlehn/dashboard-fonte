@@ -1,30 +1,32 @@
 // Date utility helpers used by dashboard.js
 
 (function (global) {
+    'use strict';
+
     const monthNamesShort = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
     const monthNamesFull = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
 
     function formatDateYYYYMMDD(d) {
-        const yyyy = d.getFullYear();
-        const mm = String(d.getMonth() + 1).padStart(2, '0');
-        const dd = String(d.getDate()).padStart(2, '0');
+        const yyyy = d.getUTCFullYear();
+        const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
+        const dd = String(d.getUTCDate()).padStart(2, '0');
         return `${yyyy}-${mm}-${dd}`;
     }
 
     function addMonths(date, months) {
         const d = new Date(date);
-        const day = d.getDate();
-        d.setMonth(d.getMonth() + months);
+        const day = d.getUTCDate();
+        d.setUTCMonth(d.getUTCMonth() + months);
         // corrigir overflow de mês
-        if (d.getDate() < day) {
-            d.setDate(0);
+        if (d.getUTCDate() < day) {
+            d.setUTCDate(0);
         }
         return d;
     }
 
     // retorna número de semana ISO para uma Date (1-53) usando UTC para evitar timezone shifts
     function getISOWeekNumber(d) {
-        const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+        const date = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
         const dayNum = date.getUTCDay() || 7;
         date.setUTCDate(date.getUTCDate() + 4 - dayNum);
         const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
@@ -80,7 +82,7 @@
         return isNaN(parsed) ? null : parsed;
     }
 
-    // retorna "w/mm" compact (ex: "1/out") -- agora com sufixo ordinal: "1ª/out"
+    // retorna "w/mm" compacto com ordinal (ex: "1ª/out")
     function weekOfMonthFromRaw(raw) {
         if (!raw) return '';
         const m = String(raw).match(/^(\d{4})-(\d{2})-W(\d+)$/);
@@ -98,7 +100,7 @@
         return `${wom}ª/${mon}`;
     }
 
-    // retorna objeto com info da semana: { wom: 1, month: 10, monthNameFull: 'outubro' }
+    // retorna objeto com info da semana: { wom: 1, month: 10, monthNameFull: 'outubro', year }
     function weekOfMonthInfo(raw) {
         if (!raw) return null;
         const m = String(raw).match(/^(\d{4})-(\d{2})-W(\d+)$/);
@@ -117,7 +119,40 @@
         return { wom, month, monthNameShort, monthNameFull, year };
     }
 
-    // expose (keep existing exports, add new)
+    // formatadores para labels
+    function formatMonthLabelFromPeriod(periodValue) {
+        if (!periodValue) return '';
+        let y = '', m = '';
+        const dashParts = String(periodValue).split('-');
+        if (dashParts.length >= 2) {
+            y = dashParts[0];
+            m = dashParts[1].padStart(2,'0');
+        } else if (/^\d{6}$/.test(periodValue)) {
+            y = periodValue.substr(0,4);
+            m = periodValue.substr(4,2);
+        } else if (/^\d{8}$/.test(periodValue)) {
+            y = periodValue.substr(0,4);
+            m = periodValue.substr(4,2);
+        } else {
+            return periodValue;
+        }
+        const mi = parseInt(m, 10) - 1;
+        const yy = y.substr(2,2);
+        const mon = monthNamesShort[mi] || m;
+        return `${mon}/${yy}`;
+    }
+
+    function formatDayLabelFromPeriod(periodValue) {
+        if (!periodValue) return '';
+        const parts = String(periodValue).split('-');
+        if (parts.length >= 3) {
+            const dd = parseInt(parts[2], 10);
+            return String(dd);
+        }
+        return periodValue;
+    }
+
+    // expõe API
     global.DateUtils = {
         formatDateYYYYMMDD,
         addMonths,

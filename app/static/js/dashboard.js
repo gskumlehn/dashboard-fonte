@@ -136,6 +136,7 @@ function renderVolumeChart(rows) {
     // --- NOVO: quando currentPeriod === 'month_day' construir sequência de datas contínua ---
     let chartLabels;
     let chartValues;
+    let chartRawPeriods; // alinhado com labels/values, usado nos tooltips
 
     if (currentPeriod === 'month_day') {
         // mapa dateStr -> value
@@ -152,9 +153,9 @@ function renderVolumeChart(rows) {
             .sort((a, b) => a - b);
 
         if (timestamps.length === 0) {
-            // fallback: labels vazios
             chartLabels = [];
             chartValues = [];
+            chartRawPeriods = [];
         } else {
             const minTs = timestamps[0];
             const maxTs = timestamps[timestamps.length - 1];
@@ -162,6 +163,7 @@ function renderVolumeChart(rows) {
             // iterar dias UTC de minTs até maxTs
             const dayLabels = [];
             const values = [];
+            const rawDates = [];
             let cur = new Date(minTs);
             // normalize to UTC midnight
             cur = new Date(Date.UTC(cur.getUTCFullYear(), cur.getUTCMonth(), cur.getUTCDate()));
@@ -173,17 +175,20 @@ function renderVolumeChart(rows) {
                 const dayNum = String(parseInt(dateStr.split('-')[2], 10)); // '1'..'31'
                 dayLabels.push(dayNum);
                 values.push(mapVal[dateStr] !== undefined ? mapVal[dateStr] : 0);
+                rawDates.push(dateStr);
                 // next day (UTC)
                 cur = new Date(Date.UTC(cur.getUTCFullYear(), cur.getUTCMonth(), cur.getUTCDate() + 1));
             }
 
             chartLabels = dayLabels;
             chartValues = values;
+            chartRawPeriods = rawDates;
         }
     } else {
         // comportamento existente para outros períodos
         chartLabels = (chartDataObj.rawPeriods.length ? chartDataObj.rawPeriods : chartDataObj.labels);
         chartValues = chartDataObj.data;
+        chartRawPeriods = chartDataObj.rawPeriods.slice();
     }
     // --- FIM NOVO ---
 
@@ -193,7 +198,7 @@ function renderVolumeChart(rows) {
             // value já é o dia (ex: "1","2",...), retornamos como está
             return String(value);
         }
-        const raw = chartDataObj.rawPeriods[index] || value;
+        const raw = chartRawPeriods[index] || value;
         if (currentPeriod === 'year_month' || currentPeriod === 'year') {
             return formatMonthLabelFromPeriod(raw);
         }
@@ -215,11 +220,10 @@ function renderVolumeChart(rows) {
         return s.charAt(0).toUpperCase() + s.slice(1);
     }
 
-    // --- ensure typography variables are available inside renderVolumeChart ---
+    // typography variables (lidas localmente)
     const chartFontFamily = getCssVar('--font-family', getComputedStyle(document.body).fontFamily);
     const chartFontSize = parseInt(getCssVar('--chart-font-size', '13'), 10) || 13;
     const chartFontWeight = getCssVar('--chart-font-weight', '600');
-    // -------------------------------------------------------------------------
 
     // determine x axis title based on currentPeriod (dynamic)
     let xAxisTitle = 'Mês';
@@ -304,7 +308,8 @@ function renderVolumeChart(rows) {
                         title: function(items) {
                             if (!items || items.length === 0) return '';
                             const idx = items[0].dataIndex;
-                            const raw = chartDataObj.rawPeriods[idx] || chartDataObj.labels[idx] || '';
+                            // use chartRawPeriods (aligned) when available
+                            const raw = (chartRawPeriods && chartRawPeriods[idx]) ? chartRawPeriods[idx] : (chartDataObj.rawPeriods[idx] || chartDataObj.labels[idx] || '');
 
                             if (currentPeriod === 'year_month') {
                                 const parts = String(raw).split('-');
@@ -330,13 +335,11 @@ function renderVolumeChart(rows) {
                             }
 
                             if (currentPeriod === 'quarter_week') {
-                                // use DateUtils.weekOfMonthInfo to build "1ª semana de Outubro"
                                 const info = DateUtils.weekOfMonthInfo(raw);
                                 if (info) {
                                     const ordinal = `${info.wom}ª`;
                                     return [ `${ordinal} semana de ${capitalize(info.monthNameFull)}` ];
                                 }
-                                // fallback: compact label
                                 const wlabel = weekOfMonthFromRaw(raw);
                                 return [ `Semana ${wlabel}` ];
                             }
