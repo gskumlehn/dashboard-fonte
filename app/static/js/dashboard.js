@@ -79,6 +79,11 @@ function weekOfMonthFromRaw(raw) {
     return DateUtils.weekOfMonthFromRaw(raw);
 }
 
+function tickFormatter(value) {
+    // Formata os valores do eixo Y como moeda brasileira
+    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+}
+
 function renderVolumeChart(rows) {
     const ctx = document.getElementById('volumeChart').getContext('2d');
     const chartDataObj = buildChartData(rows);
@@ -159,33 +164,6 @@ function renderVolumeChart(rows) {
         return chartDataObj.labels[index] || value;
     }
 
-
-    const monthNamesFull = DateUtils.monthNamesFull;
-
-    function capitalize(s) {
-        if (!s) return s;
-        return s.charAt(0).toUpperCase() + s.slice(1);
-    }
-
-
-    const chartFontFamily = getCssVar('--font-family', getComputedStyle(document.body).fontFamily);
-    const chartFontSize = parseInt(getCssVar('--chart-font-size', '13'), 10) || 13;
-    const chartFontWeight = getCssVar('--chart-font-weight', '600');
-
-
-    let xAxisTitle = 'Mês';
-    if (currentPeriod === 'month_day' || currentPeriod === 'day') {
-        xAxisTitle = 'Dia';
-    } else if (currentPeriod === 'quarter_week') {
-        xAxisTitle = 'Semana';
-    } else if (currentPeriod === 'year') {
-        xAxisTitle = 'Ano';
-    } else if (currentPeriod === 'all') {
-        xAxisTitle = 'Período';
-    } else {
-        xAxisTitle = 'Mês';
-    }
-
     const config = {
         type: 'line',
         data: {
@@ -211,9 +189,9 @@ function renderVolumeChart(rows) {
                     display: true,
                     title: {
                         display: true,
-                        text: xAxisTitle,
+                        text: currentPeriod === 'month_day' ? 'Dia' : 'Mês',
                         color: textColor,
-                        font: { family: chartFontFamily, size: chartFontSize, weight: chartFontWeight }
+                        font: { family: getCssVar('--font-family', 'Arial'), size: 13, weight: '600' }
                     },
                     ticks: {
                         color: textColor,
@@ -231,9 +209,7 @@ function renderVolumeChart(rows) {
                     title: { display: true, text: 'Volume (R$)', color: textColor },
                     ticks: {
                         color: textColor,
-                        callback: function(value) {
-                            return tickFormatter(value);
-                        }
+                        callback: tickFormatter
                     },
                     grid: { color: gridColor }
                 }
@@ -251,63 +227,28 @@ function renderVolumeChart(rows) {
                     titleColor: textColor,
                     bodyColor: textColor,
                     callbacks: {
-                        // format tooltip title for different periods
                         title: function(items) {
                             if (!items || items.length === 0) return '';
                             const idx = items[0].dataIndex;
-                            // use chartRawPeriods (aligned) when available
-                            const raw = (chartRawPeriods && chartRawPeriods[idx]) ? chartRawPeriods[idx] : (chartDataObj.rawPeriods[idx] || chartDataObj.labels[idx] || '');
-
+                            const raw = chartRawPeriods[idx] || chartDataObj.rawPeriods[idx] || chartDataObj.labels[idx] || '';
                             if (currentPeriod === 'year_month') {
                                 const parts = String(raw).split('-');
                                 if (parts.length >= 2) {
                                     const y = parts[0];
                                     const m = parts[1].padStart(2, '0');
                                     const mi = parseInt(m, 10) - 1;
-                                    const monthName = monthNamesFull[mi] || m;
-                                    return [ `${capitalize(monthName)} de ${y}` ];
+                                    const monthName = DateUtils.monthNamesFull[mi] || m;
+                                    return [`${monthName} de ${y}`];
                                 }
                             }
-
-                            if (currentPeriod === 'month_day') {
-                                const parts = String(raw).split('-');
-                                if (parts.length >= 3) {
-                                    const y = parts[0];
-                                    const m = parts[1].padStart(2, '0');
-                                    const d = String(parseInt(parts[2], 10));
-                                    const mi = parseInt(m, 10) - 1;
-                                    const monthName = monthNamesFull[mi] || m;
-                                    return [ `${d} ${capitalize(monthName)} de ${y}` ];
-                                }
-                            }
-
-                            if (currentPeriod === 'quarter_week') {
-                                const info = DateUtils.weekOfMonthInfo(raw);
-                                if (info) {
-                                    const ordinal = `${info.wom}ª`;
-                                    return [ `${ordinal} semana de ${capitalize(info.monthNameFull)}` ];
-                                }
-                                const wlabel = weekOfMonthFromRaw(raw);
-                                return [ `Semana ${wlabel}` ];
-                            }
-
-                            return [ chartDataObj.labels[idx] || String(raw) ];
+                            return [chartDataObj.labels[idx] || String(raw)];
                         },
                         label: function(context) {
                             const val = context.parsed.y || 0;
                             return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val);
                         }
-                    },
-                    labelColor: function(context) {
-                        return {
-                            borderColor: getCssVar('--chart-color-1', '#3b82f6'),
-                            backgroundColor: hexToRgba(getCssVar('--chart-color-1', '#3b82f6'), 1)
-                        };
                     }
                 }
-            },
-            elements: {
-                line: { tension: 0.3 }
             }
         }
     };
