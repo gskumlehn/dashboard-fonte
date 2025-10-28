@@ -87,6 +87,11 @@ function renderVolumeChart(rows) {
     let chartValues;
     let chartRawPeriods;
 
+    // Definir cores do gráfico
+    const borderColor = getCssVar('--chart-color-1', '#3b82f6'); // Cor da linha
+    const backgroundColor = hexToRgba(borderColor, 0.1); // Cor de preenchimento
+    const pointColor = borderColor; // Cor dos pontos
+
     if (currentPeriod === 'month_day') {
         const mapVal = {};
         for (let i = 0; i < chartDataObj.rawPeriods.length; i++) {
