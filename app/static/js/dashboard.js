@@ -220,13 +220,7 @@ function renderVolumeChart(rows) {
     }
 }
 
-/* ---------- Novas funções de controle de filtros ---------- */
-
-function showControlsForMode(mode) {
-    document.getElementById('ultimo-controls').style.display = mode === 'ultimo' ? 'inline-flex' : 'none';
-    document.getElementById('mes-controls').style.display = mode === 'mes' ? 'inline-flex' : 'none';
-    document.getElementById('ano-controls').style.display = mode === 'ano' ? 'inline-flex' : 'none';
-}
+/* ---------- Funções de controle de filtros simplificadas ---------- */
 
 function populateYearSelect(rangeYears = 5) {
     const sel = document.getElementById('year-select');
@@ -241,7 +235,7 @@ function populateYearSelect(rangeYears = 5) {
     }
 }
 
-/* Helpers de datas */
+/* Helpers de datas (mantidas) */
 function formatDateYYYYMMDD(d) {
     const yyyy = d.getFullYear();
     const mm = String(d.getMonth() + 1).padStart(2, '0');
@@ -260,105 +254,119 @@ function addMonths(date, months) {
     return d;
 }
 
-/* Calcula start/end para os filtros solicitados */
-function computePeriodFromFilters() {
-    const mode = document.getElementById('mode-select').value;
+/* Computa período a partir dos inputs (month > year > fallback último mês) */
+function computePeriodFromInputs() {
+    const monthVal = document.getElementById('month-input').value; // YYYY-MM or ''
+    const yearVal = document.getElementById('year-select').value; // YYYY or ''
     const today = new Date();
     let period = 'year_month';
     let start = null;
     let end = formatDateYYYYMMDD(today);
 
-    if (mode === 'ultimo') {
-        const ultimo = document.getElementById('ultimo-select').value;
-        if (ultimo === 'month') {
-            period = 'month_day';
-            start = formatDateYYYYMMDD(addMonths(today, -1));
-        } else if (ultimo === 'quarter') {
-            period = 'quarter_week';
-            start = formatDateYYYYMMDD(addMonths(today, -3));
-        } else if (ultimo === 'year') {
-            period = 'year_month';
-            start = formatDateYYYYMMDD(addMonths(today, -12));
-        }
-    } else if (mode === 'mes') {
-        const m = document.getElementById('month-input').value; // YYYY-MM
-        if (!m) {
-            // default to current month
-            const first = new Date(today.getFullYear(), today.getMonth(), 1);
-            const last = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-            start = formatDateYYYYMMDD(first);
-            end = formatDateYYYYMMDD(last);
-        } else {
-            const parts = m.split('-');
-            const y = parseInt(parts[0], 10);
-            const mo = parseInt(parts[1], 10) - 1;
-            const first = new Date(y, mo, 1);
-            const last = new Date(y, mo + 1, 0);
-            start = formatDateYYYYMMDD(first);
-            end = formatDateYYYYMMDD(last);
-        }
+    if (monthVal) {
+        // Mês específico -> agregação por dia
+        const parts = monthVal.split('-');
+        const y = parseInt(parts[0], 10);
+        const mo = parseInt(parts[1], 10) - 1;
+        const first = new Date(y, mo, 1);
+        const last = new Date(y, mo + 1, 0);
+        start = formatDateYYYYMMDD(first);
+        end = formatDateYYYYMMDD(last);
         period = 'month_day';
-    } else if (mode === 'ano') {
-        const y = document.getElementById('year-select').value;
-        const year = y ? parseInt(y, 10) : today.getFullYear();
+    } else if (yearVal) {
+        const year = parseInt(yearVal, 10);
         start = `${year}-01-01`;
         end = `${year}-12-31`;
         period = 'year_month';
+    } else {
+        // fallback: último mês
+        const first = addMonths(today, -1);
+        start = formatDateYYYYMMDD(first);
+        end = formatDateYYYYMMDD(today);
+        period = 'month_day';
     }
 
     return { period, start_date: start, end_date: end };
 }
 
-/* Handler do botão aplicar */
-async function applyFiltersAndRender() {
-    const computed = computePeriodFromFilters();
-    currentPeriod = computed.period || 'year_month'; // atualizar período atual
+/* Aplica filtros e renderiza; aceita override opcional (period,start,end) */
+async function applyFiltersAndRender(override = null) {
+    let computed;
+    if (override && override.period) {
+        computed = {
+            period: override.period,
+            start_date: override.start_date || null,
+            end_date: override.end_date || null
+        };
+    } else {
+        computed = computePeriodFromInputs();
+    }
+    currentPeriod = computed.period || 'year_month';
     const rows = await fetchVolumeData(computed.period, computed.start_date, computed.end_date);
     renderVolumeChart(rows);
 }
 
-/* Quick buttons */
+// Debounce helper
+function debounce(fn, wait = 300) {
+    let t = null;
+    return function(...args) {
+        if (t) clearTimeout(t);
+        t = setTimeout(() => fn.apply(this, args), wait);
+    };
+}
+
+/* Quick buttons: aplicam override direto */
 function setupQuickButtons() {
     document.getElementById('btn-last-month').addEventListener('click', async () => {
-        document.getElementById('mode-select').value = 'ultimo';
-        document.getElementById('ultimo-select').value = 'month';
-        showControlsForMode('ultimo');
-        await applyFiltersAndRender();
+        const today = new Date();
+        const start = formatDateYYYYMMDD(addMonths(today, -1));
+        const end = formatDateYYYYMMDD(today);
+        // clear explicit month/year inputs to reflect override
+        document.getElementById('month-input').value = '';
+        document.getElementById('year-select').value = '';
+        await applyFiltersAndRender({ period: 'month_day', start_date: start, end_date: end });
     });
     document.getElementById('btn-last-quarter').addEventListener('click', async () => {
-        document.getElementById('mode-select').value = 'ultimo';
-        document.getElementById('ultimo-select').value = 'quarter';
-        showControlsForMode('ultimo');
-        await applyFiltersAndRender();
+        const today = new Date();
+        const start = formatDateYYYYMMDD(addMonths(today, -3));
+        const end = formatDateYYYYMMDD(today);
+        document.getElementById('month-input').value = '';
+        document.getElementById('year-select').value = '';
+        await applyFiltersAndRender({ period: 'quarter_week', start_date: start, end_date: end });
     });
     document.getElementById('btn-last-year').addEventListener('click', async () => {
-        document.getElementById('mode-select').value = 'ultimo';
-        document.getElementById('ultimo-select').value = 'year';
-        showControlsForMode('ultimo');
-        await applyFiltersAndRender();
+        const today = new Date();
+        const start = formatDateYYYYMMDD(addMonths(today, -12));
+        const end = formatDateYYYYMMDD(today);
+        document.getElementById('month-input').value = '';
+        document.getElementById('year-select').value = '';
+        await applyFiltersAndRender({ period: 'year_month', start_date: start, end_date: end });
     });
 }
 
 /* Inicialização */
 document.addEventListener('DOMContentLoaded', async () => {
-    // Setup handler
+    // Setup UI controls
+    populateYearSelect(5);
+
+    // set default month input to previous month for convenience
+    const today = new Date();
+    const prev = addMonths(today, -1);
+    const prevMonthStr = `${prev.getFullYear()}-${String(prev.getMonth() + 1).padStart(2, '0')}`;
+    document.getElementById('month-input').value = prevMonthStr;
+
+    // auto apply when month or year changes (debounced)
+    const autoApply = debounce(async () => { await applyFiltersAndRender(); }, 250);
+    document.getElementById('month-input').addEventListener('change', autoApply);
+    document.getElementById('year-select').addEventListener('change', autoApply);
+
+    // apply button fallback
     document.getElementById('apply-filters').addEventListener('click', async () => {
         await applyFiltersAndRender();
     });
 
-    // Setup UI controls
-    populateYearSelect(5);
-    showControlsForMode(document.getElementById('mode-select').value);
-
-    document.getElementById('mode-select').addEventListener('change', (e) => {
-        showControlsForMode(e.target.value);
-    });
-
     setupQuickButtons();
 
-    // Initial render: Último mês
-    document.getElementById('mode-select').value = 'ultimo';
-    document.getElementById('ultimo-select').value = 'month';
-    showControlsForMode('ultimo');
+    // Initial render: mês anterior (month input already set)
     await applyFiltersAndRender();
 });

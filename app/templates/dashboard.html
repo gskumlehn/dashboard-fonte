@@ -4,37 +4,16 @@
 <h1>Volume de Operações</h1>
 
 <div class="filters">
-    <label for="mode-select">Filtro:</label>
-    <select id="mode-select">
-        <option value="ultimo" selected>Último</option>
-        <option value="mes">Mês específico</option>
-        <option value="ano">Ano específico</option>
-    </select>
+    <label for="month-input" style="margin-bottom:0">Mês:</label>
+    <input type="month" id="month-input" />
 
-    <!-- Último: escolher unidade (mês, trimestre, ano) -->
-    <div id="ultimo-controls" style="display:inline-flex;align-items:center;gap:.5rem;">
-        <label for="ultimo-select" style="margin-bottom:0">Último:</label>
-        <select id="ultimo-select">
-            <option value="month">Mês (agregado por dia)</option>
-            <option value="quarter">Trimestre (agregado por semana)</option>
-            <option value="year">Ano (agregado por mês)</option>
-        </select>
-        <button id="btn-last-month" class="btn" type="button">Último mês</button>
-        <button id="btn-last-quarter" class="btn" type="button">Último trimestre</button>
-        <button id="btn-last-year" class="btn" type="button">Último ano</button>
-    </div>
+    <label for="year-select" style="margin-bottom:0">Ano:</label>
+    <select id="year-select"></select>
 
-    <!-- Mês específico -->
-    <div id="mes-controls" style="display:none;align-items:center;gap:.5rem;">
-        <label for="month-input" style="margin-bottom:0">Mês:</label>
-        <input type="month" id="month-input" />
-    </div>
-
-    <!-- Ano específico -->
-    <div id="ano-controls" style="display:none;align-items:center;gap:.5rem;">
-        <label for="year-select" style="margin-bottom:0">Ano:</label>
-        <select id="year-select"></select>
-    </div>
+    <!-- Botões rápidos (último mês/trimestre/ano) -->
+    <button id="btn-last-month" class="btn" type="button">Último mês</button>
+    <button id="btn-last-quarter" class="btn" type="button">Último trimestre</button>
+    <button id="btn-last-year" class="btn" type="button">Último ano</button>
 
     <button id="apply-filters" class="btn">Aplicar</button>
 </div>
