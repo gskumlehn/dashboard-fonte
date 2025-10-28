@@ -6,3 +6,16 @@
   --card-border: rgba(0,0,0,0.06);
   --gap: 1rem;
 }
+
+/* Ensure the chart canvas has a fixed height so the graph height is always constant */
+.table-card canvas,
+#volumeChart {
+    height: 360px !important; /* fixed height */
+    max-height: 360px !important;
+    display: block;
+}
+
+/* In case container uses flex, ensure chart area doesn't collapse */
+.table-card {
+    align-items: stretch;
+}

@@ -1,4 +1,5 @@
 let volumeChart = null;
+let currentPeriod = 'year_month'; // guarda período atual usado para formatar eixo X
 
 function getCssVar(name, fallback) {
     const v = getComputedStyle(document.documentElement).getPropertyValue(name);
@@ -41,18 +42,70 @@ async function fetchVolumeData(period = 'year_month', start_date = null, end_dat
 }
 
 function buildChartData(rows) {
-    const labels = rows.map(r => r.period_formatted);
+    // agora retorna tanto labels formatados pelo backend quanto os períodos "raw"
+    const formatted = rows.map(r => r.period_formatted);
+    const raw = rows.map(r => r.period);
     const data = rows.map(r => Number(r.total_volume) || 0);
-    return { labels, data };
+    return { labels: formatted, rawPeriods: raw, data };
+}
+
+// formata label do eixo X para 'jan/25' quando for year_month
+function formatMonthLabelFromPeriod(periodValue) {
+    // aceita formatos: 'YYYY-MM', 'YYYY-M', 'YYYYMM' ou 'YYYY-MM-DD' (usa mês)
+    const monthNames = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+    if (!periodValue) return '';
+    // extrair ano e mês
+    let y = '', m = '';
+    const dashParts = String(periodValue).split('-');
+    if (dashParts.length >= 2) {
+        y = dashParts[0];
+        m = dashParts[1].padStart(2,'0');
+    } else if (/^\d{6}$/.test(periodValue)) {
+        y = periodValue.substr(0,4);
+        m = periodValue.substr(4,2);
+    } else if (/^\d{4}\d{2}\d{2}$/.test(periodValue)) {
+        y = periodValue.substr(0,4);
+        m = periodValue.substr(4,2);
+    } else {
+        return periodValue;
+    }
+    const mi = parseInt(m, 10) - 1;
+    const yy = y.substr(2,2);
+    const mon = monthNames[mi] || m;
+    return `${mon}/${yy}`;
+}
+
+// formata label do eixo X para month_day (dd/MM)
+function formatDayLabelFromPeriod(periodValue) {
+    // aceita 'YYYY-MM-DD' ou Date-like
+    if (!periodValue) return '';
+    const parts = String(periodValue).split('-');
+    if (parts.length >= 3) {
+        const dd = parts[2].padStart(2,'0');
+        const mm = parts[1].padStart(2,'0');
+        return `${dd}/${mm}`;
+    }
+    return periodValue;
 }
 
 function renderVolumeChart(rows) {
     const ctx = document.getElementById('volumeChart').getContext('2d');
-    const chartData = buildChartData(rows);
+    const chartDataObj = buildChartData(rows);
+
+    // determine magnitude for automatic unit (none / k / M)
+    const maxVal = chartDataObj.data.length ? Math.max(...chartDataObj.data.map(v => Math.abs(Number(v) || 0))) : 0;
+    let unit = 1;
+    let suffix = '';
+    if (maxVal >= 1_000_000) {
+        unit = 1_000_000;
+        suffix = 'M';
+    } else if (maxVal >= 1_000) {
+        unit = 1_000;
+        suffix = 'k';
+    }
 
     // read colors from CSS variables (colors.css)
     const primaryColor = getCssVar('--chart-color-1', '#3b82f6');
-    const secondaryColor = getCssVar('--chart-color-2', '#31708f');
     const textColor = getCssVar('--text', '#3d3d3d');
     const gridColor = getCssVar('--card-border', 'rgba(0,0,0,0.06)');
 
@@ -60,13 +113,37 @@ function renderVolumeChart(rows) {
     const backgroundColor = hexToRgba(primaryColor, 0.12);
     const pointColor = primaryColor;
 
+    // tick formatter for axis (abbreviated when unit > 1)
+    function tickFormatter(value) {
+        if (unit === 1) {
+            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(value);
+        }
+        const v = value / unit;
+        const digits = Number.isInteger(v) ? 0 : (Math.abs(v) >= 10 ? 0 : 1);
+        return `${v.toLocaleString('pt-BR', { maximumFractionDigits: digits, minimumFractionDigits: 0 })}${suffix}`;
+    }
+
+    // decide formatter do eixo X baseado no período atual e usa rawPeriods como fonte
+    function xTickFormatter(value, index) {
+        const raw = chartDataObj.rawPeriods[index] || value;
+        if (currentPeriod === 'year_month' || currentPeriod === 'year') {
+            return formatMonthLabelFromPeriod(raw);
+        }
+        if (currentPeriod === 'month_day' || currentPeriod === 'day') {
+            return formatDayLabelFromPeriod(raw);
+        }
+        // default: usa formatted (labels já amigáveis)
+        return chartDataObj.labels[index] || value;
+    }
+
     const config = {
         type: 'line',
         data: {
-            labels: chartData.labels,
+            // usar rawPeriods como labels fonte para indexação, Chart.js mostrará o resultado do callback
+            labels: chartDataObj.rawPeriods.length ? chartDataObj.rawPeriods : chartDataObj.labels,
             datasets: [{
                 label: 'Volume Total',
-                data: chartData.data,
+                data: chartDataObj.data,
                 borderColor: borderColor,
                 backgroundColor: backgroundColor,
                 fill: true,
@@ -82,8 +159,15 @@ function renderVolumeChart(rows) {
             scales: {
                 x: {
                     display: true,
-                    title: { display: false },
-                    ticks: { color: textColor },
+                    title: { display: false, color: textColor },
+                    ticks: {
+                        color: textColor,
+                        callback: xTickFormatter,
+                        autoSkip: true,
+                        maxRotation: 90,
+                        minRotation: 90,
+                        align: 'center'
+                    },
                     grid: { color: gridColor }
                 },
                 y: {
@@ -92,7 +176,7 @@ function renderVolumeChart(rows) {
                     ticks: {
                         color: textColor,
                         callback: function(value) {
-                            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(value);
+                            return tickFormatter(value);
                         }
                     },
                     grid: { color: gridColor }
@@ -112,7 +196,6 @@ function renderVolumeChart(rows) {
                             return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val);
                         }
                     },
-                    // small colored box in tooltip uses labelColor callback
                     labelColor: function(context) {
                         return {
                             borderColor: getCssVar('--chart-color-1', '#3b82f6'),
@@ -120,6 +203,9 @@ function renderVolumeChart(rows) {
                         };
                     }
                 }
+            },
+            elements: {
+                line: { tension: 0.3 }
             }
         }
     };
@@ -226,6 +312,7 @@ function computePeriodFromFilters() {
 /* Handler do botão aplicar */
 async function applyFiltersAndRender() {
     const computed = computePeriodFromFilters();
+    currentPeriod = computed.period || 'year_month'; // atualizar período atual
     const rows = await fetchVolumeData(computed.period, computed.start_date, computed.end_date);
     renderVolumeChart(rows);
 }
