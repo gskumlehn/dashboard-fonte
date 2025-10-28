@@ -51,7 +51,6 @@
         if (!p) return null;
         const isoDate = /^\d{4}-\d{2}-\d{2}$/;
         const yearMonth = /^\d{4}-\d{2}$/;
-        const weekRaw = /^(\d{4})-(\d{2})-W(\d+)$/; // YYYY-MM-W<weekOfYear>
 
         if (isoDate.test(p)) {
             const parts = p.split('-').map(x => parseInt(x, 10));
@@ -61,25 +60,8 @@
             const parts = p.split('-').map(x => parseInt(x, 10));
             return Date.UTC(parts[0], parts[1] - 1, 1);
         }
-        const m = p.match(weekRaw);
-        if (m) {
-            const year = parseInt(m[1], 10);
-            const month = parseInt(m[2], 10);
-            const weekOfYear = parseInt(m[3], 10);
 
-            const firstDay = new Date(Date.UTC(year, month - 1, 1));
-            const weekFirst = getISOWeekNumber(firstDay);
-            let wom = weekOfYear - weekFirst + 1;
-            if (wom < 1) wom = 1;
-            // aproxima dia: 1 + (wom-1)*7
-            const approxDay = 1 + (wom - 1) * 7;
-            const lastDay = new Date(Date.UTC(year, month, 0)).getUTCDate();
-            const day = Math.min(approxDay, lastDay);
-            return Date.UTC(year, month - 1, day);
-        }
-
-        const parsed = Date.parse(p);
-        return isNaN(parsed) ? null : parsed;
+        return null;
     }
 
     // retorna "w/mm" compacto com ordinal (ex: "1ª/out")
@@ -147,7 +129,7 @@
         const parts = String(periodValue).split('-');
         if (parts.length >= 3) {
             const dd = parseInt(parts[2], 10);
-            return String(dd);
+            return String(dd); // Retorna apenas o dia como número
         }
         return periodValue;
     }

@@ -47,36 +47,24 @@ function buildChartData(rows) {
         return { labels: [], rawPeriods: [], data: [] };
     }
 
-    // use DateUtils.periodToTimestamp for reliable chronological sort
     const items = rows.map(r => {
         const ts = DateUtils.periodToTimestamp(String(r.period || ''));
         return { r, ts };
     });
 
-    const hasSomeTs = items.some(it => it.ts !== null);
-    if (hasSomeTs) {
-        items.sort((a, b) => {
-            if (a.ts === null && b.ts === null) {
-                const pa = String(a.r.period || '');
-                const pb = String(b.r.period || '');
-                return pa.localeCompare(pb);
-            }
-            if (a.ts === null) return 1;
-            if (b.ts === null) return -1;
-            return a.ts - b.ts;
-        });
-    } else {
-        items.sort((a, b) => {
-            const pa = String(a.r.period || '');
-            const pb = String(b.r.period || '');
-            return pa.localeCompare(pb);
-        });
-    }
+    items.sort((a, b) => {
+        if (a.ts === null && b.ts === null) {
+            return String(a.r.period || '').localeCompare(String(b.r.period || ''));
+        }
+        if (a.ts === null) return 1;
+        if (b.ts === null) return -1;
+        return a.ts - b.ts;
+    });
 
     const sortedRows = items.map(it => it.r);
     const formatted = sortedRows.map(r => r.period_formatted);
     const raw = sortedRows.map(r => r.period);
-    const data = sortedRows.map(r => Number(r.total_volume) || 0);
+    const data = sortedRows.map(r => Number(r.total_volume) || 0); // Garantir que total_volume seja numérico
     return { labels: formatted, rawPeriods: raw, data };
 }
 
@@ -101,6 +89,10 @@ function weekOfMonthFromRaw(raw) {
 function renderVolumeChart(rows) {
     const ctx = document.getElementById('volumeChart').getContext('2d');
     const chartDataObj = buildChartData(rows);
+
+    // Garantir que os dados sejam carregados corretamente
+    const chartLabels = chartDataObj.labels.length ? chartDataObj.labels : chartDataObj.rawPeriods;
+    const chartValues = chartDataObj.data;
 
     // determine magnitude for automatic unit (none / k / M)
     const maxVal = chartDataObj.data.length ? Math.max(...chartDataObj.data.map(v => Math.abs(Number(v) || 0))) : 0;
@@ -146,7 +138,6 @@ function renderVolumeChart(rows) {
             if (d) mapVal[d] = Number(chartDataObj.data[i] || 0);
         }
 
-        // obter min/max timestamps a partir dos períodos (DateUtils.periodToTimestamp)
         const timestamps = chartDataObj.rawPeriods
             .map(p => DateUtils.periodToTimestamp(String(p || '')))
             .filter(ts => ts !== null)
@@ -165,7 +156,6 @@ function renderVolumeChart(rows) {
             const values = [];
             const rawDates = [];
             let cur = new Date(minTs);
-            // normalize to UTC midnight
             cur = new Date(Date.UTC(cur.getUTCFullYear(), cur.getUTCMonth(), cur.getUTCDate()));
             const end = new Date(maxTs);
             const endUtc = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate()));
@@ -195,8 +185,7 @@ function renderVolumeChart(rows) {
     // decide formatter do eixo X baseado no período atual e usa rawPeriods como fonte quando necessário
     function xTickFormatter(value, index) {
         if (currentPeriod === 'month_day') {
-            // value já é o dia (ex: "1","2",...), retornamos como está
-            return String(value);
+            return String(value); // Exibe o dia diretamente
         }
         const raw = chartRawPeriods[index] || value;
         if (currentPeriod === 'year_month' || currentPeriod === 'year') {

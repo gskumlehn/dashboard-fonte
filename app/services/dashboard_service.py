@@ -78,7 +78,7 @@ class DashboardService:
         SELECT 
             Period,
             {period_format_expr} AS PeriodFormatted,
-            TotalVolume,
+            ISNULL(TotalVolume, 0) AS TotalVolume, -- Garantir que TotalVolume nunca seja NULL
             OperationCount
         FROM AggregatedData
         ORDER BY Period ASC;
