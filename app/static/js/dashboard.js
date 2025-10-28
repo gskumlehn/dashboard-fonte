@@ -41,7 +41,18 @@ async function fetchVolumeData(period = 'year_month', start_date = null, end_dat
         const resp = await fetch(`/dashboard/volume-data?${params.toString()}`);
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const payload = await resp.json();
-        return payload.data || [];
+
+        let sortedData = payload.data || [];
+        // Ordenar os dados apenas se o período for 'month_day'
+        if (period === 'month_day') {
+            sortedData = sortedData.sort((a, b) => {
+                const dateA = new Date(a.period_formatted);
+                const dateB = new Date(b.period_formatted);
+                return dateA - dateB;
+            });
+        }
+
+        return sortedData;
     } catch (err) {
         errorEl.textContent = `Erro ao carregar dados: ${err.message}`;
         errorEl.style.display = 'block';
