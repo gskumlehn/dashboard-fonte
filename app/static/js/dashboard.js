@@ -47,53 +47,12 @@ function buildChartData(rows) {
         return { labels: [], rawPeriods: [], data: [] };
     }
 
-    // helper: parse period strings into a UTC timestamp (ms) when possible
-    function periodToTimestamp(p) {
-        if (!p) return null;
-        // YYYY-MM-DD
-        const isoDate = /^\d{4}-\d{2}-\d{2}$/;
-        const yearMonth = /^\d{4}-\d{2}$/;
-        const weekRaw = /^(\d{4})-(\d{2})-W(\d+)$/; // YYYY-MM-W<weekOfYear>
-
-        if (isoDate.test(p)) {
-            const parts = p.split('-').map(x => parseInt(x, 10));
-            return Date.UTC(parts[0], parts[1] - 1, parts[2]);
-        }
-        if (yearMonth.test(p)) {
-            const parts = p.split('-').map(x => parseInt(x, 10));
-            return Date.UTC(parts[0], parts[1] - 1, 1);
-        }
-        const m = p.match(weekRaw);
-        if (m) {
-            const year = parseInt(m[1], 10);
-            const month = parseInt(m[2], 10);
-            const weekOfYear = parseInt(m[3], 10);
-
-            // compute iso week of first day of month (UTC) and approximate week-of-month
-            const firstDay = new Date(Date.UTC(year, month - 1, 1));
-            const weekFirst = getISOWeekNumber(firstDay); // uses UTC internally
-            let wom = weekOfYear - weekFirst + 1;
-            if (wom < 1) wom = 1;
-            // approximate day: first day + (wom-1)*7
-            const approxDay = 1 + (wom - 1) * 7;
-            // clamp to last day of month
-            const lastDay = new Date(Date.UTC(year, month, 0)).getUTCDate();
-            const day = Math.min(approxDay, lastDay);
-            return Date.UTC(year, month - 1, day);
-        }
-
-        // fallback: try Date.parse safely by splitting numeric parts (last resort)
-        const parsed = Date.parse(p);
-        return isNaN(parsed) ? null : parsed;
-    }
-
-    // build array with timestamp keys
+    // use DateUtils.periodToTimestamp for reliable chronological sort
     const items = rows.map(r => {
-        const ts = periodToTimestamp(String(r.period || ''));
+        const ts = DateUtils.periodToTimestamp(String(r.period || ''));
         return { r, ts };
     });
 
-    // if at least one timestamp exists, sort by ts when possible; otherwise fallback to string sort
     const hasSomeTs = items.some(it => it.ts !== null);
     if (hasSomeTs) {
         items.sort((a, b) => {
@@ -107,7 +66,6 @@ function buildChartData(rows) {
             return a.ts - b.ts;
         });
     } else {
-        // fallback alphabetical
         items.sort((a, b) => {
             const pa = String(a.r.period || '');
             const pb = String(b.r.period || '');
@@ -115,7 +73,6 @@ function buildChartData(rows) {
         });
     }
 
-    // produce arrays in sorted order
     const sortedRows = items.map(it => it.r);
     const formatted = sortedRows.map(r => r.period_formatted);
     const raw = sortedRows.map(r => r.period);
@@ -123,91 +80,23 @@ function buildChartData(rows) {
     return { labels: formatted, rawPeriods: raw, data };
 }
 
-// formata label do eixo X para 'jan/25' quando for year_month
+// formata label do eixo X para 'jan/25' quando for year_month (delegar a DateUtils)
 function formatMonthLabelFromPeriod(periodValue) {
-    // aceita formatos: 'YYYY-MM', 'YYYY-M', 'YYYYMM' ou 'YYYY-MM-DD' (usa mês)
-    const monthNames = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
-    if (!periodValue) return '';
-    // extrair ano e mês
-    let y = '', m = '';
-    const dashParts = String(periodValue).split('-');
-    if (dashParts.length >= 2) {
-        y = dashParts[0];
-        m = dashParts[1].padStart(2,'0');
-    } else if (/^\d{6}$/.test(periodValue)) {
-        y = periodValue.substr(0,4);
-        m = periodValue.substr(4,2);
-    } else if (/^\d{4}\d{2}\d{2}$/.test(periodValue)) {
-        y = periodValue.substr(0,4);
-        m = periodValue.substr(4,2);
-    } else {
-        return periodValue;
-    }
-    const mi = parseInt(m, 10) - 1;
-    const yy = y.substr(2,2);
-    const mon = monthNames[mi] || m;
-    return `${mon}/${yy}`;
+    return DateUtils.formatMonthLabelFromPeriod(periodValue);
 }
 
 // formata label do eixo X para month_day (dia -> apenas número)
 function formatDayLabelFromPeriod(periodValue) {
-    if (!periodValue) return '';
-    const parts = String(periodValue).split('-');
-    if (parts.length >= 3) {
-        const dd = parseInt(parts[2], 10);
-        return String(dd); // apenas o número do dia
-    }
-    // fallback: try to parse date
-    const d = new Date(periodValue);
-    if (!isNaN(d)) return String(d.getDate());
-    return periodValue;
+    return DateUtils.formatDayLabelFromPeriod(periodValue);
 }
 
-// retorna número de semana ISO para uma Date (1-53)
-function getISOWeekNumber(d) {
-    const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-    const dayNum = date.getUTCDay() || 7;
-    date.setUTCDate(date.getUTCDate() + 4 - dayNum);
-    const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
-    return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
-}
-
-// calcula week-of-month a partir de raw 'YYYY-MM-Ww' (w = week-of-year)
-// aproximação: weekOfMonth = weekOfYear(raw) - weekOfYear(firstDayOfMonth) + 1
+// weekOfMonthFromRaw -> delega para DateUtils
 function weekOfMonthFromRaw(raw) {
-    if (!raw) return '';
-    // expected format 'YYYY-MM-W<week>'
-    const m = String(raw).match(/^(\d{4})-(\d{2})-W(\d+)$/);
-    if (!m) return raw;
-    const year = parseInt(m[1], 10);
-    const month = parseInt(m[2], 10);
-    const weekOfYear = parseInt(m[3], 10);
-
-    const firstDay = new Date(year, month - 1, 1);
-    const weekFirst = getISOWeekNumber(firstDay);
-    let wom = weekOfYear - weekFirst + 1;
-    if (wom < 1) wom = 1;
-
-    // month short names in Portuguese
-    const monthNames = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
-    const mon = monthNames[(month - 1) % 12] || String(month);
-
-    // return format like: "1/out"  (removed 'semana ' prefix)
-    return `${wom}/${mon}`;
+    return DateUtils.weekOfMonthFromRaw(raw);
 }
 
-// Novo helper: converte número para ordinal em PT-BR (1 -> 'Primeira', 2 -> 'Segunda', ...)
-function ordinalPortuguese(n) {
-    const ord = {
-        1: 'Primeira',
-        2: 'Segunda',
-        3: 'Terceira',
-        4: 'Quarta',
-        5: 'Quinta',
-        6: 'Sexta'
-    };
-    return ord[n] || `${n}ª`;
-}
+// ordinalPortuguese disponível via DateUtils.ordinalPortuguese
+// getISOWeekNumber disponível via DateUtils.getISOWeekNumber
 
 function renderVolumeChart(rows) {
     const ctx = document.getElementById('volumeChart').getContext('2d');
@@ -244,21 +133,61 @@ function renderVolumeChart(rows) {
         return `${v.toLocaleString('pt-BR', { maximumFractionDigits: digits, minimumFractionDigits: 0 })}${suffix}`;
     }
 
-    // decide labels a serem usadas no Chart:
-    // - para month_day usamos os dias extraídos de rawPeriods (1..31) em ordem crescente
+    // --- NOVO: quando currentPeriod === 'month_day' construir sequência de datas contínua ---
     let chartLabels;
-    if (currentPeriod === 'month_day') {
-        chartLabels = chartDataObj.rawPeriods.map(p => {
-            if (!p) return '';
-            const parts = String(p).split('-');
-            if (parts.length >= 3) return String(parseInt(parts[2], 10)); // remove leading zeros
-            return p;
-        });
-    } else {
-        chartLabels = (chartDataObj.rawPeriods.length ? chartDataObj.rawPeriods : chartDataObj.labels);
-    }
+    let chartValues;
 
-    // decide formatter do eixo X baseado no período atual and other helpers
+    if (currentPeriod === 'month_day') {
+        // mapa dateStr -> value
+        const mapVal = {};
+        for (let i = 0; i < chartDataObj.rawPeriods.length; i++) {
+            const d = String(chartDataObj.rawPeriods[i] || '');
+            if (d) mapVal[d] = Number(chartDataObj.data[i] || 0);
+        }
+
+        // obter min/max timestamps a partir dos períodos (DateUtils.periodToTimestamp)
+        const timestamps = chartDataObj.rawPeriods
+            .map(p => DateUtils.periodToTimestamp(String(p || '')))
+            .filter(ts => ts !== null)
+            .sort((a, b) => a - b);
+
+        if (timestamps.length === 0) {
+            // fallback: labels vazios
+            chartLabels = [];
+            chartValues = [];
+        } else {
+            const minTs = timestamps[0];
+            const maxTs = timestamps[timestamps.length - 1];
+
+            // iterar dias UTC de minTs até maxTs
+            const dayLabels = [];
+            const values = [];
+            let cur = new Date(minTs);
+            // normalize to UTC midnight
+            cur = new Date(Date.UTC(cur.getUTCFullYear(), cur.getUTCMonth(), cur.getUTCDate()));
+            const end = new Date(maxTs);
+            const endUtc = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate()));
+
+            while (cur.getTime() <= endUtc.getTime()) {
+                const dateStr = DateUtils.formatDateYYYYMMDD(cur); // 'YYYY-MM-DD'
+                const dayNum = String(parseInt(dateStr.split('-')[2], 10)); // '1'..'31'
+                dayLabels.push(dayNum);
+                values.push(mapVal[dateStr] !== undefined ? mapVal[dateStr] : 0);
+                // next day (UTC)
+                cur = new Date(Date.UTC(cur.getUTCFullYear(), cur.getUTCMonth(), cur.getUTCDate() + 1));
+            }
+
+            chartLabels = dayLabels;
+            chartValues = values;
+        }
+    } else {
+        // comportamento existente para outros períodos
+        chartLabels = (chartDataObj.rawPeriods.length ? chartDataObj.rawPeriods : chartDataObj.labels);
+        chartValues = chartDataObj.data;
+    }
+    // --- FIM NOVO ---
+
+    // decide formatter do eixo X baseado no período atual e usa rawPeriods como fonte quando necessário
     function xTickFormatter(value, index) {
         if (currentPeriod === 'month_day') {
             // value já é o dia (ex: "1","2",...), retornamos como está
@@ -279,18 +208,32 @@ function renderVolumeChart(rows) {
     }
 
     // month full names (pt-BR)
-    const monthNamesFull = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+    const monthNamesFull = DateUtils.monthNamesFull;
 
     function capitalize(s) {
         if (!s) return s;
         return s.charAt(0).toUpperCase() + s.slice(1);
     }
 
-    // --- ADDED: ensure typography variables are available inside renderVolumeChart ---
+    // --- ensure typography variables are available inside renderVolumeChart ---
     const chartFontFamily = getCssVar('--font-family', getComputedStyle(document.body).fontFamily);
     const chartFontSize = parseInt(getCssVar('--chart-font-size', '13'), 10) || 13;
     const chartFontWeight = getCssVar('--chart-font-weight', '600');
     // -------------------------------------------------------------------------
+
+    // determine x axis title based on currentPeriod (dynamic)
+    let xAxisTitle = 'Mês';
+    if (currentPeriod === 'month_day' || currentPeriod === 'day') {
+        xAxisTitle = 'Dia';
+    } else if (currentPeriod === 'quarter_week') {
+        xAxisTitle = 'Semana';
+    } else if (currentPeriod === 'year') {
+        xAxisTitle = 'Ano';
+    } else if (currentPeriod === 'all') {
+        xAxisTitle = 'Período';
+    } else {
+        xAxisTitle = 'Mês';
+    }
 
     const config = {
         type: 'line',
@@ -298,7 +241,7 @@ function renderVolumeChart(rows) {
             labels: chartLabels,
             datasets: [{
                 label: 'Volume Total',
-                data: chartDataObj.data,
+                data: chartValues,
                 borderColor: borderColor,
                 backgroundColor: backgroundColor,
                 fill: true,
@@ -317,7 +260,7 @@ function renderVolumeChart(rows) {
                     display: true,
                     title: {
                         display: true,
-                        text: 'Mês',
+                        text: xAxisTitle,
                         color: textColor,
                         font: { family: chartFontFamily, size: chartFontSize, weight: chartFontWeight }
                     },
@@ -394,10 +337,10 @@ function renderVolumeChart(rows) {
                                     const month = parseInt(m[2], 10);
                                     const weekOfYear = parseInt(m[3], 10);
                                     const firstDay = new Date(year, month - 1, 1);
-                                    const weekFirst = getISOWeekNumber(firstDay);
+                                    const weekFirst = DateUtils.getISOWeekNumber(firstDay);
                                     let wom = weekOfYear - weekFirst + 1;
                                     if (wom < 1) wom = 1;
-                                    const ordinal = ordinalPortuguese(wom);
+                                    const ordinal = DateUtils.ordinalPortuguese(wom);
                                     const monthName = monthNamesFull[(month - 1) % 12] || String(month);
                                     return [ `${ordinal} semana de ${capitalize(monthName)}` ];
                                 }
@@ -466,25 +409,6 @@ function populateMonthSelect() {
     }
 }
 
-/* Helpers de datas (mantidas) */
-function formatDateYYYYMMDD(d) {
-    const yyyy = d.getFullYear();
-    const mm = String(d.getMonth() + 1).padStart(2, '0');
-    const dd = String(d.getDate()).padStart(2, '0');
-    return `${yyyy}-${mm}-${dd}`;
-}
-
-function addMonths(date, months) {
-    const d = new Date(date);
-    const day = d.getDate();
-    d.setMonth(d.getMonth() + months);
-    // corrigir overflow de mês
-    if (d.getDate() < day) {
-        d.setDate(0);
-    }
-    return d;
-}
-
 /* Computa período a partir dos selects (month-select > year-select > fallback último mês) */
 function computePeriodFromInputs() {
     const monthVal = document.getElementById('month-select').value; // '01'..'12' or ''
@@ -492,15 +416,15 @@ function computePeriodFromInputs() {
     const today = new Date();
     let period = 'year_month';
     let start = null;
-    let end = formatDateYYYYMMDD(today);
+    let end = DateUtils.formatDateYYYYMMDD(today);
 
     if (monthVal && yearVal) {
         const y = parseInt(yearVal, 10);
         const mo = parseInt(monthVal, 10) - 1;
         const first = new Date(y, mo, 1);
         const last = new Date(y, mo + 1, 0);
-        start = formatDateYYYYMMDD(first);
-        end = formatDateYYYYMMDD(last);
+        start = DateUtils.formatDateYYYYMMDD(first);
+        end = DateUtils.formatDateYYYYMMDD(last);
         period = 'month_day';
     } else if (yearVal) {
         const year = parseInt(yearVal, 10);
@@ -509,9 +433,9 @@ function computePeriodFromInputs() {
         period = 'year_month';
     } else {
         // fallback: último mês
-        const first = addMonths(today, -1);
-        start = formatDateYYYYMMDD(first);
-        end = formatDateYYYYMMDD(today);
+        const first = DateUtils.addMonths(today, -1);
+        start = DateUtils.formatDateYYYYMMDD(first);
+        end = DateUtils.formatDateYYYYMMDD(today);
         period = 'month_day';
     }
 
@@ -551,8 +475,8 @@ function setupQuickButtons() {
 
     document.getElementById('btn-last-month').addEventListener('click', async () => {
         const today = new Date();
-        const start = formatDateYYYYMMDD(addMonths(today, -1));
-        const end = formatDateYYYYMMDD(today);
+        const start = DateUtils.formatDateYYYYMMDD(DateUtils.addMonths(today, -1));
+        const end = DateUtils.formatDateYYYYMMDD(today);
         yearSel.value = '';
         monthSel.value = '';
         monthSel.disabled = true;
@@ -561,8 +485,8 @@ function setupQuickButtons() {
     });
     document.getElementById('btn-last-quarter').addEventListener('click', async () => {
         const today = new Date();
-        const start = formatDateYYYYMMDD(addMonths(today, -3));
-        const end = formatDateYYYYMMDD(today);
+        const start = DateUtils.formatDateYYYYMMDD(DateUtils.addMonths(today, -3));
+        const end = DateUtils.formatDateYYYYMMDD(today);
         yearSel.value = '';
         monthSel.value = '';
         monthSel.disabled = true;
@@ -571,8 +495,8 @@ function setupQuickButtons() {
     });
     document.getElementById('btn-last-year').addEventListener('click', async () => {
         const today = new Date();
-        const start = formatDateYYYYMMDD(addMonths(today, -12));
-        const end = formatDateYYYYMMDD(today);
+        const start = DateUtils.formatDateYYYYMMDD(DateUtils.addMonths(today, -12));
+        const end = DateUtils.formatDateYYYYMMDD(today);
         yearSel.value = '';
         monthSel.value = '';
         monthSel.disabled = true;
@@ -641,9 +565,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Initial render: mês anterior (simulate quick last month)
     const today = new Date();
-    const start = formatDateYYYYMMDD(addMonths(today, -1));
-    const end = formatDateYYYYMMDD(today);
-    // keep month select disabled in UI since this is a quick override
+    const start = DateUtils.formatDateYYYYMMDD(DateUtils.addMonths(today, -1));
+    const end = DateUtils.formatDateYYYYMMDD(today);
     monthSel.value = '';
     monthSel.disabled = true;
     monthSel.style.opacity = '0.6';
