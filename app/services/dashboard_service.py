@@ -1,6 +1,7 @@
 from typing import Tuple, Dict, Any, Optional
 from app.services.comercial_service import ComercialService
 from app.infra.db_connection import Database
+import re
 
 class DashboardService:
     def __init__(self, comercial_service: ComercialService = None):
@@ -84,6 +85,34 @@ class DashboardService:
         """
         return sql, params
 
+    # --- helpers for safe rendering when DB driver doesn't accept params ---
+    def _escape_sql_literal(self, value: Any) -> str:
+        """
+        Escapes a simple scalar value to be safely injected as SQL literal.
+        Currently supports strings and numbers; wraps strings in single quotes and escapes internal quotes.
+        """
+        if value is None:
+            return 'NULL'
+        if isinstance(value, (int, float)):
+            return str(value)
+        s = str(value)
+        s = s.replace("'", "''")
+        return f"'{s}'"
+
+    def _render_sql_with_params(self, sql: str, params: Dict[str, Any]) -> str:
+        """
+        Replace named parameters like @start_date/@end_date in the SQL with escaped literals.
+        Simple textual replacement is used because params are dates/strings produced by UI.
+        """
+        rendered = sql
+        # Replace @paramName with escaped literal for known params
+        for k, v in params.items():
+            placeholder = f"@{k}"
+            escaped = self._escape_sql_literal(v)
+            # use regex word-boundary replace to avoid accidental partial matches
+            rendered = re.sub(re.escape(placeholder) + r'\b', escaped, rendered)
+        return rendered
+
     def get_volume_data(self, period: str = "month",
                         start_date: Optional[str] = None,
                         end_date: Optional[str] = None):
@@ -95,10 +124,22 @@ class DashboardService:
         sql, params = self.build_volume_query(period, start_date, end_date)
         db = Database()
         try:
+            rows = None
+            # Try preferred execution with params (if Database supports it)
             try:
-                rows = db.execute_query(sql, params)
-            except TypeError:
-                rows = db.execute_query(sql)
+                if params:
+                    rows = db.execute_query(sql, params)
+                else:
+                    rows = db.execute_query(sql)
+            except Exception as exec_err:
+                # Fallback: render SQL with literals if driver rejects params (common with some ODBC wrappers)
+                msg = str(exec_err)
+                if params and ("parameter markers" in msg or "0 parameter" in msg or "HY000" in msg or "42S22" in msg):
+                    rendered_sql = self._render_sql_with_params(sql, params)
+                    rows = db.execute_query(rendered_sql)
+                else:
+                    # re-raise original error if it's not the params-mismatch
+                    raise
 
             result = []
             for r in rows:
