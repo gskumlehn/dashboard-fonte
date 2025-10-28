@@ -91,6 +91,8 @@ function renderVolumeChart(rows) {
     const borderColor = getCssVar('--chart-color-1', '#3b82f6'); // Cor da linha
     const backgroundColor = hexToRgba(borderColor, 0.1); // Cor de preenchimento
     const pointColor = borderColor; // Cor dos pontos
+    const textColor = getCssVar('--text', '#3d3d3d'); // Cor do texto
+    const gridColor = getCssVar('--grid-color', 'rgba(0, 0, 0, 0.1)'); // Cor da grade
 
     if (currentPeriod === 'month_day') {
         const mapVal = {};
