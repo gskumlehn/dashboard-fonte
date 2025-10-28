@@ -42,7 +42,6 @@ async function fetchVolumeData(period = 'year_month', start_date = null, end_dat
 }
 
 function buildChartData(rows) {
-    // rows: [{ period, period_formatted, total_volume, operation_count }, ...]
     if (!rows || rows.length === 0) {
         return { labels: [], rawPeriods: [], data: [] };
     }
@@ -68,70 +67,27 @@ function buildChartData(rows) {
     return { labels: formatted, rawPeriods: raw, data };
 }
 
-// formata label do eixo X para 'jan/25' quando for year_month (delegar a DateUtils)
 function formatMonthLabelFromPeriod(periodValue) {
     return DateUtils.formatMonthLabelFromPeriod(periodValue);
 }
 
-// formata label do eixo X para month_day (dia -> apenas número)
 function formatDayLabelFromPeriod(periodValue) {
     return DateUtils.formatDayLabelFromPeriod(periodValue);
 }
 
-// weekOfMonthFromRaw -> delega para DateUtils
 function weekOfMonthFromRaw(raw) {
     return DateUtils.weekOfMonthFromRaw(raw);
 }
-
-// ordinalPortuguese disponível via DateUtils.ordinalPortuguese
-// getISOWeekNumber disponível via DateUtils.getISOWeekNumber
 
 function renderVolumeChart(rows) {
     const ctx = document.getElementById('volumeChart').getContext('2d');
     const chartDataObj = buildChartData(rows);
 
-    // Garantir que os dados sejam carregados corretamente
-    const chartLabels = chartDataObj.labels.length ? chartDataObj.labels : chartDataObj.rawPeriods;
-    const chartValues = chartDataObj.data;
-
-    // determine magnitude for automatic unit (none / k / M)
-    const maxVal = chartDataObj.data.length ? Math.max(...chartDataObj.data.map(v => Math.abs(Number(v) || 0))) : 0;
-    let unit = 1;
-    let suffix = '';
-    if (maxVal >= 1_000_000) {
-        unit = 1_000_000;
-        suffix = 'M';
-    } else if (maxVal >= 1_000) {
-        unit = 1_000;
-        suffix = 'k';
-    }
-
-    // read colors from CSS variables (colors.css)
-    const primaryColor = getCssVar('--chart-color-1', '#3b82f6');
-    const textColor = getCssVar('--text', '#3d3d3d');
-    const gridColor = getCssVar('--card-border', 'rgba(0,0,0,0.06)');
-
-    const borderColor = primaryColor;
-    const backgroundColor = hexToRgba(primaryColor, 0.12);
-    const pointColor = primaryColor;
-
-    // tick formatter for axis (abbreviated when unit > 1)
-    function tickFormatter(value) {
-        if (unit === 1) {
-            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(value);
-        }
-        const v = value / unit;
-        const digits = Number.isInteger(v) ? 0 : (Math.abs(v) >= 10 ? 0 : 1);
-        return `${v.toLocaleString('pt-BR', { maximumFractionDigits: digits, minimumFractionDigits: 0 })}${suffix}`;
-    }
-
-    // --- NOVO: quando currentPeriod === 'month_day' construir sequência de datas contínua ---
     let chartLabels;
     let chartValues;
-    let chartRawPeriods; // alinhado com labels/values, usado nos tooltips
+    let chartRawPeriods;
 
     if (currentPeriod === 'month_day') {
-        // mapa dateStr -> value
         const mapVal = {};
         for (let i = 0; i < chartDataObj.rawPeriods.length; i++) {
             const d = String(chartDataObj.rawPeriods[i] || '');
@@ -151,7 +107,6 @@ function renderVolumeChart(rows) {
             const minTs = timestamps[0];
             const maxTs = timestamps[timestamps.length - 1];
 
-            // iterar dias UTC de minTs até maxTs
             const dayLabels = [];
             const values = [];
             const rawDates = [];
@@ -166,7 +121,6 @@ function renderVolumeChart(rows) {
                 dayLabels.push(dayNum);
                 values.push(mapVal[dateStr] !== undefined ? mapVal[dateStr] : 0);
                 rawDates.push(dateStr);
-                // next day (UTC)
                 cur = new Date(Date.UTC(cur.getUTCFullYear(), cur.getUTCMonth(), cur.getUTCDate() + 1));
             }
 
@@ -175,17 +129,14 @@ function renderVolumeChart(rows) {
             chartRawPeriods = rawDates;
         }
     } else {
-        // comportamento existente para outros períodos
         chartLabels = (chartDataObj.rawPeriods.length ? chartDataObj.rawPeriods : chartDataObj.labels);
         chartValues = chartDataObj.data;
         chartRawPeriods = chartDataObj.rawPeriods.slice();
     }
-    // --- FIM NOVO ---
 
-    // decide formatter do eixo X baseado no período atual e usa rawPeriods como fonte quando necessário
     function xTickFormatter(value, index) {
         if (currentPeriod === 'month_day') {
-            return String(value); // Exibe o dia diretamente
+            return String(value);
         }
         const raw = chartRawPeriods[index] || value;
         if (currentPeriod === 'year_month' || currentPeriod === 'year') {
@@ -197,11 +148,11 @@ function renderVolumeChart(rows) {
         if (currentPeriod === 'quarter_week') {
             return weekOfMonthFromRaw(raw);
         }
-        // default: usa formatted (labels já amigáveis)
+
         return chartDataObj.labels[index] || value;
     }
 
-    // month full names (pt-BR)
+
     const monthNamesFull = DateUtils.monthNamesFull;
 
     function capitalize(s) {
@@ -209,12 +160,12 @@ function renderVolumeChart(rows) {
         return s.charAt(0).toUpperCase() + s.slice(1);
     }
 
-    // typography variables (lidas localmente)
+
     const chartFontFamily = getCssVar('--font-family', getComputedStyle(document.body).fontFamily);
     const chartFontSize = parseInt(getCssVar('--chart-font-size', '13'), 10) || 13;
     const chartFontWeight = getCssVar('--chart-font-weight', '600');
 
-    // determine x axis title based on currentPeriod (dynamic)
+
     let xAxisTitle = 'Mês';
     if (currentPeriod === 'month_day' || currentPeriod === 'day') {
         xAxisTitle = 'Dia';
