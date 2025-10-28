@@ -1,34 +1,31 @@
 {% extends 'base.html' %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
-<div class="dashboard-container">
-  <h1>Dashboard</h1>
-  <div class="charts-grid">
-    <div class="chart-card">
-      <h2>Vendas (Linha)</h2>
-      <canvas id="chart-line"></canvas>
-    </div>
-    <div class="chart-card">
-      <h2>Usuários (Bar)</h2>
-      <canvas id="chart-bar"></canvas>
-    </div>
-    <div class="chart-card">
-      <h2>Distribuição (Doughnut)</h2>
-      <canvas id="chart-doughnut"></canvas>
-    </div>
-    <div class="chart-card">
-      <h2>Tendência (Radar)</h2>
-      <canvas id="chart-radar"></canvas>
-    </div>
-    <div class="chart-card">
-      <h2>Participação (Polar Area)</h2>
-      <canvas id="chart-polar"></canvas>
-    </div>
-    <div class="chart-card">
-      <h2>Bolhas (Bubble)</h2>
-      <canvas id="chart-bubble"></canvas>
-    </div>
-  </div>
+<h1>Volume de Operações</h1>
+
+<div class="filters">
+    <label for="period-select">Período / Granularidade:</label>
+    <select id="period-select">
+        <option value="all">Todo o período</option>
+        <option value="year">Por ano</option>
+        <option value="year_month" selected>Ano agregado por mês</option>
+        <option value="quarter_week">Trimestre agregado por semana</option>
+        <option value="month_day">Mês agregado por dia</option>
+    </select>
+
+    <label for="start-date">Data início:</label>
+    <input type="date" id="start-date" />
+
+    <label for="end-date">Data fim:</label>
+    <input type="date" id="end-date" />
+
+    <button id="apply-filters" class="btn">Aplicar</button>
+</div>
+
+<div class="table-card">
+    <canvas id="volumeChart" width="800" height="320"></canvas>
+    <div id="chart-loader" style="display:none;">Carregando...</div>
+    <div id="chart-error" style="display:none;color:red;"></div>
 </div>
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">

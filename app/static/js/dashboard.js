@@ -1,158 +1,153 @@
-(function () {
-  function getColorVar(name, fallback) {
+let volumeChart = null;
+
+function getCssVar(name, fallback) {
     const v = getComputedStyle(document.documentElement).getPropertyValue(name);
-    return (v || fallback).trim();
-  }
+    return v ? v.trim() : fallback;
+}
 
-  const colors = {
-    primary: getColorVar('--primary', '#c67440'),
-    secondary: getColorVar('--secondary', '#b56535'),
-    accent: getColorVar('--accent', '#f2cfa6'),
-    muted: getColorVar('--muted', '#f5f5f5'),
-    success: getColorVar('--success', '#28a745'),
-    danger: getColorVar('--danger', '#dc3545')
-  };
-
-  function hexToRgba(hex, alpha) {
-    if (!hex) return `rgba(0,0,0,${alpha})`;
-    const h = hex.replace('#','').trim();
-    const full = h.length === 3 ? h.split('').map(c=>c+c).join('') : h;
-    const bigint = parseInt(full, 16);
-    const r = (bigint >> 16) & 255;
-    const g = (bigint >> 8) & 255;
-    const b = bigint & 255;
+function hexToRgba(hex, alpha = 1) {
+    if (!hex) return `rgba(59,130,246,${alpha})`;
+    let h = hex.replace('#', '').trim();
+    if (h.length === 3) h = h.split('').map(ch => ch + ch).join('');
+    const int = parseInt(h, 16);
+    const r = (int >> 16) & 255;
+    const g = (int >> 8) & 255;
+    const b = int & 255;
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-  }
+}
 
-  function safeCreateChart(createFn, id, name) {
+async function fetchVolumeData(period = 'year_month', start_date = null, end_date = null) {
+    const loader = document.getElementById('chart-loader');
+    const errorEl = document.getElementById('chart-error');
+    loader.style.display = 'block';
+    errorEl.style.display = 'none';
     try {
-      const el = document.getElementById(id);
-      if (!el) {
-        console.debug(`Canvas ${id} não encontrado — ignorando ${name}`);
-        return;
-      }
-      const ctx = el.getContext && el.getContext('2d');
-      if (!ctx) {
-        console.warn(`Context 2d não disponível para ${id}`);
-        return;
-      }
-      createFn(ctx);
-      console.debug(`${name} criado em ${id}`);
+        const params = new URLSearchParams();
+        params.append('period', period);
+        if (start_date) params.append('start_date', start_date);
+        if (end_date) params.append('end_date', end_date);
+
+        const resp = await fetch(`/dashboard/volume-data?${params.toString()}`);
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const payload = await resp.json();
+        return payload.data || [];
     } catch (err) {
-      console.error(`Erro ao criar ${name} em ${id}:`, err);
+        errorEl.textContent = `Erro ao carregar dados: ${err.message}`;
+        errorEl.style.display = 'block';
+        return [];
+    } finally {
+        loader.style.display = 'none';
     }
-  }
+}
 
-  function createLineChart(ctx) {
-    return new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul'],
-        datasets: [{
-          label: 'Receita',
-          data: [1200, 1500, 1700, 1600, 1900, 2200, 2400],
-          borderColor: colors.primary,
-          backgroundColor: hexToRgba(colors.primary, 0.12),
-          fill: true,
-          tension: 0.3,
-          pointRadius: 3
-        }]
-      },
-      options: { responsive: true, maintainAspectRatio: false, scales: { x: { grid: { display: false } }, y: { grid: { display: false } } } }
-    });
-  }
+function buildChartData(rows) {
+    const labels = rows.map(r => r.period_formatted);
+    const data = rows.map(r => Number(r.total_volume) || 0);
+    return { labels, data };
+}
 
-  function createBarChart(ctx) {
-    return new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
-        datasets: [{
-          label: 'Novos usuários',
-          data: [12, 19, 8, 14, 23, 7, 10],
-          backgroundColor: colors.secondary,
-          borderRadius: 6
-        }]
-      },
-      options: { responsive: true, maintainAspectRatio: false, scales: { x: { grid: { display: false } }, y: { grid: { display: false } } } }
-    });
-  }
+function renderVolumeChart(rows) {
+    const ctx = document.getElementById('volumeChart').getContext('2d');
+    const chartData = buildChartData(rows);
 
-  function createDoughnutChart(ctx) {
-    return new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Orgânico','Pago','Indicação'],
-        datasets: [{
-          data: [55, 30, 15],
-          backgroundColor: [colors.primary, colors.accent, colors.muted]
-        }]
-      },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
-    });
-  }
+    // read colors from CSS variables (colors.css)
+    const primaryColor = getCssVar('--chart-color-1', '#3b82f6');
+    const secondaryColor = getCssVar('--chart-color-2', '#31708f');
+    const textColor = getCssVar('--text', '#3d3d3d');
+    const gridColor = getCssVar('--card-border', 'rgba(0,0,0,0.06)');
 
-  function createRadarChart(ctx) {
-    return new Chart(ctx, {
-      type: 'radar',
-      data: {
-        labels: ['Velocidade','Estabilidade','UX','Funcionalidade','Segurança'],
-        datasets: [{
-          label: 'Pontuação',
-          data: [80, 65, 75, 90, 70],
-          backgroundColor: hexToRgba(colors.primary, 0.14),
-          borderColor: colors.primary,
-          pointBackgroundColor: colors.primary
-        }]
-      },
-      options: { responsive: true, maintainAspectRatio: false, scales: { r: { grid: { display: false } } } }
-    });
-  }
+    const borderColor = primaryColor;
+    const backgroundColor = hexToRgba(primaryColor, 0.12);
+    const pointColor = primaryColor;
 
-  function createPolarChart(ctx) {
-    return new Chart(ctx, {
-      type: 'polarArea',
-      data: {
-        labels: ['Produto A','Produto B','Produto C','Produto D'],
-        datasets: [{
-          data: [11, 16, 7, 14],
-          backgroundColor: [colors.primary, colors.secondary, colors.accent, colors.muted]
-        }]
-      },
-      options: { responsive: true, maintainAspectRatio: false }
-    });
-  }
+    const config = {
+        type: 'line',
+        data: {
+            labels: chartData.labels,
+            datasets: [{
+                label: 'Volume Total',
+                data: chartData.data,
+                borderColor: borderColor,
+                backgroundColor: backgroundColor,
+                fill: true,
+                tension: 0.3,
+                pointRadius: 3,
+                pointBackgroundColor: pointColor,
+                pointBorderColor: pointColor
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    display: true,
+                    title: { display: false },
+                    ticks: { color: textColor },
+                    grid: { color: gridColor }
+                },
+                y: {
+                    display: true,
+                    title: { display: true, text: 'Volume (R$)', color: textColor },
+                    ticks: {
+                        color: textColor,
+                        callback: function(value) {
+                            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(value);
+                        }
+                    },
+                    grid: { color: gridColor }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false,
+                    labels: { color: textColor }
+                },
+                tooltip: {
+                    titleColor: textColor,
+                    bodyColor: textColor,
+                    callbacks: {
+                        label: function(context) {
+                            const val = context.parsed.y || 0;
+                            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val);
+                        }
+                    },
+                    // small colored box in tooltip uses labelColor callback
+                    labelColor: function(context) {
+                        return {
+                            borderColor: getCssVar('--chart-color-1', '#3b82f6'),
+                            backgroundColor: hexToRgba(getCssVar('--chart-color-1', '#3b82f6'), 1)
+                        };
+                    }
+                }
+            }
+        }
+    };
 
-  function createBubbleChart(ctx) {
-    return new Chart(ctx, {
-      type: 'bubble',
-      data: {
-        datasets: [{
-          label: 'Segmentos',
-          data: [
-            { x: 10, y: 20, r: 8 },
-            { x: 15, y: 10, r: 12 },
-            { x: 7, y: 25, r: 6 },
-            { x: 18, y: 15, r: 10 }
-          ],
-          backgroundColor: hexToRgba(colors.secondary, 0.6)
-        }]
-      },
-      options: { responsive: true, maintainAspectRatio: false, scales: { x: { grid: { display: false } }, y: { grid: { display: false } } } }
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded', function () {
-    if (typeof Chart === 'undefined') {
-      console.error('Chart.js não encontrado. Verifique se o CDN está carregado antes de dashboard.js');
-      return;
+    if (volumeChart) {
+        volumeChart.data.labels = config.data.labels;
+        volumeChart.data.datasets = config.data.datasets;
+        volumeChart.options = config.options;
+        volumeChart.update();
+    } else {
+        volumeChart = new Chart(ctx, config);
     }
+}
 
-    safeCreateChart(createLineChart, 'chart-line', 'LineChart');
-    safeCreateChart(createBarChart, 'chart-bar', 'BarChart');
-    safeCreateChart(createDoughnutChart, 'chart-doughnut', 'DoughnutChart');
-    safeCreateChart(createRadarChart, 'chart-radar', 'RadarChart');
-    safeCreateChart(createPolarChart, 'chart-polar', 'PolarAreaChart');
-    safeCreateChart(createBubbleChart, 'chart-bubble', 'BubbleChart');
-  });
-})();
+async function applyFiltersAndRender() {
+    const period = document.getElementById('period-select').value;
+    const start_date = document.getElementById('start-date').value || null;
+    const end_date = document.getElementById('end-date').value || null;
+    const rows = await fetchVolumeData(period, start_date, end_date);
+    renderVolumeChart(rows);
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    // Setup handler
+    document.getElementById('apply-filters').addEventListener('click', async () => {
+        await applyFiltersAndRender();
+    });
+
+    // Initial render (default: year_month)
+    await applyFiltersAndRender();
+});
