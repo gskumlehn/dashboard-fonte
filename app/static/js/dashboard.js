@@ -141,9 +141,24 @@ function renderVolumeChart(rows) {
     }
 
     function xTickFormatter(value, index) {
-        if (currentPeriod === 'month_day') return String(value);
-        if (currentPeriod === 'quarter_week') return chartLabels[index];
-        return chartDataObj.labels[index] || value;
+        const raw = chartRawPeriods[index] || value;
+        if (currentPeriod === 'month_day') {
+            const date = new Date(DateUtils.periodToTimestamp(raw));
+            const day = date.getUTCDate();
+            const month = DateUtils.monthNamesFull[date.getUTCMonth()];
+            const year = date.getUTCFullYear();
+            return `${day} de ${month} de ${year}`;
+        }
+        if (currentPeriod === 'quarter_week') {
+            return DateUtils.weekOfMonthFromRaw(raw);
+        }
+        if (currentPeriod === 'year_month') {
+            const parts = raw.split('-');
+            const year = parts[0];
+            const month = DateUtils.monthNamesFull[parseInt(parts[1], 10) - 1];
+            return `${month} de ${year}`;
+        }
+        return value;
     }
 
     const config = {
@@ -168,10 +183,22 @@ function renderVolumeChart(rows) {
             scales: {
                 x: {
                     type: 'category',
+                    title: {
+                        display: true,
+                        text: currentPeriod === 'month_day' ? 'Dias' : (currentPeriod === 'quarter_week' ? 'Semanas' : 'Meses'),
+                        color: textColor,
+                        font: { family: getCssVar('--font-family', 'Arial'), size: 14, weight: 'bold' }
+                    },
                     ticks: { color: textColor, callback: xTickFormatter },
                     grid: { color: gridColor }
                 },
                 y: {
+                    title: {
+                        display: true,
+                        text: 'Volume (R$)',
+                        color: textColor,
+                        font: { family: getCssVar('--font-family', 'Arial'), size: 14, weight: 'bold' }
+                    },
                     ticks: { color: textColor, callback: tickFormatter },
                     grid: { color: gridColor }
                 }
@@ -179,7 +206,33 @@ function renderVolumeChart(rows) {
             plugins: {
                 tooltip: {
                     callbacks: {
-                        label: context => tickFormatter(context.parsed.y)
+                        title: function(items) {
+                            if (!items || items.length === 0) return '';
+                            const idx = items[0].dataIndex;
+                            const raw = chartRawPeriods[idx] || chartDataObj.rawPeriods[idx] || chartDataObj.labels[idx] || '';
+                            if (currentPeriod === 'month_day') {
+                                const date = new Date(DateUtils.periodToTimestamp(raw));
+                                const day = date.getUTCDate();
+                                const month = DateUtils.monthNamesFull[date.getUTCMonth()];
+                                const year = date.getUTCFullYear();
+                                return `${day} de ${month} de ${year}`;
+                            }
+                            if (currentPeriod === 'quarter_week') {
+                                return DateUtils.weekOfMonthFromRaw(raw);
+                            }
+                            if (currentPeriod === 'year_month') {
+                                const parts = raw.split('-');
+                                const year = parts[0];
+                                const month = DateUtils.monthNamesFull[parseInt(parts[1], 10) - 1];
+                                return `${month} de ${year}`;
+                            }
+                            return raw;
+                        },
+                        label: function(context) {
+                            // Exibe o valor completo no tooltip
+                            const val = context.parsed.y || 0;
+                            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 }).format(val);
+                        }
                     }
                 }
             }
