@@ -287,13 +287,44 @@ async function applyFiltersAndRender(override = null) {
     renderVolumeChart(rows);
 }
 
+function computeInitialPeriod() {
+    const today = new Date();
+    const isLastDayOfMonth = today.getUTCDate() === new Date(today.getUTCFullYear(), today.getUTCMonth() + 1, 0).getUTCDate();
+
+    let start, end;
+    if (isLastDayOfMonth) {
+        // Primeiro dia do mês atual até hoje
+        start = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), 1));
+        end = today;
+    } else {
+        // Mesmo dia do mês passado até hoje
+        const lastMonth = DateUtils.addMonths(today, -1);
+        start = new Date(Date.UTC(lastMonth.getUTCFullYear(), lastMonth.getUTCMonth(), today.getUTCDate()));
+        end = today;
+    }
+
+    return {
+        period: 'month_day',
+        start_date: DateUtils.formatDateYYYYMMDD(start),
+        end_date: DateUtils.formatDateYYYYMMDD(end)
+    };
+}
+
 // --- Funções de preenchimento de selects ---
 function populateYearSelect(yearsBack = 5) {
     const yearSelect = document.getElementById('year-select');
     const currentYear = new Date().getFullYear();
+    const startYear = 2023; // Ano inicial fixo
 
-    for (let i = 0; i <= yearsBack; i++) {
-        const year = currentYear - i;
+    // Adicionar uma opção padrão vazia
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = '—';
+    defaultOption.selected = true; // Nenhum ano selecionado por padrão
+    yearSelect.appendChild(defaultOption);
+
+    // Preencher os anos a partir de 2023 até o ano atual
+    for (let year = currentYear; year >= startYear; year--) {
         const option = document.createElement('option');
         option.value = year;
         option.textContent = year;
@@ -351,5 +382,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     populateYearSelect(5);
     populateMonthSelect();
     setupQuickButtons();
-    await applyFiltersAndRender();
+
+    // Aplicar o filtro inicial com base no último mês
+    const initialPeriod = computeInitialPeriod();
+    await applyFiltersAndRender(initialPeriod);
 });
