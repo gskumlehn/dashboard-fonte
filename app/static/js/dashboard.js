@@ -42,10 +42,78 @@ async function fetchVolumeData(period = 'year_month', start_date = null, end_dat
 }
 
 function buildChartData(rows) {
-    // agora retorna tanto labels formatados pelo backend quanto os períodos "raw"
-    const formatted = rows.map(r => r.period_formatted);
-    const raw = rows.map(r => r.period);
-    const data = rows.map(r => Number(r.total_volume) || 0);
+    // rows: [{ period, period_formatted, total_volume, operation_count }, ...]
+    // Ordem garantida agora do lado cliente: quando o period for ISO date (YYYY-MM-DD)
+    // ordenamos e, se for month_day e todos no mesmo mês, preenchermos dias faltantes 1..ultimoDia.
+
+    if (!rows || rows.length === 0) {
+        return { labels: [], rawPeriods: [], data: [] };
+    }
+
+    // detecta se todos os period são datas ISO (YYYY-MM-DD)
+    const rawPeriods = rows.map(r => String(r.period || ''));
+    const allIsoDates = rawPeriods.every(p => /^\d{4}-\d{2}-\d{2}$/.test(p));
+
+    let sortedRows = rows.slice();
+
+    if (allIsoDates) {
+        // ordena cronologicamente
+        sortedRows.sort((a, b) => new Date(a.period) - new Date(b.period));
+
+        // checa se todos pertencem ao mesmo ano-mês
+        const first = sortedRows[0].period;
+        const [fy, fm] = first.split('-');
+        const sameMonth = sortedRows.every(r => {
+            const parts = String(r.period).split('-');
+            return parts[0] === fy && parts[1] === fm;
+        });
+
+        if (sameMonth) {
+            // mapa date -> value
+            const mapVal = {};
+            sortedRows.forEach(r => {
+                mapVal[String(r.period)] = Number(r.total_volume) || 0;
+            });
+            const year = parseInt(fy, 10);
+            const month = parseInt(fm, 10); // 1..12
+            // último dia do mês: new Date(year, month, 0).getDate()
+            const lastDay = new Date(year, month, 0).getDate();
+
+            const raw = [];
+            const data = [];
+            const formatted = [];
+
+            for (let d = 1; d <= lastDay; d++) {
+                const dd = String(d).padStart(2, '0');
+                const mm = String(month).padStart(2, '0');
+                const dateStr = `${fy}-${mm}-${dd}`;
+                raw.push(dateStr);
+                data.push(mapVal[dateStr] || 0);
+                // period_formatted não é usado para month_day ticks (mostramos apenas dia),
+                // mas mantemos algo útil (dia) caso seja necessário.
+                formatted.push(String(d));
+            }
+            return { labels: formatted, rawPeriods: raw, data: data };
+        }
+    }
+
+    // fallback geral: ordena alfabeticamente por period quando possível, depois mapeia
+    try {
+        sortedRows.sort((a, b) => {
+            const pa = a.period || '';
+            const pb = b.period || '';
+            if (allIsoDates) return new Date(pa) - new Date(pb);
+            if (pa < pb) return -1;
+            if (pa > pb) return 1;
+            return 0;
+        });
+    } catch (e) {
+        // ignore and keep original order
+    }
+
+    const formatted = sortedRows.map(r => r.period_formatted);
+    const raw = sortedRows.map(r => r.period);
+    const data = sortedRows.map(r => Number(r.total_volume) || 0);
     return { labels: formatted, rawPeriods: raw, data };
 }
 
@@ -113,7 +181,13 @@ function weekOfMonthFromRaw(raw) {
     const weekFirst = getISOWeekNumber(firstDay);
     let wom = weekOfYear - weekFirst + 1;
     if (wom < 1) wom = 1;
-    return `${wom}/${month}`; // exemplo: '1/4'
+
+    // month short names in Portuguese
+    const monthNames = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+    const mon = monthNames[(month - 1) % 12] || String(month);
+
+    // return format like: "semana 1/out"
+    return `semana ${wom}/${mon}`;
 }
 
 function renderVolumeChart(rows) {
@@ -218,6 +292,11 @@ function renderVolumeChart(rows) {
                     labels: { color: textColor }
                 },
                 tooltip: {
+                    // <-- ADIÇÕES: força fundo branco e borda para a "div informativa"
+                    backgroundColor: getCssVar('--white', '#ffffff'),
+                    borderColor: getCssVar('--card-border', 'rgba(0,0,0,0.06)'),
+                    borderWidth: 1,
+                    padding: 8,
                     titleColor: textColor,
                     bodyColor: textColor,
                     callbacks: {
@@ -226,6 +305,7 @@ function renderVolumeChart(rows) {
                             return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val);
                         }
                     },
+                    // small colored box in tooltip uses labelColor callback
                     labelColor: function(context) {
                         return {
                             borderColor: getCssVar('--chart-color-1', '#3b82f6'),
