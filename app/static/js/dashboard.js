@@ -225,8 +225,15 @@ function renderVolumeChart(rows) {
         return `${v.toLocaleString('pt-BR', { maximumFractionDigits: digits, minimumFractionDigits: 0 })}${suffix}`;
     }
 
-    // decide formatter do eixo X baseado no período atual e usa rawPeriods como fonte
+    // decide labels a serem usadas no Chart: para month_day usar labels numéricas (1..N)
+    const chartLabels = (currentPeriod === 'month_day') ? chartDataObj.labels : (chartDataObj.rawPeriods.length ? chartDataObj.rawPeriods : chartDataObj.labels);
+
+    // decide formatter do eixo X baseado no período atual e usa rawPeriods como fonte quando necessário
     function xTickFormatter(value, index) {
+        if (currentPeriod === 'month_day') {
+            // value já é a label numérica (ex: "1","2",...), retornamos como está
+            return String(value);
+        }
         const raw = chartDataObj.rawPeriods[index] || value;
         if (currentPeriod === 'year_month' || currentPeriod === 'year') {
             return formatMonthLabelFromPeriod(raw);
@@ -241,10 +248,18 @@ function renderVolumeChart(rows) {
         return chartDataObj.labels[index] || value;
     }
 
+    // month full names (pt-BR)
+    const monthNamesFull = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+
+    function capitalize(s) {
+        if (!s) return s;
+        return s.charAt(0).toUpperCase() + s.slice(1);
+    }
+
     const config = {
         type: 'line',
         data: {
-            labels: chartDataObj.rawPeriods.length ? chartDataObj.rawPeriods : chartDataObj.labels,
+            labels: chartLabels,
             datasets: [{
                 label: 'Volume Total',
                 data: chartDataObj.data,
@@ -262,6 +277,7 @@ function renderVolumeChart(rows) {
             maintainAspectRatio: false,
             scales: {
                 x: {
+                    type: 'category', // força eixo categórico para preservar ordem fornecida
                     display: true,
                     title: { display: false, color: textColor },
                     ticks: {
@@ -292,7 +308,6 @@ function renderVolumeChart(rows) {
                     labels: { color: textColor }
                 },
                 tooltip: {
-                    // <-- ADIÇÕES: força fundo branco e borda para a "div informativa"
                     backgroundColor: getCssVar('--white', '#ffffff'),
                     borderColor: getCssVar('--card-border', 'rgba(0,0,0,0.06)'),
                     borderWidth: 1,
@@ -300,12 +315,29 @@ function renderVolumeChart(rows) {
                     titleColor: textColor,
                     bodyColor: textColor,
                     callbacks: {
+                        // NEW: format tooltip title for month periods as "Outubro de 2025"
+                        title: function(items) {
+                            if (!items || items.length === 0) return '';
+                            const idx = items[0].dataIndex;
+                            const raw = chartDataObj.rawPeriods[idx] || chartDataObj.labels[idx] || '';
+                            if (currentPeriod === 'year_month') {
+                                const parts = String(raw).split('-');
+                                if (parts.length >= 2) {
+                                    const y = parts[0];
+                                    const m = parts[1].padStart(2, '0');
+                                    const mi = parseInt(m, 10) - 1;
+                                    const monthName = monthNamesFull[mi] || m;
+                                    return [ `${capitalize(monthName)} de ${y}` ];
+                                }
+                            }
+                            // fallback: show the formatted label
+                            return [ chartDataObj.labels[idx] || String(raw) ];
+                        },
                         label: function(context) {
                             const val = context.parsed.y || 0;
                             return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val);
                         }
                     },
-                    // small colored box in tooltip uses labelColor callback
                     labelColor: function(context) {
                         return {
                             borderColor: getCssVar('--chart-color-1', '#3b82f6'),
@@ -337,7 +369,8 @@ function populateYearSelect(rangeYears = 5) {
     sel.innerHTML = '<option value="">—</option>';
     const now = new Date();
     const currentYear = now.getFullYear();
-    for (let y = currentYear; y >= currentYear - rangeYears; y--) {
+    const startYear = 2023; // start the year filter at 2023
+    for (let y = currentYear; y >= startYear; y--) {
         const opt = document.createElement('option');
         opt.value = String(y);
         opt.textContent = String(y);
