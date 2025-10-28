@@ -134,20 +134,144 @@ function renderVolumeChart(rows) {
     }
 }
 
+/* ---------- Novas funções de controle de filtros ---------- */
+
+function showControlsForMode(mode) {
+    document.getElementById('ultimo-controls').style.display = mode === 'ultimo' ? 'inline-flex' : 'none';
+    document.getElementById('mes-controls').style.display = mode === 'mes' ? 'inline-flex' : 'none';
+    document.getElementById('ano-controls').style.display = mode === 'ano' ? 'inline-flex' : 'none';
+}
+
+function populateYearSelect(rangeYears = 5) {
+    const sel = document.getElementById('year-select');
+    sel.innerHTML = '';
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    for (let y = currentYear; y >= currentYear - rangeYears; y--) {
+        const opt = document.createElement('option');
+        opt.value = String(y);
+        opt.textContent = String(y);
+        sel.appendChild(opt);
+    }
+}
+
+/* Helpers de datas */
+function formatDateYYYYMMDD(d) {
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+}
+
+function addMonths(date, months) {
+    const d = new Date(date);
+    const day = d.getDate();
+    d.setMonth(d.getMonth() + months);
+    // corrigir overflow de mês
+    if (d.getDate() < day) {
+        d.setDate(0);
+    }
+    return d;
+}
+
+/* Calcula start/end para os filtros solicitados */
+function computePeriodFromFilters() {
+    const mode = document.getElementById('mode-select').value;
+    const today = new Date();
+    let period = 'year_month';
+    let start = null;
+    let end = formatDateYYYYMMDD(today);
+
+    if (mode === 'ultimo') {
+        const ultimo = document.getElementById('ultimo-select').value;
+        if (ultimo === 'month') {
+            period = 'month_day';
+            start = formatDateYYYYMMDD(addMonths(today, -1));
+        } else if (ultimo === 'quarter') {
+            period = 'quarter_week';
+            start = formatDateYYYYMMDD(addMonths(today, -3));
+        } else if (ultimo === 'year') {
+            period = 'year_month';
+            start = formatDateYYYYMMDD(addMonths(today, -12));
+        }
+    } else if (mode === 'mes') {
+        const m = document.getElementById('month-input').value; // YYYY-MM
+        if (!m) {
+            // default to current month
+            const first = new Date(today.getFullYear(), today.getMonth(), 1);
+            const last = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            start = formatDateYYYYMMDD(first);
+            end = formatDateYYYYMMDD(last);
+        } else {
+            const parts = m.split('-');
+            const y = parseInt(parts[0], 10);
+            const mo = parseInt(parts[1], 10) - 1;
+            const first = new Date(y, mo, 1);
+            const last = new Date(y, mo + 1, 0);
+            start = formatDateYYYYMMDD(first);
+            end = formatDateYYYYMMDD(last);
+        }
+        period = 'month_day';
+    } else if (mode === 'ano') {
+        const y = document.getElementById('year-select').value;
+        const year = y ? parseInt(y, 10) : today.getFullYear();
+        start = `${year}-01-01`;
+        end = `${year}-12-31`;
+        period = 'year_month';
+    }
+
+    return { period, start_date: start, end_date: end };
+}
+
+/* Handler do botão aplicar */
 async function applyFiltersAndRender() {
-    const period = document.getElementById('period-select').value;
-    const start_date = document.getElementById('start-date').value || null;
-    const end_date = document.getElementById('end-date').value || null;
-    const rows = await fetchVolumeData(period, start_date, end_date);
+    const computed = computePeriodFromFilters();
+    const rows = await fetchVolumeData(computed.period, computed.start_date, computed.end_date);
     renderVolumeChart(rows);
 }
 
+/* Quick buttons */
+function setupQuickButtons() {
+    document.getElementById('btn-last-month').addEventListener('click', async () => {
+        document.getElementById('mode-select').value = 'ultimo';
+        document.getElementById('ultimo-select').value = 'month';
+        showControlsForMode('ultimo');
+        await applyFiltersAndRender();
+    });
+    document.getElementById('btn-last-quarter').addEventListener('click', async () => {
+        document.getElementById('mode-select').value = 'ultimo';
+        document.getElementById('ultimo-select').value = 'quarter';
+        showControlsForMode('ultimo');
+        await applyFiltersAndRender();
+    });
+    document.getElementById('btn-last-year').addEventListener('click', async () => {
+        document.getElementById('mode-select').value = 'ultimo';
+        document.getElementById('ultimo-select').value = 'year';
+        showControlsForMode('ultimo');
+        await applyFiltersAndRender();
+    });
+}
+
+/* Inicialização */
 document.addEventListener('DOMContentLoaded', async () => {
     // Setup handler
     document.getElementById('apply-filters').addEventListener('click', async () => {
         await applyFiltersAndRender();
     });
 
-    // Initial render (default: year_month)
+    // Setup UI controls
+    populateYearSelect(5);
+    showControlsForMode(document.getElementById('mode-select').value);
+
+    document.getElementById('mode-select').addEventListener('change', (e) => {
+        showControlsForMode(e.target.value);
+    });
+
+    setupQuickButtons();
+
+    // Initial render: Último mês
+    document.getElementById('mode-select').value = 'ultimo';
+    document.getElementById('ultimo-select').value = 'month';
+    showControlsForMode('ultimo');
     await applyFiltersAndRender();
 });
