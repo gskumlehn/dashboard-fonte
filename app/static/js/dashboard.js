@@ -146,8 +146,8 @@ function weekOfMonthFromRaw(raw) {
     const monthNames = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
     const mon = monthNames[(month - 1) % 12] || String(month);
 
-    // return format like: "semana 1/out"
-    return `semana ${wom}/${mon}`;
+    // return format like: "1/out"  (removed 'semana ' prefix)
+    return `${wom}/${mon}`;
 }
 
 function renderVolumeChart(rows) {
@@ -216,6 +216,20 @@ function renderVolumeChart(rows) {
         return s.charAt(0).toUpperCase() + s.slice(1);
     }
 
+    // determine x axis title based on currentPeriod
+    let xAxisTitle = 'Mês';
+    if (currentPeriod === 'month_day' || currentPeriod === 'day') {
+        xAxisTitle = 'Dia';
+    } else if (currentPeriod === 'quarter_week') {
+        xAxisTitle = 'Semana';
+    } else {
+        xAxisTitle = 'Mês';
+    }
+
+    const chartFontFamily = getCssVar('--font-family', getComputedStyle(document.body).fontFamily);
+    const chartFontSize = parseInt(getCssVar('--chart-font-size', '13'), 10) || 13;
+    const chartFontWeight = getCssVar('--chart-font-weight', '600');
+
     const config = {
         type: 'line',
         data: {
@@ -237,15 +251,21 @@ function renderVolumeChart(rows) {
             maintainAspectRatio: false,
             scales: {
                 x: {
-                    type: 'category', // força eixo categórico para preservar ordem fornecida
+                    type: 'category',
                     display: true,
-                    title: { display: false, color: textColor },
+                    title: {
+                        display: true,
+                        text: xAxisTitle,
+                        color: textColor,
+                        font: { family: chartFontFamily, size: chartFontSize, weight: chartFontWeight }
+                    },
                     ticks: {
                         color: textColor,
                         callback: xTickFormatter,
                         autoSkip: true,
-                        maxRotation: 90,
-                        minRotation: 90,
+                        maxTicksLimit: 24,
+                        maxRotation: 0,
+                        minRotation: 0,
                         align: 'center'
                     },
                     grid: { color: gridColor }
@@ -281,7 +301,6 @@ function renderVolumeChart(rows) {
                             const idx = items[0].dataIndex;
                             const raw = chartDataObj.rawPeriods[idx] || chartDataObj.labels[idx] || '';
 
-                            // month aggregated by month -> "Outubro de 2025"
                             if (currentPeriod === 'year_month') {
                                 const parts = String(raw).split('-');
                                 if (parts.length >= 2) {
@@ -293,28 +312,24 @@ function renderVolumeChart(rows) {
                                 }
                             }
 
-                            // month_day (daily) -> "1 Outubro de 2025" (parsing direto para evitar timezone)
                             if (currentPeriod === 'month_day') {
-                                // expect 'YYYY-MM-DD'
                                 const parts = String(raw).split('-');
                                 if (parts.length >= 3) {
                                     const y = parts[0];
                                     const m = parts[1].padStart(2, '0');
-                                    const d = String(parseInt(parts[2], 10)); // remove leading zeros
+                                    const d = String(parseInt(parts[2], 10));
                                     const mi = parseInt(m, 10) - 1;
                                     const monthName = monthNamesFull[mi] || m;
                                     return [ `${d} ${capitalize(monthName)} de ${y}` ];
                                 }
                             }
 
-                            // quarter_week -> show "semana X/mesAno" fallback
                             if (currentPeriod === 'quarter_week') {
-                                // raw expected 'YYYY-MM-W<week>'; reuse weekOfMonthFromRaw for label
-                                const weekLabel = weekOfMonthFromRaw(raw);
-                                return [ weekLabel ];
+                                const weekLabel = weekOfMonthFromRaw(raw); // now returns "1/out"
+                                // show with "Semana" in tooltip title for clarity
+                                return [ `Semana ${weekLabel}` ];
                             }
 
-                            // fallback: show formatted label or raw
                             return [ chartDataObj.labels[idx] || String(raw) ];
                         },
                         label: function(context) {
