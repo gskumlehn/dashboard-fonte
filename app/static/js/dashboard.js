@@ -330,21 +330,13 @@ function renderVolumeChart(rows) {
                             }
 
                             if (currentPeriod === 'quarter_week') {
-                                // expected raw: 'YYYY-MM-W<week>'
-                                const m = String(raw).match(/^(\d{4})-(\d{2})-W(\d+)$/);
-                                if (m) {
-                                    const year = parseInt(m[1], 10);
-                                    const month = parseInt(m[2], 10);
-                                    const weekOfYear = parseInt(m[3], 10);
-                                    const firstDay = new Date(year, month - 1, 1);
-                                    const weekFirst = DateUtils.getISOWeekNumber(firstDay);
-                                    let wom = weekOfYear - weekFirst + 1;
-                                    if (wom < 1) wom = 1;
-                                    const ordinal = DateUtils.ordinalPortuguese(wom);
-                                    const monthName = monthNamesFull[(month - 1) % 12] || String(month);
-                                    return [ `${ordinal} semana de ${capitalize(monthName)}` ];
+                                // use DateUtils.weekOfMonthInfo to build "1ª semana de Outubro"
+                                const info = DateUtils.weekOfMonthInfo(raw);
+                                if (info) {
+                                    const ordinal = `${info.wom}ª`;
+                                    return [ `${ordinal} semana de ${capitalize(info.monthNameFull)}` ];
                                 }
-                                // fallback: use previous compact label if parse fails
+                                // fallback: compact label
                                 const wlabel = weekOfMonthFromRaw(raw);
                                 return [ `Semana ${wlabel}` ];
                             }

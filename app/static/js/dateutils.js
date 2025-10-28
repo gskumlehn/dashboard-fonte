@@ -80,7 +80,7 @@
         return isNaN(parsed) ? null : parsed;
     }
 
-    // retorna "w/mm" compact (ex: "1/out")
+    // retorna "w/mm" compact (ex: "1/out") -- agora com sufixo ordinal: "1ª/out"
     function weekOfMonthFromRaw(raw) {
         if (!raw) return '';
         const m = String(raw).match(/^(\d{4})-(\d{2})-W(\d+)$/);
@@ -89,49 +89,35 @@
         const month = parseInt(m[2], 10);
         const weekOfYear = parseInt(m[3], 10);
 
-        const firstDay = new Date(year, month - 1, 1);
+        const firstDay = new Date(Date.UTC(year, month - 1, 1));
         const weekFirst = getISOWeekNumber(firstDay);
         let wom = weekOfYear - weekFirst + 1;
         if (wom < 1) wom = 1;
 
         const mon = monthNamesShort[(month - 1) % 12] || String(month);
-        return `${wom}/${mon}`;
+        return `${wom}ª/${mon}`;
     }
 
-    function formatMonthLabelFromPeriod(periodValue) {
-        if (!periodValue) return '';
-        let y = '', m = '';
-        const dashParts = String(periodValue).split('-');
-        if (dashParts.length >= 2) {
-            y = dashParts[0];
-            m = dashParts[1].padStart(2,'0');
-        } else if (/^\d{6}$/.test(periodValue)) {
-            y = periodValue.substr(0,4);
-            m = periodValue.substr(4,2);
-        } else if (/^\d{4}\d{2}\d{2}$/.test(periodValue)) {
-            y = periodValue.substr(0,4);
-            m = periodValue.substr(4,2);
-        } else {
-            return periodValue;
-        }
-        const mi = parseInt(m, 10) - 1;
-        const yy = y.substr(2,2);
-        const mon = monthNamesShort[mi] || m;
-        return `${mon}/${yy}`;
+    // retorna objeto com info da semana: { wom: 1, month: 10, monthNameFull: 'outubro' }
+    function weekOfMonthInfo(raw) {
+        if (!raw) return null;
+        const m = String(raw).match(/^(\d{4})-(\d{2})-W(\d+)$/);
+        if (!m) return null;
+        const year = parseInt(m[1], 10);
+        const month = parseInt(m[2], 10);
+        const weekOfYear = parseInt(m[3], 10);
+
+        const firstDay = new Date(Date.UTC(year, month - 1, 1));
+        const weekFirst = getISOWeekNumber(firstDay);
+        let wom = weekOfYear - weekFirst + 1;
+        if (wom < 1) wom = 1;
+
+        const monthNameShort = monthNamesShort[(month - 1) % 12] || String(month);
+        const monthNameFull = monthNamesFull[(month - 1) % 12] || String(month);
+        return { wom, month, monthNameShort, monthNameFull, year };
     }
 
-    function formatDayLabelFromPeriod(periodValue) {
-        if (!periodValue) return '';
-        const parts = String(periodValue).split('-');
-        if (parts.length >= 3) {
-            const dd = parseInt(parts[2], 10);
-            return String(dd);
-        }
-        // fallback
-        return periodValue;
-    }
-
-    // expose
+    // expose (keep existing exports, add new)
     global.DateUtils = {
         formatDateYYYYMMDD,
         addMonths,
@@ -139,10 +125,10 @@
         ordinalPortuguese,
         periodToTimestamp,
         weekOfMonthFromRaw,
+        weekOfMonthInfo,
         formatMonthLabelFromPeriod,
         formatDayLabelFromPeriod,
         monthNamesShort,
         monthNamesFull
     };
 })(window);
-
