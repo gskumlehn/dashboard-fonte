@@ -3,25 +3,6 @@
 {% block content %}
 <h1>Volume de Operações</h1>
 
-<div class="filters">
-    <div class="filters-left">
-        <button id="btn-last-month" class="btn" type="button">Último mês</button>
-        <button id="btn-last-quarter" class="btn" type="button">Último trimestre</button>
-        <button id="btn-last-year" class="btn" type="button">Último ano</button>
-    </div>
-
-    <div class="filters-right">
-        <label for="year-select" style="margin-bottom:0">Ano:</label>
-        <select id="year-select"></select>
-
-        <label for="month-select" style="margin-bottom:0">Mês:</label>
-        <select id="month-select" disabled aria-disabled="true">
-            <option value="">—</option>
-            <!-- meses populados pelo JS -->
-        </select>
-    </div>
-</div>
-
 <div class="table-card">
     <canvas id="volumeChart" width="800" height="320"></canvas>
     <div id="chart-loader" style="display:none;">Carregando...</div>
@@ -30,5 +11,7 @@
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/date-fns@2.30.0/dist/date-fns.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/date-fns@2.30.0/locale/pt-BR/index.min.js"></script>
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 {% endblock %}
