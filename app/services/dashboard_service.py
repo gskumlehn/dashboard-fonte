@@ -2,6 +2,19 @@ from typing import Tuple, Dict, Any, Optional
 from app.services.comercial_service import ComercialService
 from app.infra.db_connection import Database
 import re
+import logging
+import sys
+
+# Configuração mínima de logging para garantir que mensagens vão para stdout quando em container
+# Só aplica basicConfig se nenhum handler estiver configurado (evita sobrescrever config de frameworks)
+if not logging.getLogger().handlers:
+    logging.basicConfig(
+        stream=sys.stdout,
+        level=logging.DEBUG,
+        format='[%(levelname)s] %(asctime)s %(name)s: %(message)s'
+    )
+
+logger = logging.getLogger(__name__)
 
 class DashboardService:
     def __init__(self, comercial_service: ComercialService = None):
@@ -123,27 +136,27 @@ class DashboardService:
         """
         try:
             if rows is None:
-                print("[DEBUG] rows is None")
+                logger.debug("rows is None")
                 return
             length = len(rows)
-            print(f"[DEBUG] rows count: {length}")
+            logger.debug("rows count: %d", length)
             sample = rows[:5]
-            print(f"[DEBUG] sample rows (até 5):")
+            logger.debug("sample rows (até 5):")
             for i, r in enumerate(sample):
-                print(f"  [{i}] {repr(r)}")
+                logger.debug("  [%d] %r", i, r)
             if length > 0:
                 first = rows[0]
                 # Se row for tupla/list ou dict, printar detalhes de cada coluna
                 if isinstance(first, (list, tuple)):
                     col_types = [type(c).__name__ + ':' + repr(c)[:100] for c in first]
-                    print(f"[DEBUG] first row column types/preview: {col_types}")
+                    logger.debug("first row column types/preview: %s", col_types)
                 elif isinstance(first, dict):
                     col_types = {k: type(v).__name__ for k, v in first.items()}
-                    print(f"[DEBUG] first row keys/types: {col_types}")
+                    logger.debug("first row keys/types: %s", col_types)
                 else:
-                    print(f"[DEBUG] first row type: {type(first).__name__} value: {repr(first)[:200]}")
+                    logger.debug("first row type: %s value: %r", type(first).__name__, repr(first)[:200])
         except Exception as e:
-            print(f"[DEBUG] erro ao imprimir resumo das rows: {e}")
+            logger.exception("erro ao imprimir resumo das rows: %s", e)
 
     def get_volume_data(self, period: str = "month",
                         start_date: Optional[str] = None,
@@ -155,36 +168,33 @@ class DashboardService:
         """
         sql, params = self.build_volume_query(period, start_date, end_date)
         # Debug: mostrar SQL gerado e params antes da execução
-        print("[DEBUG] Executando get_volume_data")
-        print(f"[DEBUG] built SQL (truncated): {sql.strip()[:1000]}")  # trunca para evitar flood
-        print(f"[DEBUG] params: {params}")
+        logger.debug("Executando get_volume_data")
+        logger.debug("built SQL (truncated): %s", sql.strip()[:1000])
+        logger.debug("params: %s", params)
         db = Database()
         try:
             rows = None
             # Try preferred execution with params (if Database supports it)
             try:
                 if params:
-                    print("[DEBUG] Tentando executar query com parâmetros (db.execute_query(sql, params))")
+                    logger.debug("Tentando executar query com parâmetros (db.execute_query(sql, params))")
                     rows = db.execute_query(sql, params)
                 else:
-                    print("[DEBUG] Executando query sem parâmetros (db.execute_query(sql))")
+                    logger.debug("Executando query sem parâmetros (db.execute_query(sql))")
                     rows = db.execute_query(sql)
                 # Debug: mostrar resumo das rows retornadas pela primeira tentativa
-                print("[DEBUG] Resultado da execução inicial:")
+                logger.debug("Resultado da execução inicial:")
                 self._debug_print_rows_summary(rows)
             except Exception as exec_err:
-                # Fallback: render SQL with literals if driver rejects params (common with some ODBC wrappers)
-                print(f"[DEBUG] exceção ao executar com params: {repr(exec_err)}")
+                logger.exception("exceção ao executar com params: %s", exec_err)
                 msg = str(exec_err)
                 if params and ("parameter markers" in msg or "0 parameter" in msg or "HY000" in msg or "42S22" in msg):
                     rendered_sql = self._render_sql_with_params(sql, params)
-                    print("[DEBUG] Usando fallback: SQL renderizado com literais (truncated):")
-                    print(f"  {rendered_sql.strip()[:1000]}")
+                    logger.debug("Usando fallback: SQL renderizado com literais (truncated): %s", rendered_sql.strip()[:1000])
                     rows = db.execute_query(rendered_sql)
-                    print("[DEBUG] Resultado após fallback (executando SQL renderizado):")
+                    logger.debug("Resultado após fallback (executando SQL renderizado):")
                     self._debug_print_rows_summary(rows)
                 else:
-                    # re-raise original error if it's not the params-mismatch
                     raise
 
             result = []
@@ -196,13 +206,12 @@ class DashboardService:
                     "operation_count": r[3]
                 })
             # Debug: mostrar resultado final antes de retornar
-            print("[DEBUG] Resultado final (após conversão para dicts) - sample até 5 items:")
+            logger.debug("Resultado final (após conversão para dicts) - sample até 5 items:")
             for i, item in enumerate(result[:5]):
-                print(f"  [{i}] {item}")
+                logger.debug("  [%d] %s", i, item)
             return {"data": result, "sql": sql}
         except Exception as e:
-            # Imprimir erro completo para diagnóstico antes de propagar
-            print(f"[ERROR] Error fetching volume data: {repr(e)}")
+            logger.exception("Error fetching volume data: %s", e)
             raise RuntimeError(f"Error fetching volume data: {e}")
         finally:
             db.close_connection()

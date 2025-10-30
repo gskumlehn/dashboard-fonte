@@ -224,13 +224,19 @@ function renderVolumeChart(rows) {
                     grid: { color: gridColor }
                 },
                 y: {
+                    // Forçar o eixo Y a sempre começar em 0 para padronizar o gráfico de volume
+                    min: 0,
+                    ticks: {
+                        color: textColor,
+                        callback: tickFormatter,
+                        beginAtZero: true
+                    },
                     title: {
                         display: true,
                         text: 'Volume (R$)',
                         color: textColor,
                         font: { family: getCssVar('--font-family', 'Arial'), size: 14, weight: 'bold' }
                     },
-                    ticks: { color: textColor, callback: tickFormatter },
                     grid: { color: gridColor }
                 }
             },
