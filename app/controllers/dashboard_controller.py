@@ -10,23 +10,17 @@ def home():
     return render_template('dashboard.html', user=current_user)
 
 @dashboard_bp.route('/volume-data', methods=['GET'])
-# @login_required
 def get_volume_data():
-    """
-    Endpoint para retornar dados agregados de volume por período.
-    Query params:
-      - period: 'day' | 'month' | 'year' (default: 'month')
-      - start_date: 'YYYY-MM-DD' (opcional)
-      - end_date: 'YYYY-MM-DD' (opcional)
-    Retorna JSON: { data: [{ period, period_formatted, total_volume, operation_count }, ...] }
-    """
     try:
-        period = request.args.get('period', 'month')
-        start_date = request.args.get('start_date')  # pode ser None
-        end_date = request.args.get('end_date')      # pode ser None
+        # Recebe apenas start_date e end_date como parâmetros
+        start_date = request.args.get('start_date')  # Exemplo: '2023-01-01'
+        end_date = request.args.get('end_date')      # Exemplo: '2023-12-31'
+
+        if not start_date or not end_date:
+            return jsonify({"error": "start_date and end_date are required"}), 400
 
         service = DashboardService()
-        result = service.get_volume_data(period=period, start_date=start_date, end_date=end_date)
+        result = service.get_monthly_volume_data(start_date=start_date, end_date=end_date)
         return jsonify(result), 200
     except Exception as e:
         return jsonify({"error": f"Error fetching volume data: {str(e)}"}), 500
