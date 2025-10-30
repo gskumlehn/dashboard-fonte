@@ -5,13 +5,18 @@
 
 <div class="table-card">
     <canvas id="volumeChart" width="800" height="320"></canvas>
-    <div id="chart-loader" style="display:none;">Carregando...</div>
-    <div id="chart-error" style="display:none;color:red;"></div>
 </div>
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/date-fns@2.30.0/dist/date-fns.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/date-fns@2.30.0/locale/pt-BR/index.min.js"></script>
+<script>
+    // Configurar date-fns no escopo global
+    window.dateFns = {
+        ...dateFns,
+        ptBR: dateFns.locale.ptBR
+    };
+</script>
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 {% endblock %}
