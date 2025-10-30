@@ -1,6 +1,6 @@
 import dateUtils from './utils/dateUtils.js';
 
-class VolumeChart {
+export default class VolumeChart {
     constructor() {
         this.chart = null;
     }
