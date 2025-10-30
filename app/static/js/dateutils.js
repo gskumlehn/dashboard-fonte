@@ -1,5 +1,3 @@
-// Date utility helpers used by dashboard.js
-
 (function (global) {
     'use strict';
 
@@ -17,14 +15,12 @@
         const d = new Date(date);
         const day = d.getUTCDate();
         d.setUTCMonth(d.getUTCMonth() + months);
-        // corrigir overflow de mês
         if (d.getUTCDate() < day) {
             d.setUTCDate(0);
         }
         return d;
     }
 
-    // retorna número de semana ISO para uma Date (1-53) usando UTC para evitar timezone shifts
     function getISOWeekNumber(d) {
         const date = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
         const dayNum = date.getUTCDay() || 7;
@@ -33,7 +29,6 @@
         return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
     }
 
-    // ordinal em PT-BR
     function ordinalPortuguese(n) {
         const ord = {
             1: 'Primeira',
@@ -46,7 +41,6 @@
         return ord[n] || `${n}ª`;
     }
 
-    // converte period strings em timestamp UTC aproximado
     function periodToTimestamp(p) {
         if (!p) return null;
         const isoDate = /^\d{4}-\d{2}-\d{2}$/;
@@ -64,7 +58,6 @@
         return null;
     }
 
-    // retorna "w/mm" compacto com ordinal (ex: "1ª/out")
     function weekOfMonthFromRaw(raw) {
         if (!raw) return '';
         const m = String(raw).match(/^(\d{4})-(\d{2})-W(\d+)$/);
@@ -82,7 +75,6 @@
         return `${wom}ª/${mon}`;
     }
 
-    // retorna objeto com info da semana: { wom: 1, month: 10, monthNameFull: 'outubro', year }
     function weekOfMonthInfo(raw) {
         if (!raw) return null;
         const m = String(raw).match(/^(\d{4})-(\d{2})-W(\d+)$/);
@@ -101,7 +93,6 @@
         return { wom, month, monthNameShort, monthNameFull, year };
     }
 
-    // formatadores para labels
     function formatMonthLabelFromPeriod(periodValue) {
         if (!periodValue) return '';
         let y = '', m = '';
@@ -129,12 +120,11 @@
         const parts = String(periodValue).split('-');
         if (parts.length >= 3) {
             const dd = parseInt(parts[2], 10);
-            return String(dd); // Retorna apenas o dia como número
+            return String(dd);
         }
         return periodValue;
     }
 
-    // expõe API
     global.DateUtils = {
         formatDateYYYYMMDD,
         addMonths,

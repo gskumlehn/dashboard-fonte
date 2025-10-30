@@ -113,6 +113,38 @@ class DashboardService:
             rendered = re.sub(re.escape(placeholder) + r'\b', escaped, rendered)
         return rendered
 
+    # Novo helper para printar resumo das linhas retornadas
+    def _debug_print_rows_summary(self, rows):
+        """
+        Imprime um resumo das linhas retornadas:
+        - total de linhas
+        - primeiras 5 linhas (repr)
+        - tipos/formatos dos campos da primeira linha (útil para verificar se period vem como date/string/numero)
+        """
+        try:
+            if rows is None:
+                print("[DEBUG] rows is None")
+                return
+            length = len(rows)
+            print(f"[DEBUG] rows count: {length}")
+            sample = rows[:5]
+            print(f"[DEBUG] sample rows (até 5):")
+            for i, r in enumerate(sample):
+                print(f"  [{i}] {repr(r)}")
+            if length > 0:
+                first = rows[0]
+                # Se row for tupla/list ou dict, printar detalhes de cada coluna
+                if isinstance(first, (list, tuple)):
+                    col_types = [type(c).__name__ + ':' + repr(c)[:100] for c in first]
+                    print(f"[DEBUG] first row column types/preview: {col_types}")
+                elif isinstance(first, dict):
+                    col_types = {k: type(v).__name__ for k, v in first.items()}
+                    print(f"[DEBUG] first row keys/types: {col_types}")
+                else:
+                    print(f"[DEBUG] first row type: {type(first).__name__} value: {repr(first)[:200]}")
+        except Exception as e:
+            print(f"[DEBUG] erro ao imprimir resumo das rows: {e}")
+
     def get_volume_data(self, period: str = "month",
                         start_date: Optional[str] = None,
                         end_date: Optional[str] = None):
@@ -122,21 +154,35 @@ class DashboardService:
             { period, period_formatted, total_volume, operation_count }
         """
         sql, params = self.build_volume_query(period, start_date, end_date)
+        # Debug: mostrar SQL gerado e params antes da execução
+        print("[DEBUG] Executando get_volume_data")
+        print(f"[DEBUG] built SQL (truncated): {sql.strip()[:1000]}")  # trunca para evitar flood
+        print(f"[DEBUG] params: {params}")
         db = Database()
         try:
             rows = None
             # Try preferred execution with params (if Database supports it)
             try:
                 if params:
+                    print("[DEBUG] Tentando executar query com parâmetros (db.execute_query(sql, params))")
                     rows = db.execute_query(sql, params)
                 else:
+                    print("[DEBUG] Executando query sem parâmetros (db.execute_query(sql))")
                     rows = db.execute_query(sql)
+                # Debug: mostrar resumo das rows retornadas pela primeira tentativa
+                print("[DEBUG] Resultado da execução inicial:")
+                self._debug_print_rows_summary(rows)
             except Exception as exec_err:
                 # Fallback: render SQL with literals if driver rejects params (common with some ODBC wrappers)
+                print(f"[DEBUG] exceção ao executar com params: {repr(exec_err)}")
                 msg = str(exec_err)
                 if params and ("parameter markers" in msg or "0 parameter" in msg or "HY000" in msg or "42S22" in msg):
                     rendered_sql = self._render_sql_with_params(sql, params)
+                    print("[DEBUG] Usando fallback: SQL renderizado com literais (truncated):")
+                    print(f"  {rendered_sql.strip()[:1000]}")
                     rows = db.execute_query(rendered_sql)
+                    print("[DEBUG] Resultado após fallback (executando SQL renderizado):")
+                    self._debug_print_rows_summary(rows)
                 else:
                     # re-raise original error if it's not the params-mismatch
                     raise
@@ -149,8 +195,14 @@ class DashboardService:
                     "total_volume": r[2],
                     "operation_count": r[3]
                 })
+            # Debug: mostrar resultado final antes de retornar
+            print("[DEBUG] Resultado final (após conversão para dicts) - sample até 5 items:")
+            for i, item in enumerate(result[:5]):
+                print(f"  [{i}] {item}")
             return {"data": result, "sql": sql}
         except Exception as e:
+            # Imprimir erro completo para diagnóstico antes de propagar
+            print(f"[ERROR] Error fetching volume data: {repr(e)}")
             raise RuntimeError(f"Error fetching volume data: {e}")
         finally:
             db.close_connection()

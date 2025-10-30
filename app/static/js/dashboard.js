@@ -28,36 +28,56 @@ function tickFormatter(value) {
 }
 
 // --- Funções de manipulação de dados ---
+/**
+ * Função responsável por buscar os dados de volume para o gráfico.
+ * @param {string} period - O período do filtro (ex.: 'year_month', 'month_day', etc.).
+ * @param {string|null} start_date - Data inicial do filtro no formato 'YYYY-MM-DD'.
+ * @param {string|null} end_date - Data final do filtro no formato 'YYYY-MM-DD'.
+ * @returns {Promise<Array>} - Retorna uma lista de objetos contendo os dados formatados.
+ */
 async function fetchVolumeData(period = 'year_month', start_date = null, end_date = null) {
+    // Exibe o loader enquanto os dados estão sendo carregados
     const loader = document.getElementById('chart-loader');
     const errorEl = document.getElementById('chart-error');
     loader.style.display = 'block';
     errorEl.style.display = 'none';
+
     try {
+        // Monta os parâmetros da URL com base no período e nas datas fornecidas
         const params = new URLSearchParams({ period });
         if (start_date) params.append('start_date', start_date);
         if (end_date) params.append('end_date', end_date);
 
+        // Faz a requisição para a API com os parâmetros fornecidos
         const resp = await fetch(`/dashboard/volume-data?${params.toString()}`);
-        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`); // Lança erro se a resposta não for bem-sucedida
+
+        // Converte a resposta para JSON
         const payload = await resp.json();
 
+        // Inicializa os dados recebidos ou uma lista vazia
         let sortedData = payload.data || [];
-        // Ordenar os dados apenas se o período for 'month_day'
+
+        // Ordena os dados apenas se o período for 'month_day'
         if (period === 'month_day') {
             sortedData = sortedData.sort((a, b) => {
+                // Converte as datas do campo 'period_formatted' para objetos Date
                 const dateA = new Date(a.period_formatted);
                 const dateB = new Date(b.period_formatted);
+                // Ordena em ordem crescente com base nas datas
                 return dateA - dateB;
             });
         }
 
+        // Retorna os dados ordenados ou originais
         return sortedData;
     } catch (err) {
+        // Exibe a mensagem de erro no elemento de erro
         errorEl.textContent = `Erro ao carregar dados: ${err.message}`;
         errorEl.style.display = 'block';
-        return [];
+        return []; // Retorna uma lista vazia em caso de erro
     } finally {
+        // Oculta o loader após a conclusão da requisição
         loader.style.display = 'none';
     }
 }

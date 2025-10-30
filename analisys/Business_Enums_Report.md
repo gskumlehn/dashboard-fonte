@@ -291,5 +291,3 @@ Este relatório contém os valores reais extraídos dos campos mais importantes 
 
 ---
 
-**Relatório gerado por:** Manus AI  
-**Data:** {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}

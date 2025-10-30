@@ -1,5 +1,5 @@
 import os
-import pyodbc  # Importação explícita para evitar erro "name 'pyodbc' is not defined"
+import pyodbc
 
 class Database:
     def __init__(self):
