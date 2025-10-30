@@ -40,7 +40,7 @@ const volumeChart = {
         // Preparar os dados para o gráfico
         const labels = data.map(item => {
             const date = window.dateFns.parseISO(`${item.date}-01`); // Adicionar dia fictício para parsing
-            return window.dateFns.format(date, 'MMM', { locale: window.dateFns.ptBR }); // Meses em português reduzido
+            return window.dateFns.format(date, 'MMM', { locale: window.ptBR }); // Meses em português reduzido
         });
 
         const values = data.map(item => (item.total_volume / 1_000_000).toFixed(2)); // Escala em milhões

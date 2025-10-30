@@ -13,10 +13,8 @@
 <script src="https://cdn.jsdelivr.net/npm/date-fns@2.30.0/locale/pt-BR/index.min.js"></script>
 <script>
     // Configurar date-fns no escopo global
-    window.dateFns = {
-        ...dateFns,
-        ptBR: dateFns.locale.ptBR
-    };
+    window.dateFns = window.dateFns || dateFns;
+    window.ptBR = dateFns && dateFns.locale && dateFns.locale.ptBR ? dateFns.locale.ptBR : undefined;
 </script>
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 {% endblock %}
