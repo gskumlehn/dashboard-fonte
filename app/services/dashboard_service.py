@@ -35,7 +35,7 @@ class DashboardService:
         db = Database()
         try:
             rows = db.execute_query(sql, params)
-            result = [{"date": r[0], "total_volume": r[1]} for r in rows]
+            result = [{"date": r[0], "total_volume": round(float(r[1]), 2)} for r in rows]
             return {"data": result}
         finally:
             db.close_connection()

@@ -1,7 +1,9 @@
 import dateUtils from './utils/dateUtils.js';
 
-const volumeChart = {
-    chart: null,
+class VolumeChart {
+    constructor() {
+        this.chart = null;
+    }
 
     async init() {
         // Determinar o intervalo de datas
@@ -17,7 +19,7 @@ const volumeChart = {
 
         // Configurar o gráfico
         this.renderChart(data);
-    },
+    }
 
     async fetchVolumeData(start_date, end_date) {
         try {
@@ -29,7 +31,7 @@ const volumeChart = {
             console.error('Erro ao buscar dados do volume:', error);
             return [];
         }
-    },
+    }
 
     renderChart(data) {
         const ctx = document.getElementById('volumeChart').getContext('2d');
@@ -43,11 +45,11 @@ const volumeChart = {
         const values = data.map(item => (item.total_volume / 1_000_000).toFixed(2)); // Escala em milhões
 
         // Obter cores e fonte das variáveis CSS
-        const borderColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-1') || '#c67440';
-        const backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-1') || 'rgba(198, 116, 64, 0.1)';
-        const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text') || '#3d3d3d';
-        const gridColor = getComputedStyle(document.documentElement).getPropertyValue('--input-border') || '#e0e0e0';
-        const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family') || '"Source Sans Pro", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+        const borderColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-1');
+        const backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-1');
+        const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text');
+        const gridColor = getComputedStyle(document.documentElement).getPropertyValue('--input-border');
+        const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family');
 
         // Configurar o gráfico
         if (this.chart) {
@@ -115,9 +117,10 @@ const volumeChart = {
             }
         });
     }
-};
+}
 
 // Inicializar o gráfico ao carregar a página
 document.addEventListener('DOMContentLoaded', () => {
+    const volumeChart = new VolumeChart();
     volumeChart.init();
 });
