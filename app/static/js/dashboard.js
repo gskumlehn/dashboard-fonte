@@ -1,19 +1,16 @@
-// Configurar date-fns e localidade pt-BR no escopo global
-window.dateFns = {
-    ...dateFns,
-    ptBR: dateFns.locale.ptBR
-};
+import dateUtils from './utils/dateUtils.js';
 
 const volumeChart = {
     chart: null,
+
     async init() {
         // Determinar o intervalo de datas
         const endDate = new Date(); // Mês atual
-        const startDate = window.dateFns.subMonths(endDate, 12); // Últimos 12 meses
+        const startDate = dateUtils.subtractMonthsFromDate(endDate, 12); // Últimos 12 meses
 
         // Formatar as datas no formato ISO (yyyy-MM-dd)
-        const start_date = window.dateFns.format(startDate, 'yyyy-MM-dd');
-        const end_date = window.dateFns.format(endDate, 'yyyy-MM-dd');
+        const start_date = dateUtils.formatDateToPattern(startDate, 'yyyy-MM-dd');
+        const end_date = dateUtils.formatDateToPattern(endDate, 'yyyy-MM-dd');
 
         // Buscar dados do backend
         const data = await this.fetchVolumeData(start_date, end_date);
@@ -39,8 +36,8 @@ const volumeChart = {
 
         // Preparar os dados para o gráfico
         const labels = data.map(item => {
-            const date = window.dateFns.parseISO(`${item.date}-01`); // Adicionar dia fictício para parsing
-            return window.dateFns.format(date, 'MMM', { locale: window.ptBR }); // Meses em português reduzido
+            const date = dateUtils.convertISOToDate(`${item.date}-01`); // Adicionar dia fictício para parsing
+            return dateUtils.getPortugueseMonthAbbreviation(date); // Meses em português reduzido
         });
 
         const values = data.map(item => (item.total_volume / 1_000_000).toFixed(2)); // Escala em milhões
