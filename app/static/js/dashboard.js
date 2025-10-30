@@ -2,6 +2,9 @@
 let volumeChart = null;
 let currentPeriod = 'year_month'; // Período atual usado para formatar o eixo X
 
+// --- Adicionar variável para instância do componente de linha ---
+let volumeChartComponent = null;
+
 // --- Funções utilitárias ---
 function getCssVar(name, fallback) {
     const v = getComputedStyle(document.documentElement).getPropertyValue(name);
@@ -19,12 +22,82 @@ function hexToRgba(hex, alpha = 1) {
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-function tickFormatter(value) {
-    // Formata os valores do eixo Y como moeda brasileira, com abreviação para milhões
-    if (value >= 1_000_000) {
-        return `${(value / 1_000_000).toFixed(1)}M`;
+/**
+ * Formata moeda BRL com opção de remover o símbolo (R$).
+ * - value: número
+ * - opts.symbol: boolean (true => com "R$", false => sem símbolo)
+ * - opts.maximumFractionDigits / opts.minimumFractionDigits opcional
+ *
+ * Usa formatToParts para remover somente a parte 'currency' quando symbol=false (mantendo separadores corretos).
+ */
+function formatCurrency(value, opts = {}) {
+    const { symbol = true, maximumFractionDigits = 0, minimumFractionDigits = 0 } = opts;
+    const num = Number(value) || 0;
+    const nf = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+        maximumFractionDigits,
+        minimumFractionDigits
+    });
+
+    if (symbol) {
+        return nf.format(num);
     }
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(value);
+    // Remove apenas a parte currency, mantendo espaçamento e separadores
+    const parts = nf.formatToParts(num);
+    const filtered = parts.filter(p => p.type !== 'currency').map(p => p.value).join('');
+    return filtered.trim();
+}
+
+// Ajustar tickFormatter para usar formato com função centralizada (mantendo R$ no eixo/tooltip)
+function tickFormatter(value) {
+    const absVal = Math.abs(Number(value) || 0);
+    const MILLION = 1000000;
+    const THRESHOLD = 100000;
+
+    if (absVal >= THRESHOLD) {
+        const m = value / MILLION;
+        const formatted = Number.isInteger(m) ? m.toFixed(0) : m.toFixed(1);
+        return `${formatted}M`;
+    }
+
+    // Usa formatCurrency com símbolo para ticks
+    return formatCurrency(value, { symbol: true, maximumFractionDigits: 0 });
+}
+
+// --- Nova função: formata valores na sidebar sem cifrão ---
+// Busca elementos com atributo data-no-currency="true" ou com a classe .no-currency
+// Preferência de fonte de valor:
+// 1) data-value (valor numérico bruto em atributo) 2) textContent (tenta parsear)
+// Atualiza textContent com valor formatado sem símbolo.
+function formatSidebarValues() {
+    const nodes = document.querySelectorAll('[data-no-currency="true"], .no-currency');
+    if (!nodes || nodes.length === 0) return;
+
+    nodes.forEach(el => {
+        try {
+            let raw = null;
+            // Usa data-value se presente (mais confiável)
+            if (el.dataset && el.dataset.value !== undefined) {
+                raw = el.dataset.value;
+            } else {
+                // Tenta extrair número do textContent (remove R$, pontos, espaços; converte vírgula para ponto)
+                const txt = (el.textContent || '').replace(/\s/g, '').replace('R$', '').replace(/\./g, '').replace(',', '.');
+                const m = txt.match(/-?\d+(\.\d+)?/);
+                raw = m ? m[0] : null;
+            }
+            const num = raw !== null ? Number(raw) : NaN;
+            if (!isNaN(num)) {
+                // Decide decimais: inteiro -> 0, caso contrário 2
+                const frac = (num % 1 === 0) ? 0 : 2;
+                el.textContent = formatCurrency(num, { symbol: false, maximumFractionDigits: frac, minimumFractionDigits: frac });
+            }
+        } catch (e) {
+            // não quebrar a UI em caso de erro; apenas logar no console dev
+            // eslint-disable-next-line no-console
+            console.debug('formatSidebarValues error for element', el, e);
+        }
+    });
 }
 
 // --- Funções de manipulação de dados ---
@@ -110,182 +183,65 @@ function buildChartData(rows) {
 }
 
 // --- Funções de renderização do gráfico ---
+// Substituir a antiga função renderVolumeChart pelo uso do componente reusável e genérico
 function renderVolumeChart(rows) {
-    const ctx = document.getElementById('volumeChart').getContext('2d');
-    const chartDataObj = buildChartData(rows);
-
-    let chartLabels, chartValues, chartRawPeriods;
-
-    // Definir cores do gráfico
-    const borderColor = getCssVar('--chart-color-1', '#3b82f6');
-    const backgroundColor = hexToRgba(borderColor, 0.1);
-    const pointColor = borderColor;
-    const textColor = getCssVar('--text', '#3d3d3d');
-    const gridColor = getCssVar('--grid-color', 'rgba(0, 0, 0, 0.1)');
-
-    if (currentPeriod === 'month_day') {
-        const mapVal = {};
-        chartDataObj.rawPeriods.forEach((d, i) => {
-            if (d) mapVal[d] = chartDataObj.data[i];
-        });
-
-        const timestamps = chartDataObj.rawPeriods
-            .map(p => DateUtils.periodToTimestamp(p))
-            .filter(ts => ts !== null)
-            .sort((a, b) => a - b);
-
-        if (timestamps.length === 0) {
-            chartLabels = [];
-            chartValues = [];
-            chartRawPeriods = [];
-        } else {
-            const minTs = timestamps[0];
-            const maxTs = timestamps[timestamps.length - 1];
-
-            const dayLabels = [];
-            const values = [];
-            const rawDates = [];
-            let cur = new Date(minTs);
-            const end = new Date(maxTs);
-
-            while (cur <= end) {
-                const dateStr = DateUtils.formatDateYYYYMMDD(cur);
-                const dayNum = String(cur.getUTCDate());
-                dayLabels.push(dayNum);
-                values.push(mapVal[dateStr] || 0);
-                rawDates.push(dateStr);
-                cur.setUTCDate(cur.getUTCDate() + 1);
-            }
-
-            chartLabels = dayLabels;
-            chartValues = values;
-            chartRawPeriods = rawDates;
-        }
-    } else if (currentPeriod === 'quarter_week') {
-        chartLabels = chartDataObj.rawPeriods.map(DateUtils.weekOfMonthFromRaw);
-        chartValues = chartDataObj.data;
-        chartRawPeriods = chartDataObj.rawPeriods.slice();
-    } else {
-        chartLabels = chartDataObj.labels;
-        chartValues = chartDataObj.data;
-        chartRawPeriods = chartDataObj.rawPeriods.slice();
-    }
-
-    function xTickFormatter(value, index) {
-        const raw = chartRawPeriods[index] || value;
-        if (currentPeriod === 'month_day') {
-            const date = new Date(DateUtils.periodToTimestamp(raw));
-            const day = date.getUTCDate();
-            const month = DateUtils.monthNamesFull[date.getUTCMonth()];
-            const year = date.getUTCFullYear();
-            return `${day} de ${month} de ${year}`;
-        }
-        if (currentPeriod === 'quarter_week') {
-            return DateUtils.weekOfMonthFromRaw(raw);
-        }
-        if (currentPeriod === 'year_month') {
-            const parts = raw.split('-');
-            const year = parts[0];
-            const month = DateUtils.monthNamesFull[parseInt(parts[1], 10) - 1];
-            return `${month} de ${year}`;
-        }
-        return value;
-    }
-
-    const config = {
-        type: 'line',
-        data: {
-            labels: chartLabels,
-            datasets: [{
-                label: 'Volume Total',
-                data: chartValues,
-                borderColor,
-                backgroundColor,
-                fill: true,
-                tension: 0.3,
-                pointRadius: 3,
-                pointBackgroundColor: pointColor,
-                pointBorderColor: pointColor
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                x: {
-                    type: 'category',
-                    title: {
-                        display: true,
-                        text: currentPeriod === 'month_day' ? 'Dias' : (currentPeriod === 'quarter_week' ? 'Semanas' : 'Meses'),
-                        color: textColor,
-                        font: { family: getCssVar('--font-family', 'Arial'), size: 14, weight: 'bold' }
-                    },
-                    ticks: { color: textColor, callback: xTickFormatter },
-                    grid: { color: gridColor }
-                },
-                y: {
-                    // Forçar o eixo Y a sempre começar em 0 para padronizar o gráfico de volume
-                    min: 0,
-                    ticks: {
-                        color: textColor,
-                        callback: tickFormatter,
-                        beginAtZero: true
-                    },
-                    title: {
-                        display: true,
-                        text: 'Volume (R$)',
-                        color: textColor,
-                        font: { family: getCssVar('--font-family', 'Arial'), size: 14, weight: 'bold' }
-                    },
-                    grid: { color: gridColor }
+    // cria instância do componente se necessário (usa canvas id 'volumeChart')
+    if (!volumeChartComponent) {
+        volumeChartComponent = new LineChartComponent('volumeChart', {
+            dataset: { labelKey: 'period_formatted', rawKey: 'period', valueKey: 'total_volume' },
+            label: 'Volume Total',
+            borderColor: getCssVar('--chart-color-1', '#3b82f6'),
+            backgroundColor: hexToRgba(getCssVar('--chart-color-1', '#3b82f6'), 0.1),
+            // usa tickFormatter e formatCurrency definidos neste arquivo
+            yFormatter: tickFormatter,
+            tooltipFormatter: (v) => formatCurrency(v, { symbol: true, minimumFractionDigits: 2 }),
+            // formata o título/label do eixo X dependendo do tipo do período
+            xLabelFormatter: (raw, formatted, periodType) => {
+                if (!raw && !formatted) return '';
+                if (periodType === 'month_day') {
+                    const ts = DateUtils.periodToTimestamp(raw || formatted);
+                    if (ts === null) return formatted || raw;
+                    const date = new Date(ts);
+                    const day = date.getUTCDate();
+                    const month = DateUtils.monthNamesFull[date.getUTCMonth()];
+                    const year = date.getUTCFullYear();
+                    return `${day} de ${month} de ${year}`;
                 }
-            },
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        title: function(items) {
-                            if (!items || items.length === 0) return '';
-                            const idx = items[0].dataIndex;
-                            const raw = chartRawPeriods[idx] || chartDataObj.rawPeriods[idx] || chartDataObj.labels[idx] || '';
-                            if (currentPeriod === 'month_day') {
-                                const date = new Date(DateUtils.periodToTimestamp(raw));
-                                const day = date.getUTCDate();
-                                const month = DateUtils.monthNamesFull[date.getUTCMonth()];
-                                const year = date.getUTCFullYear();
-                                return `${day} de ${month} de ${year}`;
-                            }
-                            if (currentPeriod === 'quarter_week') {
-                                return DateUtils.weekOfMonthFromRaw(raw);
-                            }
-                            if (currentPeriod === 'year_month') {
-                                const parts = raw.split('-');
-                                const year = parts[0];
-                                const month = DateUtils.monthNamesFull[parseInt(parts[1], 10) - 1];
-                                return `${month} de ${year}`;
-                            }
-                            return raw;
-                        },
-                        label: function(context) {
-                            // Exibe o valor completo no tooltip
-                            const val = context.parsed.y || 0;
-                            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2 }).format(val);
-                        }
+                if (periodType === 'quarter_week') {
+                    return DateUtils.weekOfMonthFromRaw(raw || formatted);
+                }
+                if (periodType === 'year_month') {
+                    const parts = String(raw || formatted).split('-');
+                    if (parts.length >= 2) {
+                        const year = parts[0];
+                        const month = DateUtils.monthNamesFull[parseInt(parts[1], 10) - 1];
+                        return `${month} de ${year}`;
                     }
                 }
-            }
+                return formatted || raw;
+            },
+            // para gráfico de volume por dias, preencher dias sem movimentação com 0
+            fillMissingDates: true
+        });
+        // inicializa o chart (cria objeto Chart.js)
+        try {
+            volumeChartComponent.init();
+        } catch (e) {
+            console.error('Erro ao inicializar LineChartComponent:', e);
+            return;
         }
-    };
-
-    if (volumeChart) {
-        volumeChart.data = config.data;
-        volumeChart.options = config.options;
-        volumeChart.update();
-    } else {
-        volumeChart = new Chart(ctx, config);
     }
+
+    // atualiza o componente com os dados e período atual
+    const result = volumeChartComponent.update(rows, currentPeriod);
+
+    // após renderizar o gráfico, atualiza os valores da sidebar (elementos marcados)
+    formatSidebarValues();
+
+    // opcional: retornar resultado para debugging
+    return result;
 }
 
-// --- Funções de controle de filtros ---
 function computePeriodFromInputs() {
     const monthVal = document.getElementById('month-select').value;
     const yearVal = document.getElementById('year-select').value;
@@ -322,6 +278,8 @@ async function applyFiltersAndRender(override = null) {
     currentPeriod = computed.period || 'year_month';
     const rows = await fetchVolumeData(computed.period, computed.start_date, computed.end_date);
     renderVolumeChart(rows);
+    // Garantir atualização da sidebar também aqui (caso algo externo mude antes do render)
+    formatSidebarValues();
 }
 
 function computeInitialPeriod() {
@@ -423,4 +381,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Aplicar o filtro inicial com base no último mês
     const initialPeriod = computeInitialPeriod();
     await applyFiltersAndRender(initialPeriod);
+
+    // Também formatar valores da sidebar na inicialização
+    formatSidebarValues();
 });
