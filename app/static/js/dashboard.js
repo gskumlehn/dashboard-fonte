@@ -94,7 +94,8 @@ class VolumeChart {
                             color: textColor,
                             font: {
                                 family: fontFamily.trim(),
-                                size: 14
+                                size: 14,
+                                weight: 'bold' // Legenda em negrito
                             }
                         },
                         ticks: {
@@ -114,7 +115,8 @@ class VolumeChart {
                             color: textColor,
                             font: {
                                 family: fontFamily.trim(),
-                                size: 14
+                                size: 14,
+                                weight: 'bold' // Legenda em negrito
                             }
                         },
                         ticks: {
