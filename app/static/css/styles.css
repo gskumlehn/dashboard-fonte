@@ -234,7 +234,7 @@ button, .btn, .logout-link {
 .header-nav a {
     font-family: var(--font-family);
     font-weight: 600; /* Bold */
-    color: var(--text, #3d3d3d); /* Cinza */
+    color: var(--text); /* Cinza definido em colors.css */
     text-decoration: none;
     padding: 0.5rem 1rem;
     transition: color 0.2s, background-color 0.2s;
@@ -242,23 +242,26 @@ button, .btn, .logout-link {
 }
 
 .header-nav a:hover {
-    background-color: rgba(0, 0, 0, 0.06); /* Fundo cinza claro no hover */
-    color: var(--text, #3d3d3d);
+    background-color: var(--input-border); /* Fundo cinza claro no hover */
+    color: var(--text);
 }
 
 .logout-link {
     font-family: var(--font-family);
-    font-weight: 600; /* Bold */
-    color: var(--danger, #cc0000);
+    font-weight: 500; /* Regular */
+    color: var(--text); /* Cinza definido em colors.css */
+    background-color: var(--input-border); /* Cinza claro */
     text-decoration: none;
-    padding: 0.5rem 1rem;
+    padding: 0.25rem 0.5rem; /* Menor tamanho */
+    font-size: 0.875rem; /* Menor fonte */
     transition: color 0.2s, background-color 0.2s;
     border-radius: 4px;
+    border: 1px solid var(--input-border); /* Borda leve */
 }
 
 .logout-link:hover {
-    background-color: var(--danger-light, #ffe6e6);
-    color: var(--danger, #cc0000);
+    background-color: var(--shadow); /* Fundo cinza mais escuro no hover */
+    color: var(--text);
 }
 
 .logo-horizontal {
