@@ -26,9 +26,8 @@ const dateUtils = {
 
     // Retorna a abreviação do mês em português
     getPortugueseMonthAbbreviation(date) {
-        const monthIndex = date.getMonth(); // 0-11
         const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-        return months[monthIndex];
+        return `${months[date.getMonth()]}/${date.getFullYear()`;
     },
 
     // Retorna o ano de uma data

@@ -78,7 +78,7 @@ class VolumeChart {
                     data: values,
                     borderColor,
                     fill: false,
-                    tension: 0.1,
+                    tension: 0,
                     pointRadius: 1
                 }]
             },
@@ -107,7 +107,7 @@ class VolumeChart {
                         grid: { color: gridColor }
                     },
                     y: {
-                        min: 0, // Sempre começar do 0
+                        min: 0,
                         title: {
                             display: true,
                             text: 'Volume Operado (R$)',
@@ -143,7 +143,6 @@ class VolumeChart {
     }
 }
 
-// Inicializar o gráfico automaticamente ao carregar a página
 document.addEventListener('DOMContentLoaded', () => {
     const volumeChart = new VolumeChart();
     volumeChart.init();
