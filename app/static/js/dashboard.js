@@ -1,21 +1,41 @@
 class VolumeChart {
     constructor() {
         this.chart = null;
+        this.startDateInput = document.getElementById('startDate');
+        this.endDateInput = document.getElementById('endDate');
+        this.filterButton = document.getElementById('filterButton');
     }
 
     async init() {
-        // Determinar o intervalo de datas
+        // Configurar evento de filtro
+        this.filterButton.addEventListener('click', async () => {
+            const start_date = this.startDateInput.value;
+            const end_date = this.endDateInput.value;
+            if (start_date && end_date) {
+                const data = await this.fetchVolumeData(start_date, end_date);
+                this.renderChart(data);
+            } else {
+                alert('Por favor, selecione ambas as datas.');
+            }
+        });
+
+        // Carregar gráfico inicial com os últimos 12 meses
         const endDate = new Date(); // Mês atual
         const startDate = dateUtils.subtractMonthsFromDate(endDate, 12); // Últimos 12 meses
 
-        // Formatar as datas no formato ISO (yyyy-MM-dd)
-        const start_date = dateUtils.formatDateToPattern(startDate, 'yyyy-MM-dd');
-        const end_date = dateUtils.formatDateToPattern(endDate, 'yyyy-MM-dd');
+        this.startDateInput.value = dateUtils.formatDateToPattern(startDate, 'yyyy-MM-01'); // Primeiro dia do mês
+        this.endDateInput.value = dateUtils.formatDateToPattern(endDate, 'yyyy-MM-01'); // Primeiro dia do mês atual
 
-        // Buscar dados do backend
-        const data = await this.fetchVolumeData(start_date, end_date);
+        this.startDateInput.setAttribute('min', dateUtils.formatDateToPattern(startDate, 'yyyy-MM-01'));
+        this.startDateInput.setAttribute('max', dateUtils.formatDateToPattern(endDate, 'yyyy-MM-01'));
+        this.endDateInput.setAttribute('min', dateUtils.formatDateToPattern(startDate, 'yyyy-MM-01'));
+        this.endDateInput.setAttribute('max', dateUtils.formatDateToPattern(endDate, 'yyyy-MM-01'));
 
-        // Configurar o gráfico
+        const data = await this.fetchVolumeData(
+            this.startDateInput.value,
+            this.endDateInput.value
+        );
+
         this.renderChart(data);
     }
 

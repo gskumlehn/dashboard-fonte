@@ -3,11 +3,20 @@
 {% block content %}
 <h1>Volume de Operações</h1>
 
+<div class="filter-container">
+    <label for="startDate">Data Inicial:</label>
+    <input type="date" id="startDate" />
+    <label for="endDate">Data Final:</label>
+    <input type="date" id="endDate" />
+    <button id="filterButton">Filtrar</button>
+</div>
+
 <div class="table-card">
     <canvas id="volumeChart" width="800" height="320"></canvas>
 </div>
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<script src="{{ url_for('static', filename='js/utils/dateUtils.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 {% endblock %}
