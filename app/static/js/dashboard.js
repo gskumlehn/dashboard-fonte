@@ -84,9 +84,9 @@ class VolumeChart {
                     data: values,
                     borderColor,
                     backgroundColor: transparentBackgroundColor, // Usar cor com transparência
-                    fill: true, // Preencher área abaixo da linha
-                    tension: 0.3,
-                    pointRadius: 3
+                    fill: false,
+                    tension: 0.1,
+                    pointRadius: 1
                 }]
             },
             options: {
@@ -136,9 +136,12 @@ class VolumeChart {
                     }
                 },
                 plugins: {
+                    legend: {
+                            display: false
+                        },
                     tooltip: {
                         callbacks: {
-                            label: context => `R$ ${context.raw}M` // Tooltip formatado
+                            label: context => `R$ ${context.raw}M`
                         }
                     }
                 }
