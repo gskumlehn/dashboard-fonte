@@ -77,7 +77,6 @@ class VolumeChart {
                     label: 'Volume Operado (R$)',
                     data: values,
                     borderColor,
-                    backgroundColor: transparentBackgroundColor, // Usar cor com transparência
                     fill: false,
                     tension: 0.1,
                     pointRadius: 1
