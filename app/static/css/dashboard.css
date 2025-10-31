@@ -34,6 +34,7 @@
     flex-wrap: wrap;
     gap: var(--gap);
     align-items: center;
+    justify-content: space-between; /* Adicionado para distribuir os elementos */
 }
 
 .filter-container label {
@@ -50,12 +51,16 @@
 }
 
 .filter-container button {
-    background-color: var(--primary-color, #007bff);
-    color: #fff;
+    background-color: var(--primary); /* Cor primária */
+    color: var(--white); /* Texto branco */
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .filter-container button:hover {
-    background-color: var(--primary-color-hover, #0056b3);
+    background-color: var(--primary-dark); /* Cor primária escura no hover */
+}
+
+.filter-container .filter-button {
+    margin-left: auto; /* Move o botão para a direita */
 }

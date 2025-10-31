@@ -76,8 +76,8 @@
 }
 
 .risk-churned {
-    background-color: var(--primary-dark);
-    color: var(--white);
+    background-color: var(--black); /* Fundo preto */
+    color: var(--white); /* Texto branco */
 }
 
 .risk-high {
