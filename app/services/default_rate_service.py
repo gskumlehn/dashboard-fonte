@@ -18,17 +18,17 @@ class DefaultRateService:
             start_date_str = start_date_obj.strftime('%Y-%m-%d')
             end_date_str = end_date_obj.strftime('%Y-%m-%d')
 
-            sql = """
+            sql = f"""
             WITH Calendar AS (
                 SELECT 
-                    DATEADD(DAY, n, @StartDate) AS Date,
-                    DATEPART(WEEKDAY, DATEADD(DAY, n, @StartDate)) AS WeekDay,
+                    DATEADD(DAY, n, '{start_date}') AS Date,
+                    DATEPART(WEEKDAY, DATEADD(DAY, n, '{start_date}')) AS WeekDay,
                     CASE 
-                        WHEN DATEPART(WEEKDAY, DATEADD(DAY, n, @StartDate)) IN (1, 7) THEN 1
+                        WHEN DATEPART(WEEKDAY, DATEADD(DAY, n, '{start_date}')) IN (1, 7) THEN 1
                         ELSE 0
                     END AS IsWeekend
                 FROM (
-                    SELECT TOP (DATEDIFF(DAY, @StartDate, @EndDate) + 1)
+                    SELECT TOP (DATEDIFF(DAY, '{start_date}', '{end_date}') + 1)
                         ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1 AS n
                     FROM sys.all_objects
                 ) AS Numbers
@@ -54,8 +54,8 @@ class DefaultRateService:
                 WHERE 
                     d.IsDeleted = 0
                     AND o.IsDeleted = 0
-                    AND d.DataEmissao <= @EndDate
-                    AND (d.DataBaixa IS NULL OR d.DataBaixa >= @StartDate)
+                    AND d.DataEmissao <= '{end_date}'
+                    AND (d.DataBaixa IS NULL OR d.DataBaixa >= '{start_date}')
             ),
             DailyActivePortfolio AS (
                 SELECT 
@@ -112,10 +112,9 @@ class DefaultRateService:
             LEFT JOIN DailyDefaultedDocuments ddd ON dap.Date = ddd.Date
             ORDER BY dap.Date;
             """
-            params = {"StartDate": start_date_str, "EndDate": end_date_str}
 
             db = Database()
-            rows = db.execute_query(sql, params)
+            rows = db.execute_query(sql)
             result = [
                 {
                     "date": r[0],

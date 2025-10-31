@@ -13,7 +13,7 @@ class DashboardService:
         start_date_str = start_date_obj.strftime('%Y-%m-%d')
         end_date_str = end_date_obj.strftime('%Y-%m-%d')
 
-        sql = """
+        sql = f"""
         WITH MonthlyAggregatedData AS (
             SELECT 
                 FORMAT(Data, 'yyyy-MM') AS period,
@@ -21,7 +21,7 @@ class DashboardService:
             FROM dbo.Operacao
             WHERE 
                 IsDeleted = 0
-                AND Data >= @StartDate AND Data <= @EndDate
+                AND Data >= '{start_date}' AND Data <= '{end_date}'
             GROUP BY FORMAT(Data, 'yyyy-MM')
         )
         SELECT 
@@ -30,11 +30,10 @@ class DashboardService:
         FROM MonthlyAggregatedData
         ORDER BY period ASC;
         """
-        params = {"StartDate": start_date_str, "EndDate": end_date_str}
 
         db = Database()
         try:
-            rows = db.execute_query(sql, params)
+            rows = db.execute_query(sql)
             result = [{"date": r[0], "total_volume": round(float(r[1]), 2)} for r in rows]
             return {"data": result}
         finally:
