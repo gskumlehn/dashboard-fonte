@@ -3,15 +3,7 @@
 {% block content %}
 <h1>Volume de Operações</h1>
 
-<div class="filter-card">
-    <div class="filter-container">
-        <label for="startDate">Data Inicial:</label>
-        <input type="date" id="startDate" />
-        <label for="endDate">Data Final:</label>
-        <input type="date" id="endDate" />
-        <button id="filterButton" class="filter-button">Filtrar</button>
-    </div>
-</div>
+{% include 'partials/date_filter.html' %}
 
 <div class="table-card">
     <canvas id="volumeChart" width="800" height="320"></canvas>
