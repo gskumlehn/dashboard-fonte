@@ -26,11 +26,6 @@ class VolumeChart {
         this.startDateInput.value = dateUtils.formatDateToPattern(startDate, 'yyyy-MM-01'); // Primeiro dia do mês
         this.endDateInput.value = dateUtils.formatDateToPattern(endDate, 'yyyy-MM-01'); // Primeiro dia do mês atual
 
-        this.startDateInput.setAttribute('min', dateUtils.formatDateToPattern(startDate, 'yyyy-MM-01'));
-        this.startDateInput.setAttribute('max', dateUtils.formatDateToPattern(endDate, 'yyyy-MM-01'));
-        this.endDateInput.setAttribute('min', dateUtils.formatDateToPattern(startDate, 'yyyy-MM-01'));
-        this.endDateInput.setAttribute('max', dateUtils.formatDateToPattern(endDate, 'yyyy-MM-01'));
-
         const data = await this.fetchVolumeData(
             this.startDateInput.value,
             this.endDateInput.value
@@ -65,7 +60,6 @@ class VolumeChart {
         // Obter cores e fonte das variáveis CSS
         const borderColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-1');
         const backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-1');
-        const transparentBackgroundColor = backgroundColor.replace(')', ', 0.1)').replace('rgb', 'rgba'); // Adicionar transparência
         const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text');
         const gridColor = getComputedStyle(document.documentElement).getPropertyValue('--input-border');
         const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family');

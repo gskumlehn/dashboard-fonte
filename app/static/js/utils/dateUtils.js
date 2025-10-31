@@ -20,7 +20,8 @@ const dateUtils = {
 
     // Converte uma string ISO para um objeto Date
     convertISOToDate(isoString) {
-        return new Date(isoString);
+        const [year, month, day] = isoString.split('-').map(Number);
+        return new Date(year, month - 1, day); // Ajusta o mês (0-11)
     },
 
     // Retorna a abreviação do mês em português
