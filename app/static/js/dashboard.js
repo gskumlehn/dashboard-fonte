@@ -1,6 +1,4 @@
-import dateUtils from './utils/dateUtils.js';
-
-export default class VolumeChart {
+class VolumeChart {
     constructor() {
         this.chart = null;
     }
@@ -114,12 +112,11 @@ export default class VolumeChart {
                         }
                     }
                 }
-            }
-        });
+            });
     }
 }
 
-// Inicializar o gráfico ao carregar a página
+// Inicializar o gráfico automaticamente ao carregar a página
 document.addEventListener('DOMContentLoaded', () => {
     const volumeChart = new VolumeChart();
     volumeChart.init();
