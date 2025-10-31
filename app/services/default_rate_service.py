@@ -48,13 +48,13 @@ class DefaultRateService:
                             d.DataVencimento
                     END AS AdjustedDueDate,
                     d.DataBaixa AS SettlementDate,
-                    d.DataEmissao AS IssueDate
+                    d.DataCriacao AS IssueDate -- Substituído DataEmissao por DataCriacao
                 FROM dbo.Documento d
                 INNER JOIN dbo.Operacao o ON d.OperacaoId = o.Id
                 WHERE 
                     d.IsDeleted = 0
                     AND o.IsDeleted = 0
-                    AND d.DataEmissao <= '{end_date}'
+                    AND d.DataCriacao <= '{end_date}' -- Substituído DataEmissao por DataCriacao
                     AND (d.DataBaixa IS NULL OR d.DataBaixa >= '{start_date}')
             ),
             DailyActivePortfolio AS (
@@ -67,7 +67,7 @@ class DefaultRateService:
                     SELECT d.Id, d.ValorFace
                     FROM AdjustedDueDocuments d
                     WHERE 
-                        d.DataEmissao <= c.Date
+                        d.DataCriacao <= c.Date -- Substituído DataEmissao por DataCriacao
                         AND (d.DataBaixa IS NULL OR d.DataBaixa > c.Date)
                 ) d
                 WHERE c.IsWeekend = 0 -- Ignorar finais de semana
