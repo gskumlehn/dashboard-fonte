@@ -6,7 +6,6 @@
     <title>{% block title %}Dashboard{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='favicon/logo.png') }}" type="image/png">
-    <script src="{{ url_for('static', filename='js/utils/dateUtils.js') }}"></script>
 </head>
 <body>
     <header class="site-header">
@@ -36,5 +35,7 @@
             {% block content %}{% endblock %}
         </div>
     </main>
+
+    <script src="{{ url_for('static', filename='js/utils/dateUtils.js') }}"></script>
 </body>
 </html>
