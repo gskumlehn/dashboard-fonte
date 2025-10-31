@@ -112,7 +112,8 @@ class VolumeChart {
                         }
                     }
                 }
-            };
+            }
+        }); // Corrigido: removido parêntese extra
     }
 }
 
