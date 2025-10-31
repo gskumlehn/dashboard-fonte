@@ -208,3 +208,55 @@ button, .btn, .logout-link {
     border-radius: 6px !important;
     z-index: 1200 !important;
 }
+
+.site-header {
+    background-color: var(--card-bg, #ffffff);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.logout-link {
+    font-family: var(--font-family);
+    font-weight: 600; /* Bold */
+    color: var(--danger, #cc0000);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    transition: color 0.2s, background-color 0.2s;
+    border-radius: 4px;
+}
+
+.logout-link:hover {
+    background-color: var(--danger-light, #ffe6e6);
+    color: var(--danger, #cc0000);
+}
+
+.header-nav {
+    display: flex;
+    justify-content: center; /* Centraliza os links */
+    gap: 2rem; /* Espaçamento entre os links */
+    flex-grow: 1;
+}
+
+.header-nav a {
+    font-family: var(--font-family);
+    font-weight: 600; /* Bold */
+    color: var(--danger, #cc0000); /* Mesma cor do logout */
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    transition: color 0.2s, background-color 0.2s;
+    border-radius: 4px;
+}
+
+.header-nav a:hover {
+    background-color: var(--danger-light, #ffe6e6);
+    color: var(--danger, #cc0000);
+}
