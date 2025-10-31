@@ -13,9 +13,12 @@ const dateUtils = {
         const day = String(date.getDate()).padStart(2, '0');
 
         if (formatString === 'yyyy-MM-dd') {
-            return `${year}-${month}-${day}`;
+            return `${year}-${month}-${day}`; // Formato correto para inputs de data e backend
         }
-        return `${day}/${month}/${year}`; // Formato padrão caso necessário
+        if (formatString === 'dd/MM/yyyy') {
+            return `${day}/${month}/${year}`; // Formato alternativo, se necessário
+        }
+        return `${year}-${month}-${day}`; // Padrão de fallback
     },
 
     // Converte uma string ISO para um objeto Date
