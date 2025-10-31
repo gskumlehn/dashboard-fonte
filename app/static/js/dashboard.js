@@ -45,6 +45,7 @@ class VolumeChart {
         // Obter cores e fonte das variáveis CSS
         const borderColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-1');
         const backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-1');
+        const transparentBackgroundColor = backgroundColor.replace(')', ', 0.1)').replace('rgb', 'rgba'); // Adicionar transparência
         const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text');
         const gridColor = getComputedStyle(document.documentElement).getPropertyValue('--input-border');
         const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family');
@@ -62,8 +63,8 @@ class VolumeChart {
                     label: 'Volume Operado (R$)',
                     data: values,
                     borderColor,
-                    backgroundColor,
-                    fill: true,
+                    backgroundColor: transparentBackgroundColor, // Usar cor com transparência
+                    fill: true, // Preencher área abaixo da linha
                     tension: 0.3,
                     pointRadius: 3
                 }]
@@ -74,6 +75,15 @@ class VolumeChart {
                 scales: {
                     x: {
                         type: 'category',
+                        title: {
+                            display: true,
+                            text: 'Mês',
+                            color: textColor,
+                            font: {
+                                family: fontFamily.trim(),
+                                size: 14
+                            }
+                        },
                         ticks: {
                             color: textColor,
                             font: {
@@ -85,6 +95,15 @@ class VolumeChart {
                     },
                     y: {
                         min: 0, // Sempre começar do 0
+                        title: {
+                            display: true,
+                            text: 'Volume Operado (R$)',
+                            color: textColor,
+                            font: {
+                                family: fontFamily.trim(),
+                                size: 14
+                            }
+                        },
                         ticks: {
                             callback: value => `${value}M`, // Formatar em milhões
                             color: textColor,
@@ -101,19 +120,10 @@ class VolumeChart {
                         callbacks: {
                             label: context => `R$ ${context.raw}M` // Tooltip formatado
                         }
-                    },
-                    legend: {
-                        labels: {
-                            color: textColor,
-                            font: {
-                                family: fontFamily.trim(),
-                                size: 14
-                            }
-                        }
                     }
                 }
             }
-        }); // Corrigido: removido parêntese extra
+        });
     }
 }
 
