@@ -21,7 +21,7 @@ class DashboardService:
             FROM dbo.Operacao
             WHERE 
                 IsDeleted = 0
-                AND Data >= ? AND Data <= ?
+                AND Data >= @StartDate AND Data <= @EndDate
             GROUP BY FORMAT(Data, 'yyyy-MM')
         )
         SELECT 
@@ -30,7 +30,7 @@ class DashboardService:
         FROM MonthlyAggregatedData
         ORDER BY period ASC;
         """
-        params = (start_date_str, end_date_str)
+        params = {"StartDate": start_date_str, "EndDate": end_date_str}
 
         db = Database()
         try:

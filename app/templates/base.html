@@ -16,6 +16,9 @@
                 </a>
             </div>
             <nav class="header-nav">
+                <a href="{{ url_for('dashboard_bp.home') }}">Home</a>
+                <a href="{{ url_for('comercial_bp.render_churn_analysis') }}">Churn Analysis</a>
+                <a href="{{ url_for('default_rate_bp.home') }}">Inadimplência</a>
                 <a href="{{ url_for('login_bp.logout') }}" class="logout-link">Logout</a>
             </nav>
         </div>

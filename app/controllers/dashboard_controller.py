@@ -10,6 +10,7 @@ def home():
     return render_template('dashboard.html', user=current_user)
 
 @dashboard_bp.route('/volume-data', methods=['GET'])
+@login_required
 def get_volume_data():
     try:
         # Recebe apenas start_date e end_date como parâmetros

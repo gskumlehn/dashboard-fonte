@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Inadimplência{% endblock %}
+{% block content %}
+<h1>Taxa de Inadimplência</h1>
+
+<div class="filter-card">
+    <div class="filter-container">
+        <label for="startDate">Data Inicial:</label>
+        <input type="date" id="startDate" />
+        <label for="endDate">Data Final:</label>
+        <input type="date" id="endDate" />
+        <button id="filterButton">Filtrar</button>
+    </div>
+</div>
+
+<div class="table-card">
+    <canvas id="defaultRateChart" width="800" height="320"></canvas>
+</div>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script src="{{ url_for('static', filename='js/defaultRate.js') }}"></script>
+{% endblock %}
+
