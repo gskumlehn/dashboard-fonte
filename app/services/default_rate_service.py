@@ -47,14 +47,13 @@ class DefaultRateService:
                         ELSE 
                             d.DataVencimento
                     END AS AdjustedDueDate,
-                    d.DataBaixa AS SettlementDate,
-                    d.DataCriacao AS IssueDate -- Substituído DataEmissao por DataCriacao
+                    d.DataBaixa AS SettlementDate
                 FROM dbo.Documento d
                 INNER JOIN dbo.Operacao o ON d.OperacaoId = o.Id
                 WHERE 
                     d.IsDeleted = 0
                     AND o.IsDeleted = 0
-                    AND d.DataCriacao <= '{end_date}' -- Substituído DataEmissao por DataCriacao
+                    AND d.DataVencimento <= '{end_date}'
                     AND (d.DataBaixa IS NULL OR d.DataBaixa >= '{start_date}')
             ),
             DailyActivePortfolio AS (
@@ -67,7 +66,7 @@ class DefaultRateService:
                     SELECT d.Id, d.ValorFace
                     FROM AdjustedDueDocuments d
                     WHERE 
-                        d.DataCriacao <= c.Date -- Substituído DataEmissao por DataCriacao
+                        d.AdjustedDueDate = c.Date
                         AND (d.DataBaixa IS NULL OR d.DataBaixa > c.Date)
                 ) d
                 WHERE c.IsWeekend = 0 -- Ignorar finais de semana
@@ -77,18 +76,16 @@ class DefaultRateService:
                 SELECT 
                     c.Date,
                     SUM(d.ValorFace) AS DefaultValue,
-                    COUNT(d.Id) AS DefaultDocumentCount,
-                    AVG(DATEDIFF(DAY, d.AdjustedDueDate, c.Date)) AS AverageDelayDays
+                    COUNT(d.Id) AS DefaultDocumentCount
                 FROM Calendar c
                 CROSS APPLY (
                     SELECT 
                         d.Id, 
-                        d.ValorFace,
-                        d.AdjustedDueDate
+                        d.ValorFace
                     FROM AdjustedDueDocuments d
                     WHERE 
-                        d.AdjustedDueDate < c.Date
-                        AND (d.DataBaixa IS NULL OR d.DataBaixa > c.Date)
+                        d.AdjustedDueDate = c.Date
+                        AND d.DataBaixa IS NULL -- Não pagos
                 ) d
                 WHERE c.IsWeekend = 0 -- Ignorar finais de semana
                 GROUP BY c.Date
@@ -106,8 +103,7 @@ class DefaultRateService:
                         ELSE 0
                     END,
                     2
-                ) AS DefaultRate,
-                ROUND(ISNULL(ddd.AverageDelayDays, 0), 0) AS AverageDelayDays
+                ) AS DefaultRate
             FROM DailyActivePortfolio dap
             LEFT JOIN DailyDefaultedDocuments ddd ON dap.Date = ddd.Date
             ORDER BY dap.Date;
@@ -123,7 +119,6 @@ class DefaultRateService:
                     "default_value": round(float(r[3]), 2),
                     "default_documents": r[4],
                     "default_rate": round(float(r[5]), 2),
-                    "average_delay_days": r[6],
                 }
                 for r in rows
             ]
