@@ -53,7 +53,7 @@ function populateTable(data) {
         });
 
         const emailContent = row.email_list.length > 0
-            ? row.email_list.map(email => `<a href="mailto:${email}">${email}</a>`).join(', ')
+            ? row.email_list.map(email => `<a href="mailto:${email}">${email}</a>`).join(', ').replace(/,+$/, '')
             : '-';
 
         tr.innerHTML = `
