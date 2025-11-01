@@ -90,7 +90,7 @@ class ComercialService:
                     "last_operation": last_date.strftime('%d/%m/%Y'),
                     "inactive_days": inactive_days,
                     "historical_volume": f"{historical_volume:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."),
-                    "agent": agent_name,
+                    "agent": agent_name.capitalize(),
                     "risk": risk
                 })
             return {"data": churn_data, "total_count": total_count}
