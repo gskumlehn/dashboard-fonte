@@ -1,0 +1,16 @@
+# Ignorar arquivos gerados pelos scripts
+# Manter apenas os diretórios (.gitkeep)
+
+# Arquivos de análise de views
+view_analysis/*.json
+view_analysis/*.sql
+view_analysis/*.md
+
+# Arquivos de mapeamentos de enum
+enum_meanings/*.json
+enum_meanings/*.py
+enum_meanings/*.md
+
+# Manter apenas .gitkeep
+!**/.gitkeep
+
