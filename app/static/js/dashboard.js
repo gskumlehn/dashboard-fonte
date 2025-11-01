@@ -137,6 +137,7 @@ class VolumeChart {
                 plugins: {
                     legend: {
                         display: true,
+                        position: 'bottom', // Move the legend below the chart
                         labels: {
                             usePointStyle: true, // Exibe a legenda como uma bola
                             pointStyle: 'circle',
