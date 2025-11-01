@@ -44,12 +44,16 @@ function populateTable(data) {
 
     data.forEach(row => {
         const tr = document.createElement('tr');
+        const lastOperationDate = dateUtils.convertISOToDate(row.last_operation);
+
         tr.innerHTML = `
-            <td>${row.cliente}</td>
-            <td>${new Date(row.ultima_operacao).toLocaleDateString('pt-BR')}</td>
-            <td>${row.dias_inativo}</td>
-            <td>R$ ${parseFloat(row.volume_historico).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
-            <td><span class="risk-badge risk-${getRiskLabel(row.risco)}">${row.risco}</span></td>
+            <td>${row.client}</td>
+            <td>${row.email}</td>
+            <td>${dateUtils.formatDateToPattern(lastOperationDate, 'dd/MM/yyyy')}</td>
+            <td>${row.inactive_days}</td>
+            <td>R$ ${parseFloat(row.historical_volume).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+            <td>${row.agent}</td>
+            <td><span class="risk-badge risk-${getRiskLabel(row.risk)}">${row.risk}</span></td>
         `;
         tbody.appendChild(tr);
     });

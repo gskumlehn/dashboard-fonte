@@ -12,77 +12,84 @@ class ComercialService:
         offset = (page - 1) * items_per_page
 
         risk_conditions = {
-            "Consumado": "DiasInativo > 120",
-            "Alto": "DiasInativo BETWEEN 91 AND 120",
-            "Médio": "DiasInativo BETWEEN 61 AND 90",
-            "Baixo": "DiasInativo <= 60"
+            "Consumado": "InactiveDays > 120",
+            "Alto": "InactiveDays BETWEEN 91 AND 120",
+            "Médio": "InactiveDays BETWEEN 61 AND 90",
+            "Baixo": "InactiveDays <= 60"
         }
         risk_condition = risk_conditions.get(risk_filter, "1=1")
 
         query = f"""
-        WITH UltimaOperacao AS (
+        WITH LastOperation AS (
             SELECT 
                 ClienteId,
-                MAX(Data) AS UltimaData
+                MAX(Data) AS LastDate
             FROM dbo.Operacao
             WHERE 
                 IsDeleted = 0
             GROUP BY ClienteId
         ),
-        ClientesInativos AS (
+        InactiveClients AS (
             SELECT 
-                c.Id AS ClienteId,
-                cb.Razao AS ClienteNome,
-                uo.UltimaData,
-                DATEDIFF(DAY, uo.UltimaData, GETDATE()) AS DiasInativo,
+                c.Id AS ClientId,
+                cb.Razao AS ClientName,
+                cb.Email AS Email,
+                uo.LastDate,
+                DATEDIFF(DAY, uo.LastDate, GETDATE()) AS InactiveDays,
                 (SELECT SUM(o2.ValorCompra) 
                  FROM dbo.Operacao o2
                  WHERE o2.ClienteId = c.Id
                    AND o2.IsDeleted = 0
-                ) AS VolumeHistorico
+                ) AS HistoricalVolume,
+                a.Id AS AgentId,
+                cba.Razao AS AgentFullName
             FROM dbo.Cliente c
-            INNER JOIN UltimaOperacao uo ON c.Id = uo.ClienteId
+            INNER JOIN LastOperation uo ON c.Id = uo.ClienteId
             INNER JOIN dbo.CadastroBase cb ON c.CadastroBaseId = cb.Id
+            LEFT JOIN dbo.Agente a ON c.AgenteId = a.Id
+            LEFT JOIN dbo.CadastroBase cba ON a.CadastroBaseId = cba.Id
             WHERE 
-                DATEDIFF(DAY, uo.UltimaData, GETDATE()) > 30
+                DATEDIFF(DAY, uo.LastDate, GETDATE()) > 30
                 AND cb.IsDeleted = 0
         )
         SELECT 
             COUNT(*) OVER() AS TotalCount,
-            ClienteNome,
-            UltimaData,
-            DiasInativo,
-            VolumeHistorico
-        FROM ClientesInativos
+            ClientName,
+            Email,
+            LastDate,
+            InactiveDays,
+            HistoricalVolume,
+            LEFT(AgentFullName, CHARINDEX(' ', AgentFullName + ' ') - 1)
+        FROM InactiveClients
         WHERE {risk_condition}
         ORDER BY {sort_column} {sort_direction}
         OFFSET {offset} ROWS FETCH NEXT {items_per_page} ROWS ONLY;
         """
 
-        # Conecta ao banco e executa a query
         db = Database()
         try:
             results = db.execute_query(query)
-            # Processa os resultados para adicionar o risco de churn
             churn_data = []
             total_count = 0
             for row in results:
-                total_count = row[0]  # TotalCount é retornado na primeira coluna
-                cliente_nome, ultima_data, dias_inativo, volume_historico = row[1:]
-                if dias_inativo > 120:
-                    risco = "Consumado"
-                elif dias_inativo > 90:
-                    risco = "Alto"
-                elif dias_inativo > 60:
-                    risco = "Médio"
+                total_count = row[0]
+                client_name, email, last_date, inactive_days, historical_volume, agent_name = row[1:]
+                if inactive_days > 120:
+                    risk = "Consumado"
+                elif inactive_days > 90:
+                    risk = "Alto"
+                elif inactive_days > 60:
+                    risk = "Médio"
                 else:
-                    risco = "Baixo"
+                    risk = "Baixo"
                 churn_data.append({
-                    "cliente": cliente_nome,
-                    "ultima_operacao": ultima_data.strftime('%Y-%m-%d'),
-                    "dias_inativo": dias_inativo,
-                    "volume_historico": volume_historico,
-                    "risco": risco
+                    "client": client_name,
+                    "email": email,
+                    "last_operation": last_date.strftime('%Y-%m-%d'),
+                    "inactive_days": inactive_days,
+                    "historical_volume": historical_volume,
+                    "agent": agent_name,
+                    "risk": risk
                 })
             return {"data": churn_data, "total_count": total_count}
         except Exception as e:
