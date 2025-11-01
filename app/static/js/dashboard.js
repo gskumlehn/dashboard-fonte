@@ -135,7 +135,15 @@ class VolumeChart {
                     }
                 },
                 plugins: {
-                    legend: { display: true },
+                    legend: {
+                        display: true,
+                        labels: {
+                            usePointStyle: true, // Exibe a legenda como uma bola
+                            pointStyle: 'circle',
+                            color: textColor,
+                            font: { family: fontFamily.trim(), size: 13 }
+                        }
+                    },
                     tooltip: {
                         callbacks: {
                             label: context => {
@@ -144,7 +152,7 @@ class VolumeChart {
                                 if (context.dataset.yAxisID === 'y') {
                                     return `${label}: ${raw}M`;
                                 } else {
-                                    return `${label}: R$ ${Number(raw).toLocaleString('pt-BR')}`;
+                                    return `${label}: ${Number(raw).toLocaleString('pt-BR')}`;
                                 }
                             }
                         }
