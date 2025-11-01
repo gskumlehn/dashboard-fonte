@@ -37,7 +37,7 @@ const dateUtils = {
         // Tenta analisar strings completas como "Fri, 01 Nov 2024 00:00:00 GMT"
         const parsedDate = new Date(isoString);
         if (!isNaN(parsedDate)) {
-            return new Date(parsedDate.getFullYear(), parsedDate.getMonth(), parsedDate.getDate()); // Retorna a data sem alteração de fuso horário
+            return new Date(parsedDate.getUTCFullYear(), parsedDate.getUTCMonth(), parsedDate.getUTCDate()); // Retorna a data sem alteração de fuso horário
         }
 
         // Trata strings no formato "yyyy-MM"
