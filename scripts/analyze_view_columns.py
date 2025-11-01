@@ -65,7 +65,7 @@ class ViewColumnAnalyzer:
         'ntext'
     ]
     
-    def __init__(self, output_dir='#analysis/views_analysis'):
+    def __init__(self, output_dir='analysis/views_analysis'):
         """
         Inicializa o analisador
         
@@ -262,7 +262,6 @@ class ViewColumnAnalyzer:
     def generate_reports(self):
         """Gera relatórios com os resultados da análise"""
         views_with_patterns = [v for v in self.views if v['enum_patterns']]
-        
         metadata = {
             'analysis_date': datetime.now().isoformat(),
             'total_views_analyzed': len(self.views),
@@ -271,33 +270,28 @@ class ViewColumnAnalyzer:
             'views': self.views
         }
 
-        # 1. Salva metadados em JSON
         json_file = os.path.join(self.output_dir, 'view_analysis_metadata.json')
         with open(json_file, 'w', encoding='utf-8') as f:
             json.dump(metadata, f, indent=2, ensure_ascii=False)
 
         print(f"📄 Metadados salvos em: {json_file}")
 
-        # 2. Gera queries SQL para extração
-        sql_file = self.output_dir / 'extract_enum_mappings.sql'
+        sql_file = os.path.join(self.output_dir, 'extract_enum_mappings.sql')  # Corrigido
         try:
             with open(sql_file, 'w', encoding='utf-8') as f:
                 self._write_sql_queries(f)
-            
             print(f"📄 Queries SQL salvas em: {sql_file}")
         except Exception as e:
             print(f"❌ Erro ao salvar queries SQL: {e}")
-        
-        # 3. Gera relatório Markdown
-        md_file = self.output_dir / 'ENUM_PATTERNS_REPORT.md'
+
+        md_file = os.path.join(self.output_dir, 'ENUM_PATTERNS_REPORT.md')  # Corrigido
         try:
             with open(md_file, 'w', encoding='utf-8') as f:
                 self._write_markdown_report(f)
-            
             print(f"📄 Relatório Markdown salvo em: {md_file}")
         except Exception as e:
             print(f"❌ Erro ao salvar relatório: {e}")
-        
+
         print("\n✅ Análise concluída!\n")
         print("🚀 Próximo passo: Execute o script extract_enum_meanings.py para extrair os valores\n")
     
@@ -430,7 +424,7 @@ def main():
     parser.add_argument(
         '--output',
         '-o',
-        default='#analysis/views_analysis',
+        default='analysis/views_analysis',
         help='Diretório de saída para os resultados'
     )
     

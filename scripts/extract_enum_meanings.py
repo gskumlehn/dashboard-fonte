@@ -27,7 +27,7 @@ from app.infra.db_connection import Database
 
 
 class EnumMeaningExtractor:
-    def __init__(self, analysis_dir='#analysis/views_analysis', output_dir='#analysis/enum_meanings'):
+    def __init__(self, analysis_dir='analysis/views_analysis', output_dir='analysis/enum_meanings'):
         self.analysis_dir = os.path.abspath(analysis_dir)
         self.output_dir = os.path.abspath(output_dir)
         self.db = Database()
@@ -119,8 +119,8 @@ class EnumMeaningExtractor:
 
 def main():
     extractor = EnumMeaningExtractor(
-        analysis_dir='#analysis/views_analysis',
-        output_dir='#analysis/enum_meanings'
+        analysis_dir='analysis/views_analysis',
+        output_dir='analysis/enum_meanings'
     )
     extractor.extract_all_enum_meanings()
 
