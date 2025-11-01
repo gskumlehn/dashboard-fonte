@@ -2,7 +2,7 @@ const dateUtils = {
     // Subtrai meses de uma data
     subtractMonthsFromDate(date, months) {
         const newDate = new Date(date);
-        newDate.setMonth(newDate.getMonth() - months);
+        newDate.setUTCMonth(newDate.getUTCMonth() - months);
         return newDate;
     },
 
@@ -13,9 +13,9 @@ const dateUtils = {
             return null;
         }
 
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
+        const year = date.getUTCFullYear();
+        const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+        const day = String(date.getUTCDate()).padStart(2, '0');
 
         if (formatString === 'yyyy-MM-dd') {
             return `${year}-${month}-${day}`; // Formato correto para inputs de data e backend
@@ -25,7 +25,7 @@ const dateUtils = {
         }
         if (formatString === 'dd/MMM') {
             const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-            return `${day}/${months[date.getMonth()]}`; // Formato abreviado com mês em português
+            return `${day}/${months[date.getUTCMonth()]}`; // Formato abreviado com mês em português
         }
         return `${year}-${month}-${day}`; // Padrão de fallback
     },
@@ -37,18 +37,18 @@ const dateUtils = {
         // Tenta analisar strings completas como "Fri, 01 Nov 2024 00:00:00 GMT"
         const parsedDate = new Date(isoString);
         if (!isNaN(parsedDate)) {
-            return new Date(parsedDate.getUTCFullYear(), parsedDate.getUTCMonth(), parsedDate.getUTCDate()); // Retorna a data sem alteração de fuso horário
+            return new Date(Date.UTC(parsedDate.getUTCFullYear(), parsedDate.getUTCMonth(), parsedDate.getUTCDate())); // Retorna a data sem alteração de fuso horário
         }
 
         // Trata strings no formato "yyyy-MM"
         const parts = isoString.split('-').map(Number);
         if (parts.length === 2) {
-            return new Date(parts[0], parts[1] - 1, 1); // Adiciona o dia 1 como padrão
+            return new Date(Date.UTC(parts[0], parts[1] - 1, 1)); // Adiciona o dia 1 como padrão
         }
 
         // Trata strings no formato "yyyy-MM-dd"
         if (parts.length === 3) {
-            return new Date(parts[0], parts[1] - 1, parts[2]); // Ajusta o mês (0-11)
+            return new Date(Date.UTC(parts[0], parts[1] - 1, parts[2])); // Ajusta o mês (0-11)
         }
 
         // Caso nenhuma das opções funcione, retorna null
@@ -64,7 +64,7 @@ const dateUtils = {
         }
 
         const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-        return `${months[date.getMonth()]}/${date.getFullYear()}`; // Corrigido: fechamento do template string
+        return `${months[date.getUTCMonth()]}/${date.getUTCFullYear()}`; // Corrigido: fechamento do template string
     },
 
     // Retorna o ano de uma data
@@ -74,7 +74,7 @@ const dateUtils = {
             return null;
         }
 
-        return date.getFullYear();
+        return date.getUTCFullYear();
     }
 };
 
