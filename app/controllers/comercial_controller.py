@@ -4,14 +4,14 @@ from app.services.comercial_service import ComercialService
 
 comercial_bp = Blueprint('comercial_bp', __name__, url_prefix='/comercial')
 
-@comercial_bp.route('/churn-analysis', methods=['GET'])
+@comercial_bp.route('/client-analysis', methods=['GET'])
 @login_required
-def render_churn_analysis():
-    return render_template('churnAnalysis.html')
+def render_client_analysis():
+    return render_template('comercial.html')
 
-@comercial_bp.route('/churn-analysis/data', methods=['GET'])
+@comercial_bp.route('/client-data', methods=['GET'])
 @login_required
-def fetch_churn_data():
+def fetch_client_data():
     try:
         page = int(request.args.get('page', 1))
         items_per_page = int(request.args.get('items_per_page', 10))
@@ -19,7 +19,7 @@ def fetch_churn_data():
         sort_direction = request.args.get('sort_direction', 'DESC').upper()
         risk_filter = request.args.get('risk_filter', '')
 
-        result = ComercialService.get_churn_data(
+        result = ComercialService.get_client_data(
             page=page,
             items_per_page=items_per_page,
             sort_column=sort_column,
@@ -28,4 +28,4 @@ def fetch_churn_data():
         )
         return jsonify(result), 200
     except Exception as e:
-        return jsonify({"error": f"Erro ao buscar dados de churn: {str(e)}"}), 500
+        return jsonify({"error": f"Erro ao buscar dados de clientes: {str(e)}"}), 500

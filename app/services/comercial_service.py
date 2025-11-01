@@ -2,7 +2,7 @@ from app.infra.db_connection import Database
 
 class ComercialService:
     @staticmethod
-    def get_churn_data(page=1, items_per_page=10, sort_column="HistoricalVolume", sort_direction="DESC", risk_filter=""):
+    def get_client_data(page=1, items_per_page=10, sort_column="HistoricalVolume", sort_direction="DESC", risk_filter=""):
         valid_sort_columns = ["ClientName", "LastDate", "InactiveDays", "HistoricalVolume"]
         if sort_column not in valid_sort_columns:
             raise ValueError(f"Invalid sort column: {sort_column}")
@@ -15,7 +15,8 @@ class ComercialService:
             "Consumado": "InactiveDays > 120",
             "Alto": "InactiveDays BETWEEN 91 AND 120",
             "Médio": "InactiveDays BETWEEN 61 AND 90",
-            "Baixo": "InactiveDays <= 60"
+            "Baixo": "InactiveDays BETWEEN 31 AND 60",
+            "-": "InactiveDays <= 30"
         }
         risk_condition = risk_conditions.get(risk_filter, "1=1")
 
@@ -29,7 +30,7 @@ class ComercialService:
                 IsDeleted = 0
             GROUP BY ClienteId
         ),
-        InactiveClients AS (
+        Clients AS (
             SELECT 
                 c.Id AS ClientId,
                 cb.Razao AS ClientName,
@@ -49,7 +50,6 @@ class ComercialService:
             LEFT JOIN dbo.Agente a ON c.AgenteId = a.Id
             LEFT JOIN dbo.CadastroBase cba ON a.CadastroBaseId = cba.Id
             WHERE 
-                DATEDIFF(DAY, uo.LastDate, GETDATE()) > 30
                 AND cb.IsDeleted = 0
         )
         SELECT 
@@ -60,7 +60,7 @@ class ComercialService:
             InactiveDays,
             HistoricalVolume,
             LEFT(AgentFullName, CHARINDEX(' ', AgentFullName + ' ') - 1) AS AgentName
-        FROM InactiveClients
+        FROM Clients
         WHERE {risk_condition}
         ORDER BY {sort_column} {sort_direction}
         OFFSET {offset} ROWS FETCH NEXT {items_per_page} ROWS ONLY;
@@ -82,8 +82,10 @@ class ComercialService:
                     risk = "Alto"
                 elif inactive_days > 60:
                     risk = "Médio"
-                else:
+                elif inactive_days > 30:
                     risk = "Baixo"
+                else:
+                    risk = "-"
                 churn_data.append({
                     "client": client_name,
                     "email": first_email,
@@ -99,3 +101,4 @@ class ComercialService:
             raise RuntimeError(f"Erro ao buscar dados de churn: {e}")
         finally:
             db.close_connection()
+

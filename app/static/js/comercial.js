@@ -10,6 +10,7 @@ function getRiskLabel(risk) {
         'Alto': 'high',
         'Médio': 'medium',
         'Baixo': 'low'
+        '-': 'none'
     };
     return labels[risk] || risk;
 }
@@ -39,7 +40,7 @@ function updatePaginationInfo(totalPages) {
 }
 
 function populateTable(data) {
-    const tbody = document.getElementById('churn-tbody');
+    const tbody = document.getElementById('client-tbody');
     tbody.innerHTML = '';
 
     data.forEach(row => {
@@ -74,7 +75,8 @@ function fetchChurnData() {
         risk_filter: riskFilter
     });
 
-    fetch(`/comercial/churn-analysis/data?${params.toString()}`)
+    // Update the endpoint URL
+    fetch(`/comercial/client-data?${params.toString()}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Erro ao buscar dados do servidor.');
@@ -90,7 +92,7 @@ function fetchChurnData() {
         })
         .catch(error => {
             console.error('Erro ao buscar dados:', error);
-            const tbody = document.getElementById('churn-tbody');
+            const tbody = document.getElementById('client-tbody');
             tbody.innerHTML = `
                 <tr>
                     <td colspan="7" style="text-align: center; color: var(--error-text);">

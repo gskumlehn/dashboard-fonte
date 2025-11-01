@@ -4,34 +4,34 @@
 /* .table-card styles were moved to styles.css to be shared across pages. */
 
 /* Keep table-specific rules (thead, th, td, badges, pagination, filters) */
-#churn-table {
+#client-table {
     width: 100%;
     border-collapse: collapse;
 }
 
-#churn-table thead {
+#client-table thead {
     border-bottom: 2px solid rgba(0, 0, 0, 0.06);
 }
 
-#churn-table th {
+#client-table th {
     text-align: left;
     padding: 0.75rem;
     font-size: 0.875rem;
     background-color: transparent;
 }
 
-#churn-table th.sortable {
+#client-table th.sortable {
     cursor: pointer;
     user-select: none;
     transition: background-color 0.2s;
     position: relative;
 }
 
-#churn-table th.sortable:hover {
+#client-table th.sortable:hover {
     background-color: rgba(0, 0, 0, 0.02);
 }
 
-#churn-table th.sortable.active {
+#client-table th.sortable.active {
     color: var(--primary);
     background-color: rgba(0, 102, 204, 0.05);
 }
@@ -43,27 +43,27 @@
     color: inherit;
 }
 
-#churn-table th.sortable.active .sort-indicator {
+#client-table th.sortable.active .sort-indicator {
     opacity: 1;
     color: var(--primary);
 }
 
-#churn-table td {
+#client-table td {
     text-align: left;
     padding: 0.75rem;
     border-bottom: 1px solid rgba(0, 0, 0, 0.04);
     font-size: 0.875rem;
 }
 
-#churn-table tbody tr {
+#client-table tbody tr {
     transition: background-color 0.15s;
 }
 
-#churn-table tbody tr:hover {
+#client-table tbody tr:hover {
     background-color: rgba(0, 0, 0, 0.02);
 }
 
-#churn-table tbody tr:last-child td {
+#client-table tbody tr:last-child td {
     border-bottom: none;
 }
 
@@ -93,6 +93,9 @@
 .risk-low {
     background-color: var(--success-bg);
     color: var(--success-text);
+}
+
+.risk-none {
 }
 
 .pagination {
@@ -145,8 +148,8 @@
     }
 
     /* .table-card responsive padding is handled in styles.css */
-    #churn-table th,
-    #churn-table td {
+    #client-table th,
+    #client-table td {
         padding: 0.5rem;
         font-size: 0.8rem;
     }

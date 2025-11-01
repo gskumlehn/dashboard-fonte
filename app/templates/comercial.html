@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}Análise de Churn{% endblock %}
+{% block title %}Clientes{% endblock %}
 
 {% block content %}
-<h1>Análise de Churn</h1>
+<h1>Clientes</h1>
 
 <div class="filters">
     <label for="risk-filter">Filtrar por Risco de Churn:</label>
@@ -13,11 +13,12 @@
         <option value="Alto">Alto</option>
         <option value="Médio">Médio</option>
         <option value="Baixo">Baixo</option>
+        <option value="-">Sem Risco</option>
     </select>
 </div>
 
 <div class="table-card">
-    <table id="churn-table">
+    <table id="client-table">
         <thead>
             <tr>
                 <th class="sortable" data-sort="ClientName">
@@ -41,7 +42,7 @@
                 <th>Risco de Churn</th>
             </tr>
         </thead>
-        <tbody id="churn-tbody">
+        <tbody id="client-tbody">
             <!-- Dados serão preenchidos dinamicamente -->
         </tbody>
     </table>
@@ -53,6 +54,6 @@
     </div>
 </div>
 
-<link rel="stylesheet" href="{{ url_for('static', filename='css/churnAnalysis.css') }}">
-<script defer src="{{ url_for('static', filename='js/churnAnalysis.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/comercial.css') }}">
+<script defer src="{{ url_for('static', filename='js/comercial.js') }}"></script>
 {% endblock %}
