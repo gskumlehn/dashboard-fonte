@@ -9,8 +9,8 @@ function getRiskLabel(risk) {
         'Consumado': 'churned',
         'Alto': 'high',
         'Médio': 'medium',
-        'Baixo': 'low'
-        '-': 'none'
+        'Baixo': 'low',
+        '-': 'none' // Added missing comma here
     };
     return labels[risk] || risk;
 }
