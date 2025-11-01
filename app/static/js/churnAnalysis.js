@@ -54,7 +54,7 @@ function populateTable(data) {
 
         tr.innerHTML = `
             <td>${row.client}</td>
-            <td>${row.email}</td>
+            <td><a href="mailto:${row.email}">${row.email}</a></td>
             <td>${dateUtils.formatDateToPattern(lastOperationDate, 'dd/MM/yyyy')}</td>
             <td>${row.inactive_days}</td>
             <td>${formattedVolume}</td>
