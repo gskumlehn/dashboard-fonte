@@ -58,30 +58,43 @@ class VolumeChart {
                 : dateUtils.getPortugueseMonthAbbreviation(date);
         });
 
-        const values = data.map(item => (item.total_volume / 1_000_000).toFixed(2));
+        const volumeValues = data.map(item => Number((item.total_volume / 1_000_000).toFixed(2)));
+        const ticketValues = data.map(item => Number(Number(item.average_ticket).toFixed(2)));
 
         const borderColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-1');
-        const backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-1');
+        const avgColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-5'); // Cinza
         const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text');
         const gridColor = getComputedStyle(document.documentElement).getPropertyValue('--input-border');
         const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family');
 
-        if (this.chart) {
-            this.chart.destroy();
-        }
+        if (this.chart) this.chart.destroy();
 
         this.chart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels,
-                datasets: [{
-                    label: 'Volume Operado (R$)',
-                    data: values,
-                    borderColor,
-                    fill: false,
-                    tension: 0,
-                    pointRadius: 1
-                }]
+                datasets: [
+                    {
+                        label: 'Volume Operado (M R$)',
+                        data: volumeValues,
+                        borderColor,
+                        backgroundColor: borderColor,
+                        yAxisID: 'y',
+                        fill: false,
+                        tension: 0,
+                        pointRadius: 2
+                    },
+                    {
+                        label: 'Ticket Médio (R$)',
+                        data: ticketValues,
+                        borderColor: avgColor,
+                        backgroundColor: avgColor,
+                        yAxisID: 'y1',
+                        fill: false,
+                        tension: 0.2,
+                        pointRadius: 2
+                    }
+                ]
             },
             options: {
                 responsive: true,
@@ -93,51 +106,47 @@ class VolumeChart {
                             display: true,
                             text: type === 'daily' ? 'Dia' : 'Mês',
                             color: textColor,
-                            font: {
-                                family: fontFamily.trim(),
-                                size: 14,
-                                weight: 'bold'
-                            }
+                            font: { family: fontFamily.trim(), size: 14, weight: 'bold' }
                         },
-                        ticks: {
-                            color: textColor,
-                            font: {
-                                family: fontFamily.trim(),
-                                size: 13
-                            }
-                        },
+                        ticks: { color: textColor, font: { family: fontFamily.trim(), size: 13 } },
                         grid: { color: gridColor }
                     },
                     y: {
+                        position: 'left',
                         min: 0,
-                        title: {
-                            display: true,
-                            text: 'Volume Operado (R$)',
-                            color: textColor,
-                            font: {
-                                family: fontFamily.trim(),
-                                size: 14,
-                                weight: 'bold'
-                            }
-                        },
+                        title: { display: true, text: 'Volume (M R$)', color: textColor, font: { family: fontFamily.trim(), size: 14, weight: 'bold' } },
                         ticks: {
                             callback: value => `${value}M`,
                             color: textColor,
-                            font: {
-                                family: fontFamily.trim(),
-                                size: 13
-                            }
+                            font: { family: fontFamily.trim(), size: 13 }
                         },
                         grid: { color: gridColor }
+                    },
+                    y1: {
+                        position: 'right',
+                        min: 0,
+                        title: { display: true, text: 'Ticket Médio (R$)', color: textColor, font: { family: fontFamily.trim(), size: 14, weight: 'bold' } },
+                        ticks: {
+                            callback: value => `R$ ${Number(value).toLocaleString('pt-BR')}`,
+                            color: textColor,
+                            font: { family: fontFamily.trim(), size: 13 }
+                        },
+                        grid: { drawOnChartArea: false }
                     }
                 },
                 plugins: {
-                    legend: {
-                        display: false
-                    },
+                    legend: { display: true },
                     tooltip: {
                         callbacks: {
-                            label: context => `R$ ${context.raw}M`
+                            label: context => {
+                                const label = context.dataset.label || '';
+                                const raw = context.raw;
+                                if (context.dataset.yAxisID === 'y') {
+                                    return `${label}: ${raw}M`;
+                                } else {
+                                    return `${label}: R$ ${Number(raw).toLocaleString('pt-BR')}`;
+                                }
+                            }
                         }
                     }
                 }

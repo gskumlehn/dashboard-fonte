@@ -15,7 +15,8 @@ class DashboardService:
         WITH MonthlyAggregatedData AS (
             SELECT 
                 FORMAT(Data, 'yyyy-MM') AS period,
-                SUM(ValorCompra) AS total_volume
+                SUM(ValorCompra) AS total_volume,
+                AVG(ValorCompra) AS average_ticket
             FROM dbo.Operacao
             WHERE 
                 IsDeleted = 0
@@ -24,7 +25,8 @@ class DashboardService:
         )
         SELECT 
             period AS period_date,
-            ISNULL(total_volume, 0) AS total_volume
+            ISNULL(total_volume, 0) AS total_volume,
+            ISNULL(average_ticket, 0) AS average_ticket
         FROM MonthlyAggregatedData
         ORDER BY period ASC;
         """
@@ -32,7 +34,10 @@ class DashboardService:
         db = Database()
         try:
             rows = db.execute_query(sql)
-            result = [{"date": r[0], "total_volume": round(float(r[1]), 2)} for r in rows]
+            result = [
+                {"date": r[0], "total_volume": round(float(r[1]), 2), "average_ticket": round(float(r[2]), 2)}
+                for r in rows
+            ]
             return {"data": result}
         finally:
             db.close_connection()
@@ -48,7 +53,8 @@ class DashboardService:
         WITH DailyAggregatedData AS (
             SELECT 
                 CAST(Data AS DATE) AS period,
-                SUM(ValorCompra) AS total_volume
+                SUM(ValorCompra) AS total_volume,
+                AVG(ValorCompra) AS average_ticket
             FROM dbo.Operacao
             WHERE 
                 IsDeleted = 0
@@ -58,7 +64,8 @@ class DashboardService:
         )
         SELECT 
             period AS period_date,
-            ISNULL(total_volume, 0) AS total_volume
+            ISNULL(total_volume, 0) AS total_volume,
+            ISNULL(average_ticket, 0) AS average_ticket
         FROM DailyAggregatedData
         ORDER BY period ASC;
         """
@@ -66,7 +73,10 @@ class DashboardService:
         db = Database()
         try:
             rows = db.execute_query(sql)
-            result = [{"date": r[0], "total_volume": round(float(r[1]), 2)} for r in rows]
+            result = [
+                {"date": r[0], "total_volume": round(float(r[1]), 2), "average_ticket": round(float(r[2]), 2)}
+                for r in rows
+            ]
             return {"data": result}
         finally:
             db.close_connection()
