@@ -46,12 +46,18 @@ function populateTable(data) {
         const tr = document.createElement('tr');
         const lastOperationDate = dateUtils.convertISOToDate(row.last_operation);
 
+        // Format the volume as 74.398,56
+        const formattedVolume = row.historical_volume
+            .replace(/\./g, 'X')
+            .replace(/,/g, '.')
+            .replace(/X/g, ',');
+
         tr.innerHTML = `
             <td>${row.client}</td>
             <td>${row.email}</td>
-            <td>${dateUtils.formatDateToPattern(lastOperationDate, 'MM/dd/yyyy')}</td>
+            <td>${dateUtils.formatDateToPattern(lastOperationDate, 'dd/MM/yyyy')}</td>
             <td>${row.inactive_days}</td>
-            <td>$ ${parseFloat(row.historical_volume).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+            <td>${formattedVolume}</td>
             <td>${row.agent}</td>
             <td><span class="risk-badge risk-${getRiskLabel(row.risk)}">${row.risk}</span></td>
         `;

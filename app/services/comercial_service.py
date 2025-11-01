@@ -87,9 +87,9 @@ class ComercialService:
                 churn_data.append({
                     "client": client_name,
                     "email": first_email,
-                    "last_operation": last_date.strftime('%Y-%m-%d'),
+                    "last_operation": last_date.strftime('%d/%m/%Y'),
                     "inactive_days": inactive_days,
-                    "historical_volume": historical_volume,
+                    "historical_volume": f"{historical_volume:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."),
                     "agent": agent_name,
                     "risk": risk
                 })
