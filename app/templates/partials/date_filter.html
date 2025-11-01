@@ -2,17 +2,23 @@
 
 <div class="filter-card">
     <div class="filter-container">
-        <label for="startDate">Data Inicial:</label>
-        <input type="date" id="startDate" name="startDate">
+        <div class="filter-group">
+            <label for="startDate">Data Inicial:</label>
+            <input type="date" id="startDate" name="startDate">
+        </div>
 
-        <label for="endDate">Data Final:</label>
-        <input type="date" id="endDate" name="endDate">
+        <div class="filter-group">
+            <label for="endDate">Data Final:</label>
+            <input type="date" id="endDate" name="endDate">
+        </div>
 
-        <label for="typeSelect">Período:</label>
-        <select id="typeSelect" name="typeSelect">
-            <option value="monthly">Mensal</option>
-            <option value="daily">Diário</option>
-        </select>
+        <div class="filter-group">
+            <label for="typeSelect">Período:</label>
+            <select id="typeSelect" name="typeSelect">
+                <option value="monthly">Mensal</option>
+                <option value="daily">Diário</option>
+            </select>
+        </div>
 
         <button id="filterButton">Filtrar</button>
     </div>

@@ -12,41 +12,41 @@
 
 .filter-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--gap);
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
+    gap: var(--gap);
 }
 
-.filter-container label {
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem; /* Minimal spacing between label and input */
+}
+
+.filter-group label {
     font-weight: bold;
-    margin-right: 0.5rem;
 }
 
-.filter-container input[type="date"],
-.filter-container select,
-.filter-container button {
+.filter-group input[type="date"],
+.filter-group select {
     padding: 0.5rem;
     border: 1px solid var(--card-border);
     border-radius: 4px;
     font-size: 1rem;
 }
 
-.filter-container select {
-    min-width: 150px; /* Define uma largura mínima para o select */
-}
-
 .filter-container button {
     background-color: var(--primary);
     color: var(--white);
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-left: auto; /* Push the button to the right */
 }
 
 .filter-container button:hover {
     background-color: var(--primary-dark);
-}
-
-.filter-container .filter-button {
-    margin-left: auto;
 }
