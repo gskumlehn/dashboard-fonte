@@ -28,6 +28,7 @@ class ComercialService:
             FROM dbo.Operacao
             WHERE 
                 IsDeleted = 0
+                Status = 1
             GROUP BY ClienteId
         ),
         Clients AS (
