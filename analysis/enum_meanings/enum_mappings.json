@@ -1,0 +1,4037 @@
+{
+  "extraction_date": "2025-11-01T00:14:28.395300",
+  "total_enums": 33,
+  "total_errors": 5,
+  "mappings": {
+    "dbo.Bi_ViewBaixados.TipoBaixa": {
+      "schema": "dbo",
+      "view": "Bi_ViewBaixados",
+      "enum_field": "TipoBaixa",
+      "enum_type": "tinyint",
+      "desc_field": "TipoBaixaDesc",
+      "desc_type": "varchar",
+      "pattern": "TipoBaixa+Desc",
+      "values": [
+        {
+          "valor": 0,
+          "descricao": "Baixa",
+          "quantidade": 82235
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidação",
+          "quantidade": 58773
+        },
+        {
+          "valor": 3,
+          "descricao": "Transferência",
+          "quantidade": 2
+        },
+        {
+          "valor": 6,
+          "descricao": "Baixa por Depósito",
+          "quantidade": 1
+        }
+      ]
+    },
+    "dbo.Bi_ViewBaixados.TipoRecompra": {
+      "schema": "dbo",
+      "view": "Bi_ViewBaixados",
+      "enum_field": "TipoRecompra",
+      "enum_type": "tinyint",
+      "desc_field": "TipoRecompraNome",
+      "desc_type": "varchar",
+      "pattern": "TipoRecompra+Nome",
+      "values": [
+        {
+          "valor": 0,
+          "descricao": "Normal",
+          "quantidade": 141009
+        },
+        {
+          "valor": 1,
+          "descricao": "Cobrança",
+          "quantidade": 2
+        }
+      ]
+    },
+    "dbo.Bi_ViewBaixados.DocumentoStatus": {
+      "schema": "dbo",
+      "view": "Bi_ViewBaixados",
+      "enum_field": "DocumentoStatus",
+      "enum_type": "tinyint",
+      "desc_field": "DocumentoStatusNome",
+      "desc_type": "varchar",
+      "pattern": "DocumentoStatus+Nome",
+      "values": [
+        {
+          "valor": 0,
+          "descricao": "",
+          "quantidade": 2
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Estornado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Estornado Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Prorrogado ",
+          "quantidade": 7
+        },
+        {
+          "valor": 0,
+          "descricao": "Baixado Atrasado Parcial Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Em Cobranca ",
+          "quantidade": 5
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado ",
+          "quantidade": 16
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio Protestado ",
+          "quantidade": 6
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Em Cartorio Protestado ",
+          "quantidade": 13
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Parcial Antecipado ",
+          "quantidade": 6
+        },
+        {
+          "valor": 1,
+          "descricao": "",
+          "quantidade": 42
+        },
+        {
+          "valor": 1,
+          "descricao": "Antecipado ",
+          "quantidade": 81
+        },
+        {
+          "valor": 1,
+          "descricao": "Atrasado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Atrasado Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado ",
+          "quantidade": 1753
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Antecipado ",
+          "quantidade": 3
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Atrasado ",
+          "quantidade": 1677
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Atrasado Em Cartorio ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Atrasado Em Cartorio Protestado ",
+          "quantidade": 56
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Em Cartorio Protestado ",
+          "quantidade": 3
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Parcial ",
+          "quantidade": 381
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Protestado ",
+          "quantidade": 47
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Recomprado ",
+          "quantidade": 2652
+        },
+        {
+          "valor": 1,
+          "descricao": "Em Cartorio ",
+          "quantidade": 17
+        },
+        {
+          "valor": 1,
+          "descricao": "Em Cobranca ",
+          "quantidade": 5
+        },
+        {
+          "valor": 1,
+          "descricao": "Entrada Importado ",
+          "quantidade": 15097
+        },
+        {
+          "valor": 1,
+          "descricao": "Entrada Manual Parcial ",
+          "quantidade": 16974
+        },
+        {
+          "valor": 1,
+          "descricao": "Estornado ",
+          "quantidade": 149
+        },
+        {
+          "valor": 1,
+          "descricao": "Estornado Parcial ",
+          "quantidade": 12
+        },
+        {
+          "valor": 1,
+          "descricao": "Importado ",
+          "quantidade": 29202
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado ",
+          "quantidade": 50238
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Antecipado ",
+          "quantidade": 15
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Atrasado ",
+          "quantidade": 8189
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Atrasado Em Cartorio ",
+          "quantidade": 301
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Atrasado Em Cartorio Protestado ",
+          "quantidade": 8
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Protestado ",
+          "quantidade": 8
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Recomprado Atrasado ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Prorrogado ",
+          "quantidade": 2995
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado ",
+          "quantidade": 660
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Antecipado ",
+          "quantidade": 3215
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Antecipado Em Cartorio Protestado ",
+          "quantidade": 16
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado ",
+          "quantidade": 550
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Antecipado ",
+          "quantidade": 3110
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Antecipado Em Cartorio ",
+          "quantidade": 21
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Antecipado Em Cartorio Protestado ",
+          "quantidade": 353
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Em Cartorio Protestado ",
+          "quantidade": 59
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Parcial Antecipado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio Protestado ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cartorio ",
+          "quantidade": 22
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cartorio Protestado ",
+          "quantidade": 4
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cobranca ",
+          "quantidade": 2866
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Estornado ",
+          "quantidade": 161
+        }
+      ]
+    },
+    "dbo.Bi_ViewChecagem.ControladoriaDocumentoStatus": {
+      "schema": "dbo",
+      "view": "Bi_ViewChecagem",
+      "enum_field": "ControladoriaDocumentoStatus",
+      "enum_type": "tinyint",
+      "desc_field": "ControladoriaDocumentoStatusNome",
+      "desc_type": "varchar",
+      "pattern": "ControladoriaDocumentoStatus+Nome",
+      "values": [
+        {
+          "valor": 0,
+          "descricao": "Aberta",
+          "quantidade": 3182
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixada",
+          "quantidade": 66100
+        }
+      ]
+    },
+    "dbo.Bi_ViewVencimentos.DocumentoStatus": {
+      "schema": "dbo",
+      "view": "Bi_ViewVencimentos",
+      "enum_field": "DocumentoStatus",
+      "enum_type": "tinyint",
+      "desc_field": "DocumentoStatusNome",
+      "desc_type": "varchar",
+      "pattern": "DocumentoStatus+Nome",
+      "values": [
+        {
+          "valor": 0,
+          "descricao": "",
+          "quantidade": 199
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Antecipado ",
+          "quantidade": 6
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Estornado ",
+          "quantidade": 10
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Estornado Em Cartorio Protestado ",
+          "quantidade": 10
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Prorrogado ",
+          "quantidade": 271
+        },
+        {
+          "valor": 0,
+          "descricao": "Baixado Atrasado Parcial Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Em Cartorio ",
+          "quantidade": 49
+        },
+        {
+          "valor": 0,
+          "descricao": "Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Em Cobranca ",
+          "quantidade": 196
+        },
+        {
+          "valor": 0,
+          "descricao": "Entrada Importado ",
+          "quantidade": 6706
+        },
+        {
+          "valor": 0,
+          "descricao": "Entrada Manual ",
+          "quantidade": 3079
+        },
+        {
+          "valor": 0,
+          "descricao": "Importado ",
+          "quantidade": 54
+        },
+        {
+          "valor": 0,
+          "descricao": "Prorrogado ",
+          "quantidade": 2
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado ",
+          "quantidade": 11
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio Protestado ",
+          "quantidade": 4
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Em Cartorio Protestado ",
+          "quantidade": 2
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Parcial Antecipado ",
+          "quantidade": 6
+        }
+      ]
+    },
+    "dbo.ViewAditivoRepresentante.FuncaoRepresentante": {
+      "schema": "dbo",
+      "view": "ViewAditivoRepresentante",
+      "enum_field": "FuncaoRepresentante",
+      "enum_type": "tinyint",
+      "desc_field": "FuncaoRepresentanteNome",
+      "desc_type": "varchar",
+      "pattern": "FuncaoRepresentante+Nome",
+      "values": [
+        {
+          "valor": 1,
+          "descricao": "Testemunha",
+          "quantidade": 491
+        },
+        {
+          "valor": 2,
+          "descricao": "Sócio",
+          "quantidade": 1
+        },
+        {
+          "valor": 3,
+          "descricao": "Interventor Judicial",
+          "quantidade": 486
+        },
+        {
+          "valor": 4,
+          "descricao": "Avalista",
+          "quantidade": 13
+        },
+        {
+          "valor": 5,
+          "descricao": "Endossante",
+          "quantidade": 413
+        },
+        {
+          "valor": 11,
+          "descricao": "Fiador/Avalista",
+          "quantidade": 557
+        },
+        {
+          "valor": 13,
+          "descricao": "Responsável Solidário",
+          "quantidade": 1
+        },
+        {
+          "valor": 16,
+          "descricao": "Presidente",
+          "quantidade": 1
+        }
+      ]
+    },
+    "dbo.ViewBaixados.TipoBaixa": {
+      "schema": "dbo",
+      "view": "ViewBaixados",
+      "enum_field": "TipoBaixa",
+      "enum_type": "tinyint",
+      "desc_field": "TipoBaixaDesc",
+      "desc_type": "varchar",
+      "pattern": "TipoBaixa+Desc",
+      "values": [
+        {
+          "valor": 0,
+          "descricao": "Baixa",
+          "quantidade": 79995
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidação",
+          "quantidade": 55711
+        },
+        {
+          "valor": 3,
+          "descricao": "Transferência",
+          "quantidade": 2
+        },
+        {
+          "valor": 6,
+          "descricao": "Baixa por Depósito",
+          "quantidade": 1
+        }
+      ]
+    },
+    "dbo.ViewBaixados.TipoRecompra": {
+      "schema": "dbo",
+      "view": "ViewBaixados",
+      "enum_field": "TipoRecompra",
+      "enum_type": "tinyint",
+      "desc_field": "TipoRecompraNome",
+      "desc_type": "varchar",
+      "pattern": "TipoRecompra+Nome",
+      "values": [
+        {
+          "valor": 0,
+          "descricao": "Normal",
+          "quantidade": 135707
+        },
+        {
+          "valor": 1,
+          "descricao": "Cobrança",
+          "quantidade": 2
+        }
+      ]
+    },
+    "dbo.ViewBaixados.DocumentoStatus": {
+      "schema": "dbo",
+      "view": "ViewBaixados",
+      "enum_field": "DocumentoStatus",
+      "enum_type": "tinyint",
+      "desc_field": "DocumentoStatusNome",
+      "desc_type": "varchar",
+      "pattern": "DocumentoStatus+Nome",
+      "values": [
+        {
+          "valor": 0,
+          "descricao": "",
+          "quantidade": 2
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Estornado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Estornado Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Prorrogado ",
+          "quantidade": 7
+        },
+        {
+          "valor": 0,
+          "descricao": "Baixado Atrasado Parcial Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Em Cobranca ",
+          "quantidade": 5
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado ",
+          "quantidade": 16
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio Protestado ",
+          "quantidade": 6
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Em Cartorio Protestado ",
+          "quantidade": 13
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Parcial Antecipado ",
+          "quantidade": 6
+        },
+        {
+          "valor": 1,
+          "descricao": "",
+          "quantidade": 42
+        },
+        {
+          "valor": 1,
+          "descricao": "Antecipado ",
+          "quantidade": 81
+        },
+        {
+          "valor": 1,
+          "descricao": "Atrasado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Atrasado Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado ",
+          "quantidade": 1753
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Antecipado ",
+          "quantidade": 3
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Atrasado ",
+          "quantidade": 1677
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Atrasado Em Cartorio ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Atrasado Em Cartorio Protestado ",
+          "quantidade": 56
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Em Cartorio Protestado ",
+          "quantidade": 3
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Parcial ",
+          "quantidade": 381
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Protestado ",
+          "quantidade": 47
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Recomprado ",
+          "quantidade": 2652
+        },
+        {
+          "valor": 1,
+          "descricao": "Em Cartorio ",
+          "quantidade": 17
+        },
+        {
+          "valor": 1,
+          "descricao": "Em Cobranca ",
+          "quantidade": 5
+        },
+        {
+          "valor": 1,
+          "descricao": "Entrada Importado ",
+          "quantidade": 14368
+        },
+        {
+          "valor": 1,
+          "descricao": "Entrada Manual Parcial ",
+          "quantidade": 16502
+        },
+        {
+          "valor": 1,
+          "descricao": "Estornado ",
+          "quantidade": 149
+        },
+        {
+          "valor": 1,
+          "descricao": "Estornado Parcial ",
+          "quantidade": 12
+        },
+        {
+          "valor": 1,
+          "descricao": "Importado ",
+          "quantidade": 28238
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado ",
+          "quantidade": 47950
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Antecipado ",
+          "quantidade": 15
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Atrasado ",
+          "quantidade": 7415
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Atrasado Em Cartorio ",
+          "quantidade": 301
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Atrasado Em Cartorio Protestado ",
+          "quantidade": 8
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Protestado ",
+          "quantidade": 8
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Recomprado Atrasado ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Prorrogado ",
+          "quantidade": 2917
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado ",
+          "quantidade": 660
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Antecipado ",
+          "quantidade": 3215
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Antecipado Em Cartorio Protestado ",
+          "quantidade": 16
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado ",
+          "quantidade": 550
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Antecipado ",
+          "quantidade": 3110
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Antecipado Em Cartorio ",
+          "quantidade": 21
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Antecipado Em Cartorio Protestado ",
+          "quantidade": 353
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Em Cartorio Protestado ",
+          "quantidade": 59
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Parcial Antecipado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio Protestado ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cartorio ",
+          "quantidade": 22
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cartorio Protestado ",
+          "quantidade": 4
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cobranca ",
+          "quantidade": 2866
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Estornado ",
+          "quantidade": 161
+        },
+        {
+          "valor": 2,
+          "descricao": "Perda Atrasado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 2,
+          "descricao": "Perda Atrasado Em Cartorio Protestado ",
+          "quantidade": 2
+        }
+      ]
+    },
+    "dbo.ViewBaixadosatraso.TipoBaixa": {
+      "schema": "dbo",
+      "view": "ViewBaixadosatraso",
+      "enum_field": "TipoBaixa",
+      "enum_type": "tinyint",
+      "desc_field": "TipoBaixaDesc",
+      "desc_type": "varchar",
+      "pattern": "TipoBaixa+Desc",
+      "values": [
+        {
+          "valor": 0,
+          "descricao": "Baixa",
+          "quantidade": 18260
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidação",
+          "quantidade": 8506
+        },
+        {
+          "valor": 3,
+          "descricao": "Transferência",
+          "quantidade": 2
+        }
+      ]
+    },
+    "dbo.ViewBaixadosatraso.DocumentoStatus": {
+      "schema": "dbo",
+      "view": "ViewBaixadosatraso",
+      "enum_field": "DocumentoStatus",
+      "enum_type": "tinyint",
+      "desc_field": "DocumentoStatusNome",
+      "desc_type": "varchar",
+      "pattern": "DocumentoStatus+Nome",
+      "values": [
+        {
+          "valor": 0,
+          "descricao": "Aberto Estornado Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Baixado Atrasado Parcial Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Em Cobranca ",
+          "quantidade": 4
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado ",
+          "quantidade": 16
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio Protestado ",
+          "quantidade": 6
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Em Cartorio Protestado ",
+          "quantidade": 13
+        },
+        {
+          "valor": 1,
+          "descricao": "",
+          "quantidade": 19
+        },
+        {
+          "valor": 1,
+          "descricao": "Antecipado ",
+          "quantidade": 5
+        },
+        {
+          "valor": 1,
+          "descricao": "Atrasado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Atrasado Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado ",
+          "quantidade": 28
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Atrasado ",
+          "quantidade": 1648
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Atrasado Em Cartorio ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Atrasado Em Cartorio Protestado ",
+          "quantidade": 56
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Parcial ",
+          "quantidade": 97
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Protestado ",
+          "quantidade": 42
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Recomprado ",
+          "quantidade": 1461
+        },
+        {
+          "valor": 1,
+          "descricao": "Em Cartorio ",
+          "quantidade": 17
+        },
+        {
+          "valor": 1,
+          "descricao": "Em Cobranca ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Entrada Importado ",
+          "quantidade": 2211
+        },
+        {
+          "valor": 1,
+          "descricao": "Entrada Manual Parcial ",
+          "quantidade": 2281
+        },
+        {
+          "valor": 1,
+          "descricao": "Estornado ",
+          "quantidade": 91
+        },
+        {
+          "valor": 1,
+          "descricao": "Estornado Parcial ",
+          "quantidade": 3
+        },
+        {
+          "valor": 1,
+          "descricao": "Importado ",
+          "quantidade": 4059
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Atrasado ",
+          "quantidade": 8188
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Atrasado Em Cartorio ",
+          "quantidade": 301
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Atrasado Em Cartorio Protestado ",
+          "quantidade": 8
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Protestado ",
+          "quantidade": 8
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Recomprado Atrasado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Prorrogado ",
+          "quantidade": 533
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado ",
+          "quantidade": 80
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Antecipado ",
+          "quantidade": 142
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Antecipado Em Cartorio Protestado ",
+          "quantidade": 12
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado ",
+          "quantidade": 525
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Antecipado ",
+          "quantidade": 2866
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Antecipado Em Cartorio ",
+          "quantidade": 21
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Antecipado Em Cartorio Protestado ",
+          "quantidade": 351
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Em Cartorio Protestado ",
+          "quantidade": 59
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Parcial Antecipado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio Protestado ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cartorio ",
+          "quantidade": 19
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cartorio Protestado ",
+          "quantidade": 3
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cobranca ",
+          "quantidade": 1478
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Estornado ",
+          "quantidade": 102
+        }
+      ]
+    },
+    "dbo.ViewBaixadosContabil.TipoBaixa": {
+      "schema": "dbo",
+      "view": "ViewBaixadosContabil",
+      "enum_field": "TipoBaixa",
+      "enum_type": "tinyint",
+      "desc_field": "TipoBaixaDesc",
+      "desc_type": "varchar",
+      "pattern": "TipoBaixa+Desc",
+      "values": [
+        {
+          "valor": 0,
+          "descricao": "Baixa",
+          "quantidade": 84711
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidação",
+          "quantidade": 55761
+        },
+        {
+          "valor": 3,
+          "descricao": "Transferência",
+          "quantidade": 2
+        },
+        {
+          "valor": 4,
+          "descricao": "Perda",
+          "quantidade": 85
+        },
+        {
+          "valor": 6,
+          "descricao": "Baixa por Depósito",
+          "quantidade": 1
+        }
+      ]
+    },
+    "dbo.ViewBaixadosContabil.TipoRecompra": {
+      "schema": "dbo",
+      "view": "ViewBaixadosContabil",
+      "enum_field": "TipoRecompra",
+      "enum_type": "tinyint",
+      "desc_field": "TipoRecompraNome",
+      "desc_type": "varchar",
+      "pattern": "TipoRecompra+Nome",
+      "values": [
+        {
+          "valor": 0,
+          "descricao": "Normal",
+          "quantidade": 140550
+        },
+        {
+          "valor": 1,
+          "descricao": "Cobrança",
+          "quantidade": 10
+        }
+      ]
+    },
+    "dbo.ViewBaixadosContabil.DocumentoStatus": {
+      "schema": "dbo",
+      "view": "ViewBaixadosContabil",
+      "enum_field": "DocumentoStatus",
+      "enum_type": "tinyint",
+      "desc_field": "DocumentoStatusNome",
+      "desc_type": "varchar",
+      "pattern": "DocumentoStatus+Nome",
+      "values": [
+        {
+          "valor": 0,
+          "descricao": "",
+          "quantidade": 2
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Estornado ",
+          "quantidade": 51
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Estornado Em Cartorio Protestado ",
+          "quantidade": 25
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Prorrogado ",
+          "quantidade": 27
+        },
+        {
+          "valor": 0,
+          "descricao": "Baixado AtrASado Parcial Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Em Cobranca ",
+          "quantidade": 7
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado AtrASado Parcial ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado AtrASado Parcial Antecipado ",
+          "quantidade": 18
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado AtrASado Parcial Antecipado Em Cartorio ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado AtrASado Parcial Antecipado Em Cartorio Protestado ",
+          "quantidade": 10
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado AtrASado Parcial Em Cartorio Protestado ",
+          "quantidade": 13
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Parcial Antecipado ",
+          "quantidade": 6
+        },
+        {
+          "valor": 1,
+          "descricao": "",
+          "quantidade": 42
+        },
+        {
+          "valor": 1,
+          "descricao": "Antecipado ",
+          "quantidade": 81
+        },
+        {
+          "valor": 1,
+          "descricao": "AtrASado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "AtrASado Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado ",
+          "quantidade": 1829
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Antecipado ",
+          "quantidade": 3
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado AtrASado ",
+          "quantidade": 1829
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado AtrASado Em Cartorio ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado AtrASado Em Cartorio Protestado ",
+          "quantidade": 60
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Em Cartorio Protestado ",
+          "quantidade": 3
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Parcial ",
+          "quantidade": 433
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Protestado ",
+          "quantidade": 55
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Recomprado ",
+          "quantidade": 3088
+        },
+        {
+          "valor": 1,
+          "descricao": "Em Cartorio ",
+          "quantidade": 17
+        },
+        {
+          "valor": 1,
+          "descricao": "Em Cobranca ",
+          "quantidade": 5
+        },
+        {
+          "valor": 1,
+          "descricao": "Entrada Importado ",
+          "quantidade": 14368
+        },
+        {
+          "valor": 1,
+          "descricao": "Entrada Manual Parcial ",
+          "quantidade": 16502
+        },
+        {
+          "valor": 1,
+          "descricao": "Estornado ",
+          "quantidade": 435
+        },
+        {
+          "valor": 1,
+          "descricao": "Estornado Parcial ",
+          "quantidade": 22
+        },
+        {
+          "valor": 1,
+          "descricao": "Importado ",
+          "quantidade": 28238
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado ",
+          "quantidade": 48072
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Antecipado ",
+          "quantidade": 15
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado AtrASado ",
+          "quantidade": 7447
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado AtrASado Em Cartorio ",
+          "quantidade": 309
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado AtrASado Em Cartorio Protestado ",
+          "quantidade": 8
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Protestado ",
+          "quantidade": 12
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Recomprado AtrASado ",
+          "quantidade": 6
+        },
+        {
+          "valor": 1,
+          "descricao": "Prorrogado ",
+          "quantidade": 2925
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado ",
+          "quantidade": 789
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Antecipado ",
+          "quantidade": 3925
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Antecipado Em Cartorio Protestado ",
+          "quantidade": 18
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado AtrASado ",
+          "quantidade": 622
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado AtrASado Antecipado ",
+          "quantidade": 4734
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado AtrASado Antecipado Em Cartorio ",
+          "quantidade": 21
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado AtrASado Antecipado Em Cartorio Protestado ",
+          "quantidade": 544
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado AtrASado Em Cartorio Protestado ",
+          "quantidade": 79
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado AtrASado Parcial Antecipado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado AtrASado Parcial Antecipado Em Cartorio Protestado ",
+          "quantidade": 6
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cartorio ",
+          "quantidade": 30
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cartorio Protestado ",
+          "quantidade": 4
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cobranca ",
+          "quantidade": 3340
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Estornado ",
+          "quantidade": 389
+        },
+        {
+          "valor": 2,
+          "descricao": "Perda AtrASado ",
+          "quantidade": 79
+        },
+        {
+          "valor": 2,
+          "descricao": "Perda AtrASado Em Cartorio Protestado ",
+          "quantidade": 9
+        }
+      ]
+    },
+    "dbo.ViewBorderoDespesa.Tiponumero": {
+      "schema": "dbo",
+      "view": "ViewBorderoDespesa",
+      "enum_field": "Tiponumero",
+      "enum_type": "tinyint",
+      "desc_field": "Descricao",
+      "desc_type": "varchar",
+      "pattern": "Tiponumero+Descricao",
+      "values": [
+        {
+          "valor": 4,
+          "descricao": "Despesa Bancária ",
+          "quantidade": 140865
+        },
+        {
+          "valor": 4,
+          "descricao": "Despesa Bancária - Reg. Cobrança",
+          "quantidade": 4
+        },
+        {
+          "valor": 4,
+          "descricao": "Tarifa TED/PIX",
+          "quantidade": 2
+        },
+        {
+          "valor": 5,
+          "descricao": "Adiantamento a Cliente",
+          "quantidade": 2
+        },
+        {
+          "valor": 5,
+          "descricao": "Consulta de Crédito",
+          "quantidade": 140
+        },
+        {
+          "valor": 5,
+          "descricao": "Despesa Bancária ",
+          "quantidade": 5
+        },
+        {
+          "valor": 5,
+          "descricao": "Despesa Bancária - Reg. Cobrança",
+          "quantidade": 3
+        },
+        {
+          "valor": 5,
+          "descricao": "Diferença de Prorrogação",
+          "quantidade": 1
+        },
+        {
+          "valor": 5,
+          "descricao": "Saldo de Pendencias",
+          "quantidade": 2
+        },
+        {
+          "valor": 5,
+          "descricao": "Tarifa Consulta Serasa",
+          "quantidade": 1893
+        },
+        {
+          "valor": 5,
+          "descricao": "Tarifa TED/PIX",
+          "quantidade": 19197
+        },
+        {
+          "valor": 5,
+          "descricao": "Valor liquidação recompra",
+          "quantidade": 1
+        },
+        {
+          "valor": 5,
+          "descricao": "Valor Recompra Documentos",
+          "quantidade": 3
+        },
+        {
+          "valor": 5,
+          "descricao": "Valor Trustee",
+          "quantidade": 11
+        }
+      ]
+    },
+    "dbo.ViewChecagem.ControladoriaDocumentoStatus": {
+      "schema": "dbo",
+      "view": "ViewChecagem",
+      "enum_field": "ControladoriaDocumentoStatus",
+      "enum_type": "tinyint",
+      "desc_field": "ControladoriaDocumentoStatusNome",
+      "desc_type": "varchar",
+      "pattern": "ControladoriaDocumentoStatus+Nome",
+      "values": [
+        {
+          "valor": 0,
+          "descricao": "Aberta",
+          "quantidade": 2814
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixada",
+          "quantidade": 1881
+        }
+      ]
+    },
+    "dbo.ViewChecagemUsuario.ControladoriaDocumentoStatus": {
+      "schema": "dbo",
+      "view": "ViewChecagemUsuario",
+      "enum_field": "ControladoriaDocumentoStatus",
+      "enum_type": "tinyint",
+      "desc_field": "ControladoriaDocumentoStatusNome",
+      "desc_type": "varchar",
+      "pattern": "ControladoriaDocumentoStatus+Nome",
+      "values": [
+        {
+          "valor": 1,
+          "descricao": "Baixada",
+          "quantidade": 66100
+        }
+      ]
+    },
+    "dbo.ViewContasAReceberaberto.TipoPessoa": {
+      "schema": "dbo",
+      "view": "ViewContasAReceberaberto",
+      "enum_field": "TipoPessoa",
+      "enum_type": "tinyint",
+      "desc_field": "TipoPessoaNome",
+      "desc_type": "varchar",
+      "pattern": "TipoPessoa+Nome",
+      "values": [
+        {
+          "valor": 2,
+          "descricao": "Cliente",
+          "quantidade": 3164
+        }
+      ]
+    },
+    "dbo.ViewContasAReceberabertoSacado.TipoPessoa": {
+      "schema": "dbo",
+      "view": "ViewContasAReceberabertoSacado",
+      "enum_field": "TipoPessoa",
+      "enum_type": "tinyint",
+      "desc_field": "TipoPessoaNome",
+      "desc_type": "varchar",
+      "pattern": "TipoPessoa+Nome",
+      "values": [
+        {
+          "valor": 2,
+          "descricao": "Cliente",
+          "quantidade": 2974
+        }
+      ]
+    },
+    "dbo.ViewContasAReceberabertoSint.TipoPessoa": {
+      "schema": "dbo",
+      "view": "ViewContasAReceberabertoSint",
+      "enum_field": "TipoPessoa",
+      "enum_type": "tinyint",
+      "desc_field": "TipoPessoaNome",
+      "desc_type": "varchar",
+      "pattern": "TipoPessoa+Nome",
+      "values": [
+        {
+          "valor": 2,
+          "descricao": "Cliente",
+          "quantidade": 31505
+        }
+      ]
+    },
+    "dbo.ViewDocumentoFaixa.TipoDocId": {
+      "schema": "dbo",
+      "view": "ViewDocumentoFaixa",
+      "enum_field": "TipoDocId",
+      "enum_type": "int",
+      "desc_field": "Descricao",
+      "desc_type": "varchar",
+      "pattern": "TipoDocId+Descricao",
+      "values": [
+        {
+          "valor": 1,
+          "descricao": "Duplicata",
+          "quantidade": 10660
+        },
+        {
+          "valor": 2,
+          "descricao": "Cheque",
+          "quantidade": 42
+        },
+        {
+          "valor": 3,
+          "descricao": "Nota Promissória",
+          "quantidade": 1
+        }
+      ]
+    },
+    "dbo.ViewLiquidezCliente.Carteira": {
+      "schema": "dbo",
+      "view": "ViewLiquidezCliente",
+      "enum_field": "Carteira",
+      "enum_type": "int",
+      "desc_field": "CarteiraDescricao",
+      "desc_type": "varchar",
+      "pattern": "Carteira+Descricao",
+      "values": [
+        {
+          "valor": 1,
+          "descricao": "Cobrança Simples",
+          "quantidade": 142537
+        },
+        {
+          "valor": 2,
+          "descricao": "Cobrança Simples de Terceiros",
+          "quantidade": 4
+        },
+        {
+          "valor": 3,
+          "descricao": "Desconto",
+          "quantidade": 1
+        },
+        {
+          "valor": 4,
+          "descricao": "Pedido",
+          "quantidade": 242
+        },
+        {
+          "valor": 5,
+          "descricao": "Comissaria",
+          "quantidade": 470
+        }
+      ]
+    },
+    "dbo.ViewPagarReceberAnalitco.TipoPessoa": {
+      "schema": "dbo",
+      "view": "ViewPagarReceberAnalitco",
+      "enum_field": "TipoPessoa",
+      "enum_type": "tinyint",
+      "desc_field": "TipoPessoaNome",
+      "desc_type": "varchar",
+      "pattern": "TipoPessoa+Nome",
+      "values": [
+        {
+          "valor": 2,
+          "descricao": "Cliente",
+          "quantidade": 3399
+        }
+      ]
+    },
+    "dbo.ViewProrrogado.DocumentoStatus": {
+      "schema": "dbo",
+      "view": "ViewProrrogado",
+      "enum_field": "DocumentoStatus",
+      "enum_type": "tinyint",
+      "desc_field": "DocumentoStatusNome",
+      "desc_type": "varchar",
+      "pattern": "DocumentoStatus+Nome",
+      "values": [
+        {
+          "valor": 0,
+          "descricao": "",
+          "quantidade": 23
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Antecipado ",
+          "quantidade": 10
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Estornado Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Prorrogado ",
+          "quantidade": 425
+        },
+        {
+          "valor": 0,
+          "descricao": "Em Cartorio ",
+          "quantidade": 9
+        },
+        {
+          "valor": 0,
+          "descricao": "EmCobranca ",
+          "quantidade": 19
+        },
+        {
+          "valor": 0,
+          "descricao": "Prorrogado ",
+          "quantidade": 2
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado ",
+          "quantidade": 13
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Parcial Antecipado ",
+          "quantidade": 11
+        },
+        {
+          "valor": 1,
+          "descricao": "",
+          "quantidade": 6
+        },
+        {
+          "valor": 1,
+          "descricao": "Antecipado ",
+          "quantidade": 97
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado ",
+          "quantidade": 189
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Atrasado ",
+          "quantidade": 223
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Atrasado Em Cartorio Protestado ",
+          "quantidade": 6
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Parcial ",
+          "quantidade": 20
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Protestado ",
+          "quantidade": 9
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Recomprado ",
+          "quantidade": 260
+        },
+        {
+          "valor": 1,
+          "descricao": "Em Cartorio ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Entrada Manual Parcial ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Estornado ",
+          "quantidade": 12
+        },
+        {
+          "valor": 1,
+          "descricao": "Estornado Parcial ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Importado ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado ",
+          "quantidade": 1984
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Atrasado ",
+          "quantidade": 372
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Atrasado Em Cartorio ",
+          "quantidade": 59
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Atrasado Em Cartorio Protestado ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Protestado ",
+          "quantidade": 5
+        },
+        {
+          "valor": 1,
+          "descricao": "Prorrogado ",
+          "quantidade": 3260
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado ",
+          "quantidade": 144
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Antecipado ",
+          "quantidade": 1251
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado ",
+          "quantidade": 72
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Antecipado ",
+          "quantidade": 310
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Antecipado Em Cartorio Protestado ",
+          "quantidade": 23
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Em Cartorio Protestado ",
+          "quantidade": 17
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio Protestado ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cartorio ",
+          "quantidade": 4
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado EmCobranca ",
+          "quantidade": 284
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Estornado ",
+          "quantidade": 12
+        },
+        {
+          "valor": 2,
+          "descricao": "Perda Atrasado ",
+          "quantidade": 36
+        }
+      ]
+    },
+    "dbo.ViewRepresentante.FuncaoRepresentante": {
+      "schema": "dbo",
+      "view": "ViewRepresentante",
+      "enum_field": "FuncaoRepresentante",
+      "enum_type": "tinyint",
+      "desc_field": "FuncaoRepresentanteNome",
+      "desc_type": "varchar",
+      "pattern": "FuncaoRepresentante+Nome",
+      "values": [
+        {
+          "valor": 1,
+          "descricao": "Representante",
+          "quantidade": 484
+        },
+        {
+          "valor": 2,
+          "descricao": "Fiador/Avalista",
+          "quantidade": 1
+        },
+        {
+          "valor": 3,
+          "descricao": "Responsavel Solidario",
+          "quantidade": 305
+        },
+        {
+          "valor": 4,
+          "descricao": "Procurador",
+          "quantidade": 5
+        },
+        {
+          "valor": 5,
+          "descricao": "Fiel Depositario",
+          "quantidade": 410
+        },
+        {
+          "valor": 11,
+          "descricao": "Sócio",
+          "quantidade": 8
+        },
+        {
+          "valor": 13,
+          "descricao": "Avalista",
+          "quantidade": 1
+        },
+        {
+          "valor": 16,
+          "descricao": "Administrador",
+          "quantidade": 1
+        }
+      ]
+    },
+    "dbo.ViewTermoSecuritizacaoCaracteristica.Numero": {
+      "schema": "dbo",
+      "view": "ViewTermoSecuritizacaoCaracteristica",
+      "enum_field": "Numero",
+      "enum_type": "int",
+      "desc_field": "Descricao",
+      "desc_type": "varchar",
+      "pattern": "Numero+Descricao",
+      "values": [
+        {
+          "valor": 1,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 2,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 3,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 4,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 5,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 6,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 7,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 8,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 9,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 10,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 11,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 12,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 13,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 14,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 15,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 16,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 17,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 18,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 19,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 20,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 21,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 22,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 23,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 24,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 25,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 26,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 27,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 28,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 29,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 30,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 31,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 32,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 33,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 34,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 35,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 36,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 37,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 38,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 39,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 40,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 41,
+          "descricao": "INTEGRALZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 42,
+          "descricao": "INTEGRALZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 43,
+          "descricao": "INTEGRALZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 44,
+          "descricao": "INTEGRALZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 45,
+          "descricao": "INTEGRALZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 46,
+          "descricao": "INTEGRALZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 47,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 48,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 49,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 50,
+          "descricao": "INTEGRALIZAC AO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 51,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 52,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 53,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 54,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 55,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 56,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 57,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 58,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 59,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 60,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 61,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 62,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 63,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 64,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 65,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 66,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 67,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 68,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 69,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 70,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 71,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 72,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 73,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 74,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 75,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 76,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 77,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 78,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 79,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 80,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 81,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 82,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 83,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 84,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 85,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 86,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 87,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 88,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 89,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 90,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 91,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 92,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 93,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 94,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 95,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 96,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 97,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 98,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 99,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 100,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 101,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 102,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 103,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 104,
+          "descricao": "INTEGTALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 105,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 106,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 107,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 108,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 109,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 110,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 111,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 112,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 113,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 114,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 115,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 116,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 117,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 118,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 119,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 120,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 121,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 122,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 123,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 124,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 125,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 126,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 127,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 128,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 129,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 130,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 131,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 132,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 133,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 134,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 135,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 136,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 137,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 138,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 139,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 140,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 141,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 142,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 143,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 144,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 145,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 146,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 147,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 148,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 149,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 150,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 151,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 152,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 153,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 154,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 155,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 156,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 157,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 158,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 159,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 160,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 161,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 162,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 163,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 164,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 165,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 166,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 167,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 168,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 169,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 170,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 171,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 172,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 173,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 174,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 175,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 176,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 177,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        },
+        {
+          "valor": 178,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 1
+        }
+      ]
+    },
+    "dbo.ViewTermoSecuritizacaoCaracteristica.NumeroEmissao": {
+      "schema": "dbo",
+      "view": "ViewTermoSecuritizacaoCaracteristica",
+      "enum_field": "NumeroEmissao",
+      "enum_type": "smallint",
+      "desc_field": "Descricao",
+      "desc_type": "varchar",
+      "pattern": "NumeroEmissao+Descricao",
+      "values": [
+        {
+          "valor": 1,
+          "descricao": "INTEGRALIZAC AO DE CAPITAL",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "INTEGRALIZACAO DE CAPITAL",
+          "quantidade": 113
+        },
+        {
+          "valor": 1,
+          "descricao": "INTEGRALIZAÇÃO DE DEBÊNTURES",
+          "quantidade": 57
+        },
+        {
+          "valor": 1,
+          "descricao": "INTEGRALZACAO DE CAPITAL",
+          "quantidade": 6
+        },
+        {
+          "valor": 1,
+          "descricao": "INTEGTALIZACAO DE CAPITAL",
+          "quantidade": 1
+        }
+      ]
+    },
+    "dbo.ViewVencimentos.DocumentoStatus": {
+      "schema": "dbo",
+      "view": "ViewVencimentos",
+      "enum_field": "DocumentoStatus",
+      "enum_type": "tinyint",
+      "desc_field": "DocumentoStatusNome",
+      "desc_type": "varchar",
+      "pattern": "DocumentoStatus+Nome",
+      "values": [
+        {
+          "valor": 0,
+          "descricao": "",
+          "quantidade": 199
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Antecipado ",
+          "quantidade": 6
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Estornado ",
+          "quantidade": 10
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Estornado Em Cartorio Protestado ",
+          "quantidade": 10
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Prorrogado ",
+          "quantidade": 271
+        },
+        {
+          "valor": 0,
+          "descricao": "Baixado Atrasado Parcial Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Em Cartorio ",
+          "quantidade": 49
+        },
+        {
+          "valor": 0,
+          "descricao": "Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Em Cobranca ",
+          "quantidade": 196
+        },
+        {
+          "valor": 0,
+          "descricao": "Entrada Importado ",
+          "quantidade": 6706
+        },
+        {
+          "valor": 0,
+          "descricao": "Entrada Manual ",
+          "quantidade": 3079
+        },
+        {
+          "valor": 0,
+          "descricao": "Importado ",
+          "quantidade": 54
+        },
+        {
+          "valor": 0,
+          "descricao": "Prorrogado ",
+          "quantidade": 2
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado ",
+          "quantidade": 11
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio Protestado ",
+          "quantidade": 4
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Em Cartorio Protestado ",
+          "quantidade": 2
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Parcial Antecipado ",
+          "quantidade": 6
+        }
+      ]
+    },
+    "dbo.ViewVencimentosBaixa.DocumentoStatus": {
+      "schema": "dbo",
+      "view": "ViewVencimentosBaixa",
+      "enum_field": "DocumentoStatus",
+      "enum_type": "tinyint",
+      "desc_field": "DocumentoStatusNome",
+      "desc_type": "varchar",
+      "pattern": "DocumentoStatus+Nome",
+      "values": [
+        {
+          "valor": 0,
+          "descricao": "",
+          "quantidade": 199
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Antecipado ",
+          "quantidade": 6
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Estornado ",
+          "quantidade": 16
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Estornado Em Cartorio Protestado ",
+          "quantidade": 11
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Prorrogado ",
+          "quantidade": 276
+        },
+        {
+          "valor": 0,
+          "descricao": "Baixado Atrasado Parcial Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Em Cartorio ",
+          "quantidade": 49
+        },
+        {
+          "valor": 0,
+          "descricao": "Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Em Cobranca ",
+          "quantidade": 199
+        },
+        {
+          "valor": 0,
+          "descricao": "Entrada Importado ",
+          "quantidade": 6706
+        },
+        {
+          "valor": 0,
+          "descricao": "Entrada Manual ",
+          "quantidade": 3079
+        },
+        {
+          "valor": 0,
+          "descricao": "Importado ",
+          "quantidade": 54
+        },
+        {
+          "valor": 0,
+          "descricao": "Prorrogado ",
+          "quantidade": 2
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado ",
+          "quantidade": 16
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio Protestado ",
+          "quantidade": 6
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Em Cartorio Protestado ",
+          "quantidade": 13
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Parcial Antecipado ",
+          "quantidade": 6
+        },
+        {
+          "valor": 1,
+          "descricao": "",
+          "quantidade": 42
+        },
+        {
+          "valor": 1,
+          "descricao": "Antecipado ",
+          "quantidade": 81
+        },
+        {
+          "valor": 1,
+          "descricao": "Atrasado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Atrasado Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado ",
+          "quantidade": 1740
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Antecipado ",
+          "quantidade": 3
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Atrasado ",
+          "quantidade": 1695
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Atrasado Em Cartorio ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Atrasado Em Cartorio Protestado ",
+          "quantidade": 57
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Parcial ",
+          "quantidade": 189
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Protestado ",
+          "quantidade": 44
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Recomprado ",
+          "quantidade": 2203
+        },
+        {
+          "valor": 1,
+          "descricao": "Em Cartorio ",
+          "quantidade": 17
+        },
+        {
+          "valor": 1,
+          "descricao": "Em Cobranca ",
+          "quantidade": 5
+        },
+        {
+          "valor": 1,
+          "descricao": "Entrada Importado ",
+          "quantidade": 14367
+        },
+        {
+          "valor": 1,
+          "descricao": "Entrada Manual Parcial ",
+          "quantidade": 16497
+        },
+        {
+          "valor": 1,
+          "descricao": "Estornado ",
+          "quantidade": 152
+        },
+        {
+          "valor": 1,
+          "descricao": "Estornado Parcial ",
+          "quantidade": 4
+        },
+        {
+          "valor": 1,
+          "descricao": "Importado ",
+          "quantidade": 28237
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado ",
+          "quantidade": 47980
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Antecipado ",
+          "quantidade": 15
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Atrasado ",
+          "quantidade": 7420
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Atrasado Em Cartorio ",
+          "quantidade": 305
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Atrasado Em Cartorio Protestado ",
+          "quantidade": 8
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Protestado ",
+          "quantidade": 9
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Recomprado Atrasado ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Prorrogado ",
+          "quantidade": 2918
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado ",
+          "quantidade": 639
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Antecipado ",
+          "quantidade": 3063
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Antecipado Em Cartorio Protestado ",
+          "quantidade": 12
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado ",
+          "quantidade": 550
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Antecipado ",
+          "quantidade": 3186
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Antecipado Em Cartorio ",
+          "quantidade": 21
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Antecipado Em Cartorio Protestado ",
+          "quantidade": 368
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Em Cartorio Protestado ",
+          "quantidade": 60
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Parcial Antecipado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio Protestado ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cartorio ",
+          "quantidade": 23
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cartorio Protestado ",
+          "quantidade": 3
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cobranca ",
+          "quantidade": 2372
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Estornado ",
+          "quantidade": 145
+        },
+        {
+          "valor": 2,
+          "descricao": "Perda Atrasado ",
+          "quantidade": 79
+        },
+        {
+          "valor": 2,
+          "descricao": "Perda Atrasado Em Cartorio Protestado ",
+          "quantidade": 6
+        }
+      ]
+    },
+    "dbo.ViewVencimentosCartorio.DocumentoStatus": {
+      "schema": "dbo",
+      "view": "ViewVencimentosCartorio",
+      "enum_field": "DocumentoStatus",
+      "enum_type": "tinyint",
+      "desc_field": "DocumentoStatusNome",
+      "desc_type": "varchar",
+      "pattern": "DocumentoStatus+Nome",
+      "values": [
+        {
+          "valor": 0,
+          "descricao": "Em Cartorio ",
+          "quantidade": 21
+        },
+        {
+          "valor": 0,
+          "descricao": "Em Cobranca ",
+          "quantidade": 2
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Atrasado ",
+          "quantidade": 6
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Parcial ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Recomprado ",
+          "quantidade": 5
+        },
+        {
+          "valor": 1,
+          "descricao": "Em Cartorio ",
+          "quantidade": 7
+        },
+        {
+          "valor": 1,
+          "descricao": "Entrada Importado ",
+          "quantidade": 83
+        },
+        {
+          "valor": 1,
+          "descricao": "Entrada Manual Parcial ",
+          "quantidade": 50
+        },
+        {
+          "valor": 1,
+          "descricao": "Estornado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Importado ",
+          "quantidade": 126
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Atrasado Em Cartorio ",
+          "quantidade": 301
+        },
+        {
+          "valor": 1,
+          "descricao": "Prorrogado ",
+          "quantidade": 54
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Antecipado Em Cartorio ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cartorio ",
+          "quantidade": 9
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cobranca ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Estornado ",
+          "quantidade": 3
+        }
+      ]
+    },
+    "dbo.ViewVencimentosChecagem.DocumentoStatus": {
+      "schema": "dbo",
+      "view": "ViewVencimentosChecagem",
+      "enum_field": "DocumentoStatus",
+      "enum_type": "tinyint",
+      "desc_field": "DocumentoStatusNome",
+      "desc_type": "varchar",
+      "pattern": "DocumentoStatus+Nome",
+      "values": [
+        {
+          "valor": 0,
+          "descricao": "",
+          "quantidade": 51
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Antecipado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Estornado ",
+          "quantidade": 3
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Estornado Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Prorrogado ",
+          "quantidade": 149
+        },
+        {
+          "valor": 0,
+          "descricao": "Em Cartorio ",
+          "quantidade": 29
+        },
+        {
+          "valor": 0,
+          "descricao": "Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "EmCobranca ",
+          "quantidade": 25
+        },
+        {
+          "valor": 0,
+          "descricao": "Entrada Importado ",
+          "quantidade": 1776
+        },
+        {
+          "valor": 0,
+          "descricao": "Entrada Manual ",
+          "quantidade": 2640
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado ",
+          "quantidade": 8
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio Protestado ",
+          "quantidade": 3
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Em Cartorio Protestado ",
+          "quantidade": 2
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Parcial Antecipado ",
+          "quantidade": 5
+        }
+      ]
+    },
+    "dbo.ViewVencimentosProtestado.DocumentoStatus": {
+      "schema": "dbo",
+      "view": "ViewVencimentosProtestado",
+      "enum_field": "DocumentoStatus",
+      "enum_type": "tinyint",
+      "desc_field": "DocumentoStatusNome",
+      "desc_type": "varchar",
+      "pattern": "DocumentoStatus+Nome",
+      "values": [
+        {
+          "valor": 0,
+          "descricao": "Aberto Estornado Em Cartorio Protestado ",
+          "quantidade": 10
+        },
+        {
+          "valor": 0,
+          "descricao": "Baixado Atrasado Parcial Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Em Cartorio ",
+          "quantidade": 28
+        },
+        {
+          "valor": 0,
+          "descricao": "Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio Protestado ",
+          "quantidade": 4
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Em Cartorio Protestado ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Atrasado Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Atrasado ",
+          "quantidade": 5
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Atrasado Em Cartorio ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Atrasado Em Cartorio Protestado ",
+          "quantidade": 35
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Protestado ",
+          "quantidade": 28
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Recomprado ",
+          "quantidade": 153
+        },
+        {
+          "valor": 1,
+          "descricao": "Em Cartorio ",
+          "quantidade": 10
+        },
+        {
+          "valor": 1,
+          "descricao": "Estornado ",
+          "quantidade": 11
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Atrasado Em Cartorio Protestado ",
+          "quantidade": 8
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Protestado ",
+          "quantidade": 8
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Antecipado Em Cartorio Protestado ",
+          "quantidade": 4
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Antecipado Em Cartorio ",
+          "quantidade": 19
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Antecipado Em Cartorio Protestado ",
+          "quantidade": 262
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Em Cartorio Protestado ",
+          "quantidade": 45
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio Protestado ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cartorio ",
+          "quantidade": 10
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cartorio Protestado ",
+          "quantidade": 3
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cobranca ",
+          "quantidade": 175
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Estornado ",
+          "quantidade": 11
+        },
+        {
+          "valor": 2,
+          "descricao": "Perda Atrasado Em Cartorio Protestado ",
+          "quantidade": 5
+        }
+      ]
+    },
+    "dbo.ViewVencimentosTotal.DocumentoStatus": {
+      "schema": "dbo",
+      "view": "ViewVencimentosTotal",
+      "enum_field": "DocumentoStatus",
+      "enum_type": "tinyint",
+      "desc_field": "DocumentoStatusNome",
+      "desc_type": "varchar",
+      "pattern": "DocumentoStatus+Nome",
+      "values": [
+        {
+          "valor": 0,
+          "descricao": "",
+          "quantidade": 199
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Antecipado ",
+          "quantidade": 6
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Estornado ",
+          "quantidade": 10
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Estornado Em Cartorio Protestado ",
+          "quantidade": 10
+        },
+        {
+          "valor": 0,
+          "descricao": "Aberto Prorrogado ",
+          "quantidade": 271
+        },
+        {
+          "valor": 0,
+          "descricao": "Baixado Atrasado Parcial Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Em Cartorio ",
+          "quantidade": 49
+        },
+        {
+          "valor": 0,
+          "descricao": "Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Em Cobranca ",
+          "quantidade": 196
+        },
+        {
+          "valor": 0,
+          "descricao": "Entrada Importado ",
+          "quantidade": 6706
+        },
+        {
+          "valor": 0,
+          "descricao": "Entrada Manual ",
+          "quantidade": 3079
+        },
+        {
+          "valor": 0,
+          "descricao": "Importado ",
+          "quantidade": 54
+        },
+        {
+          "valor": 0,
+          "descricao": "Prorrogado ",
+          "quantidade": 2
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado ",
+          "quantidade": 11
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio ",
+          "quantidade": 1
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio Protestado ",
+          "quantidade": 4
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Atrasado Parcial Em Cartorio Protestado ",
+          "quantidade": 2
+        },
+        {
+          "valor": 0,
+          "descricao": "Recomprado Parcial Antecipado ",
+          "quantidade": 6
+        },
+        {
+          "valor": 1,
+          "descricao": "",
+          "quantidade": 42
+        },
+        {
+          "valor": 1,
+          "descricao": "Antecipado ",
+          "quantidade": 81
+        },
+        {
+          "valor": 1,
+          "descricao": "Atrasado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Atrasado Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado ",
+          "quantidade": 1693
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Antecipado ",
+          "quantidade": 3
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Atrasado ",
+          "quantidade": 1548
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Atrasado Em Cartorio ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Atrasado Em Cartorio Protestado ",
+          "quantidade": 35
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Em Cartorio Protestado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Parcial ",
+          "quantidade": 133
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Protestado ",
+          "quantidade": 28
+        },
+        {
+          "valor": 1,
+          "descricao": "Baixado Recomprado ",
+          "quantidade": 1865
+        },
+        {
+          "valor": 1,
+          "descricao": "Em Cartorio ",
+          "quantidade": 17
+        },
+        {
+          "valor": 1,
+          "descricao": "Em Cobranca ",
+          "quantidade": 5
+        },
+        {
+          "valor": 1,
+          "descricao": "Entrada Importado ",
+          "quantidade": 14367
+        },
+        {
+          "valor": 1,
+          "descricao": "Entrada Manual Parcial ",
+          "quantidade": 16497
+        },
+        {
+          "valor": 1,
+          "descricao": "Estornado ",
+          "quantidade": 124
+        },
+        {
+          "valor": 1,
+          "descricao": "Estornado Parcial ",
+          "quantidade": 3
+        },
+        {
+          "valor": 1,
+          "descricao": "Importado ",
+          "quantidade": 28237
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado ",
+          "quantidade": 47946
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Antecipado ",
+          "quantidade": 15
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Atrasado ",
+          "quantidade": 7411
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Atrasado Em Cartorio ",
+          "quantidade": 301
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Atrasado Em Cartorio Protestado ",
+          "quantidade": 8
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Protestado ",
+          "quantidade": 8
+        },
+        {
+          "valor": 1,
+          "descricao": "Liquidado Recomprado Atrasado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Prorrogado ",
+          "quantidade": 2915
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado ",
+          "quantidade": 602
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Antecipado ",
+          "quantidade": 2745
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Antecipado Em Cartorio Protestado ",
+          "quantidade": 4
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado ",
+          "quantidade": 477
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Antecipado ",
+          "quantidade": 2316
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Antecipado Em Cartorio ",
+          "quantidade": 21
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Antecipado Em Cartorio Protestado ",
+          "quantidade": 262
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Em Cartorio Protestado ",
+          "quantidade": 45
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Parcial Antecipado ",
+          "quantidade": 1
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Atrasado Parcial Antecipado Em Cartorio Protestado ",
+          "quantidade": 2
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cartorio ",
+          "quantidade": 19
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cartorio Protestado ",
+          "quantidade": 3
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Em Cobranca ",
+          "quantidade": 1952
+        },
+        {
+          "valor": 1,
+          "descricao": "Recomprado Estornado ",
+          "quantidade": 120
+        },
+        {
+          "valor": 2,
+          "descricao": "Perda Atrasado ",
+          "quantidade": 78
+        },
+        {
+          "valor": 2,
+          "descricao": "Perda Atrasado Em Cartorio Protestado ",
+          "quantidade": 5
+        }
+      ]
+    }
+  },
+  "errors": [
+    {
+      "view": "dbo.ViewBaixadosVariavel",
+      "enum_field": "TipoBaixa",
+      "error": "Falha ao extrair mapeamento"
+    },
+    {
+      "view": "dbo.ViewBaixadosVariavel",
+      "enum_field": "TipoRecompra",
+      "error": "Falha ao extrair mapeamento"
+    },
+    {
+      "view": "dbo.ViewBaixadosVariavel",
+      "enum_field": "DocumentoStatus",
+      "error": "Falha ao extrair mapeamento"
+    },
+    {
+      "view": "dbo.ViewSimulacaoDespesa",
+      "enum_field": "tipo",
+      "error": "Falha ao extrair mapeamento"
+    },
+    {
+      "view": "dbo.ViewTermoSecuritizacaoSocio",
+      "enum_field": "EstadoCivil",
+      "error": "Falha ao extrair mapeamento"
+    }
+  ]
+}
