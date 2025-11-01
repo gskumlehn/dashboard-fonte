@@ -4,39 +4,41 @@ class VolumeChart {
         this.startDateInput = document.getElementById('startDate');
         this.endDateInput = document.getElementById('endDate');
         this.filterButton = document.getElementById('filterButton');
+        this.typeSelect = document.getElementById('typeSelect');
     }
 
     async init() {
-        // Configurar evento de filtro
         this.filterButton.addEventListener('click', async () => {
             const start_date = this.startDateInput.value;
             const end_date = this.endDateInput.value;
+            const type = this.typeSelect.value;
             if (start_date && end_date) {
-                const data = await this.fetchVolumeData(start_date, end_date);
-                this.renderChart(data);
+                const data = await this.fetchVolumeData(start_date, end_date, type);
+                this.renderChart(data, type);
             } else {
                 alert('Por favor, selecione ambas as datas.');
             }
         });
 
-        // Carregar gráfico inicial com os últimos 12 meses
-        const endDate = new Date(); // Mês atual
-        const startDate = dateUtils.subtractMonthsFromDate(endDate, 12); // Últimos 12 meses
+        const endDate = new Date();
+        const startDate = dateUtils.subtractMonthsFromDate(endDate, 12);
 
-        this.startDateInput.value = dateUtils.formatDateToPattern(startDate, 'yyyy-MM-01'); // Primeiro dia do mês
-        this.endDateInput.value = dateUtils.formatDateToPattern(endDate, 'yyyy-MM-01'); // Primeiro dia do mês atual
+        this.startDateInput.value = dateUtils.formatDateToPattern(startDate, 'yyyy-MM-01');
+        this.endDateInput.value = dateUtils.formatDateToPattern(endDate, 'yyyy-MM-01');
+        this.typeSelect.value = 'monthly';
 
         const data = await this.fetchVolumeData(
             this.startDateInput.value,
-            this.endDateInput.value
+            this.endDateInput.value,
+            this.typeSelect.value
         );
 
-        this.renderChart(data);
+        this.renderChart(data, this.typeSelect.value);
     }
 
-    async fetchVolumeData(start_date, end_date) {
+    async fetchVolumeData(start_date, end_date, type = 'monthly') {
         try {
-            const response = await fetch(`/dashboard/volume-data?start_date=${start_date}&end_date=${end_date}`);
+            const response = await fetch(`/dashboard/volume-data?start_date=${start_date}&end_date=${end_date}&type=${type}`);
             if (!response.ok) throw new Error('Erro ao buscar dados do volume');
             const result = await response.json();
             return result.data || [];
@@ -46,27 +48,26 @@ class VolumeChart {
         }
     }
 
-    renderChart(data) {
+    renderChart(data, type) {
         const ctx = document.getElementById('volumeChart').getContext('2d');
 
-        // Preparar os dados para o gráfico
         const labels = data.map(item => {
-            const date = dateUtils.convertISOToDate(`${item.date}-01`); // Adicionar dia fictício para parsing
-            return dateUtils.getPortugueseMonthAbbreviation(date); // Meses em português reduzido
+            const date = dateUtils.convertISOToDate(item.date);
+            return type === 'daily'
+                ? dateUtils.formatDateToPattern(date, 'dd/MMM')
+                : dateUtils.getPortugueseMonthAbbreviation(date);
         });
 
-        const values = data.map(item => (item.total_volume / 1_000_000).toFixed(2)); // Escala em milhões
+        const values = data.map(item => (item.total_volume / 1_000_000).toFixed(2));
 
-        // Obter cores e fonte das variáveis CSS
         const borderColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-1');
         const backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-1');
         const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text');
         const gridColor = getComputedStyle(document.documentElement).getPropertyValue('--input-border');
         const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family');
 
-        // Configurar o gráfico
         if (this.chart) {
-            this.chart.destroy(); // Destruir gráfico anterior, se existir
+            this.chart.destroy();
         }
 
         this.chart = new Chart(ctx, {
@@ -90,12 +91,12 @@ class VolumeChart {
                         type: 'category',
                         title: {
                             display: true,
-                            text: 'Mês',
+                            text: type === 'daily' ? 'Dia' : 'Mês',
                             color: textColor,
                             font: {
                                 family: fontFamily.trim(),
                                 size: 14,
-                                weight: 'bold' // Legenda em negrito
+                                weight: 'bold'
                             }
                         },
                         ticks: {
@@ -116,11 +117,11 @@ class VolumeChart {
                             font: {
                                 family: fontFamily.trim(),
                                 size: 14,
-                                weight: 'bold' // Legenda em negrito
+                                weight: 'bold'
                             }
                         },
                         ticks: {
-                            callback: value => `${value}M`, // Formatar em milhões
+                            callback: value => `${value}M`,
                             color: textColor,
                             font: {
                                 family: fontFamily.trim(),
@@ -132,8 +133,8 @@ class VolumeChart {
                 },
                 plugins: {
                     legend: {
-                            display: false
-                        },
+                        display: false
+                    },
                     tooltip: {
                         callbacks: {
                             label: context => `R$ ${context.raw}M`

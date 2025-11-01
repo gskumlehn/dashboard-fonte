@@ -3,9 +3,17 @@
 <div class="filter-card">
     <div class="filter-container">
         <label for="startDate">Data Inicial:</label>
-        <input type="date" id="startDate" />
+        <input type="date" id="startDate" name="startDate">
+
         <label for="endDate">Data Final:</label>
-        <input type="date" id="endDate" />
-        <button id="filterButton" class="filter-button">Filtrar</button>
+        <input type="date" id="endDate" name="endDate">
+
+        <label for="typeSelect">Período:</label>
+        <select id="typeSelect" name="typeSelect">
+            <option value="monthly">Mensal</option>
+            <option value="daily">Diário</option>
+        </select>
+
+        <button id="filterButton">Filtrar</button>
     </div>
 </div>
