@@ -19,9 +19,9 @@
 
 .filter-group {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.25rem; /* Minimal spacing between label and input */
+    flex-direction: row; /* Change to row to align label and input side by side */
+    align-items: center; /* Align label and input vertically */
+    gap: 0.5rem; /* Add spacing between label and input */
 }
 
 .filter-group label {

@@ -75,7 +75,7 @@ class VolumeChart {
                 labels,
                 datasets: [
                     {
-                        label: 'Volume Operado (M R$)',
+                        label: 'Volume Operado (R$)',
                         data: volumeValues,
                         borderColor,
                         backgroundColor: borderColor,
@@ -114,7 +114,7 @@ class VolumeChart {
                     y: {
                         position: 'left',
                         min: 0,
-                        title: { display: true, text: 'Volume (M R$)', color: textColor, font: { family: fontFamily.trim(), size: 14, weight: 'bold' } },
+                        title: { display: true, text: 'Volume (R$)', color: textColor, font: { family: fontFamily.trim(), size: 14, weight: 'bold' } },
                         ticks: {
                             callback: value => `${value}M`,
                             color: textColor,
