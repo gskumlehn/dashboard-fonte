@@ -47,15 +47,18 @@ function populateTable(data) {
         const tr = document.createElement('tr');
         const lastOperationDate = dateUtils.convertISOToDate(row.last_operation);
 
-        // Format the volume using toLocaleString for Brazilian formatting
         const formattedVolume = Number(row.historical_volume).toLocaleString('pt-BR', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
         });
 
+        const emailContent = row.email_list.length > 0
+            ? row.email_list.map(email => `<a href="mailto:${email}">${email}</a>`).join(', ')
+            : '-';
+
         tr.innerHTML = `
             <td>${row.client}</td>
-            <td><a href="mailto:${row.email}">${row.email}</a></td>
+            <td>${emailContent}</td>
             <td>${dateUtils.formatDateToPattern(lastOperationDate, 'dd/MM/yyyy')}</td>
             <td>${row.inactive_days}</td>
             <td>${formattedVolume}</td>

@@ -75,7 +75,12 @@ class ComercialService:
             for row in results:
                 total_count = row[0]
                 client_name, email, last_date, inactive_days, historical_volume, agent_name = row[1:]
-                first_email = email.split(';')[0].strip().lower()
+
+                email_list = [
+                    e.strip().lower()
+                    for e in email.split(';')
+                    if not e.strip().lower().endswith('@fontefm.com.br')
+                ]
 
                 if inactive_days > 120:
                     risk = "Consumado"
@@ -89,7 +94,7 @@ class ComercialService:
                     risk = "-"
                 churn_data.append({
                     "client": client_name,
-                    "email": first_email,
+                    "email_list": email_list,  # Use the cleaned email list
                     "last_operation": last_date,
                     "inactive_days": inactive_days,
                     "historical_volume": historical_volume,
