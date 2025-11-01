@@ -92,7 +92,7 @@ class ComercialService:
                     "email": first_email,
                     "last_operation": last_date,
                     "inactive_days": inactive_days,
-                    "historical_volume": f"{historical_volume:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."),
+                    "historical_volume": historical_volume,
                     "agent": agent_name.capitalize(),
                     "risk": risk
                 })
