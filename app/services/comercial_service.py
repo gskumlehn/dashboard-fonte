@@ -74,6 +74,8 @@ class ComercialService:
             for row in results:
                 total_count = row[0]
                 client_name, email, last_date, inactive_days, historical_volume, agent_name = row[1:]
+                first_email = email.split(';')[0].strip().lower()
+
                 if inactive_days > 120:
                     risk = "Consumado"
                 elif inactive_days > 90:
@@ -84,7 +86,7 @@ class ComercialService:
                     risk = "Baixo"
                 churn_data.append({
                     "client": client_name,
-                    "email": email,
+                    "email": first_email,
                     "last_operation": last_date.strftime('%Y-%m-%d'),
                     "inactive_days": inactive_days,
                     "historical_volume": historical_volume,
