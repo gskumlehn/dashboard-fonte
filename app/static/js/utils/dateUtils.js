@@ -18,13 +18,22 @@ const dateUtils = {
         if (formatString === 'dd/MM/yyyy') {
             return `${day}/${month}/${year}`; // Formato alternativo, se necessário
         }
+        if (formatString === 'dd/MMM') {
+            const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+            return `${day}/${months[date.getMonth()]}`; // Formato abreviado com mês em português
+        }
         return `${year}-${month}-${day}`; // Padrão de fallback
     },
 
     // Converte uma string ISO para um objeto Date
     convertISOToDate(isoString) {
-        const [year, month, day] = isoString.split('-').map(Number);
-        return new Date(year, month - 1, day); // Ajusta o mês (0-11)
+        if (!isoString) return null; // Retorna nulo se a string ISO for inválida
+        const parts = isoString.split('-').map(Number);
+        if (parts.length === 3) {
+            return new Date(parts[0], parts[1] - 1, parts[2]); // Ajusta o mês (0-11)
+        }
+        console.error('Invalid ISO date string:', isoString);
+        return null; // Retorna nulo em caso de erro
     },
 
     // Retorna a abreviação do mês em português
