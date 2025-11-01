@@ -1,6 +1,6 @@
 const itemsPerPage = 10;
 let currentPage = 1;
-let sortColumn = 'DiasInativo';
+let sortColumn = 'InactiveDays';
 let sortDirection = 'asc';
 let riskFilter = '';
 
@@ -49,9 +49,9 @@ function populateTable(data) {
         tr.innerHTML = `
             <td>${row.client}</td>
             <td>${row.email}</td>
-            <td>${dateUtils.formatDateToPattern(lastOperationDate, 'dd/MM/yyyy')}</td>
+            <td>${dateUtils.formatDateToPattern(lastOperationDate, 'MM/dd/yyyy')}</td>
             <td>${row.inactive_days}</td>
-            <td>R$ ${parseFloat(row.historical_volume).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+            <td>$ ${parseFloat(row.historical_volume).toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
             <td>${row.agent}</td>
             <td><span class="risk-badge risk-${getRiskLabel(row.risk)}">${row.risk}</span></td>
         `;

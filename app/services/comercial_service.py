@@ -2,12 +2,12 @@ from app.infra.db_connection import Database
 
 class ComercialService:
     @staticmethod
-    def get_churn_data(page=1, items_per_page=10, sort_column="VolumeHistorico", sort_direction="DESC", risk_filter=""):
-        valid_sort_columns = ["ClienteNome", "UltimaData", "DiasInativo", "VolumeHistorico"]
+    def get_churn_data(page=1, items_per_page=10, sort_column="HistoricalVolume", sort_direction="DESC", risk_filter=""):
+        valid_sort_columns = ["ClientName", "LastDate", "InactiveDays", "HistoricalVolume"]
         if sort_column not in valid_sort_columns:
-            raise ValueError(f"Coluna de ordenação inválida: {sort_column}")
+            raise ValueError(f"Invalid sort column: {sort_column}")
         if sort_direction.upper() not in ["ASC", "DESC"]:
-            raise ValueError(f"Direção de ordenação inválida: {sort_direction}")
+            raise ValueError(f"Invalid sort direction: {sort_direction}")
 
         offset = (page - 1) * items_per_page
 
@@ -59,7 +59,7 @@ class ComercialService:
             LastDate,
             InactiveDays,
             HistoricalVolume,
-            LEFT(AgentFullName, CHARINDEX(' ', AgentFullName + ' ') - 1)
+            LEFT(AgentFullName, CHARINDEX(' ', AgentFullName + ' ') - 1) AS AgentName
         FROM InactiveClients
         WHERE {risk_condition}
         ORDER BY {sort_column} {sort_direction}

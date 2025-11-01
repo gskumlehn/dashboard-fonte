@@ -15,7 +15,7 @@ def fetch_churn_data():
     try:
         page = int(request.args.get('page', 1))
         items_per_page = int(request.args.get('items_per_page', 10))
-        sort_column = request.args.get('sort_column', 'VolumeHistorico')
+        sort_column = request.args.get('sort_column', 'HistoricalVolume')
         sort_direction = request.args.get('sort_direction', 'DESC').upper()
         risk_filter = request.args.get('risk_filter', '')
 
