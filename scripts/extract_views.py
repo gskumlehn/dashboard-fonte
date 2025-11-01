@@ -16,13 +16,16 @@ Versão: 1.0
 
 import sys
 import os
-from pathlib import Path
 from datetime import datetime
 from tqdm import tqdm
 import json
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Adiciona o diretório raiz ao path
-sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from app.infra.db_connection import Database
 
@@ -401,4 +404,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
