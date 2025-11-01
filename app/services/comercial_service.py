@@ -50,7 +50,7 @@ class ComercialService:
             LEFT JOIN dbo.Agente a ON c.AgenteId = a.Id
             LEFT JOIN dbo.CadastroBase cba ON a.CadastroBaseId = cba.Id
             WHERE 
-                AND cb.IsDeleted = 0
+                cb.IsDeleted = 0
         )
         SELECT 
             COUNT(*) OVER() AS TotalCount,
@@ -101,4 +101,3 @@ class ComercialService:
             raise RuntimeError(f"Erro ao buscar dados de churn: {e}")
         finally:
             db.close_connection()
-
