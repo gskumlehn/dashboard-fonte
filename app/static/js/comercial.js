@@ -47,11 +47,11 @@ function populateTable(data) {
         const tr = document.createElement('tr');
         const lastOperationDate = dateUtils.convertISOToDate(row.last_operation);
 
-        // Format the volume as 74.398,56
-        const formattedVolume = row.historical_volume
-            .replace(/\./g, 'X')
-            .replace(/,/g, '.')
-            .replace(/X/g, ',');
+        // Format the volume using toLocaleString for Brazilian formatting
+        const formattedVolume = Number(row.historical_volume).toLocaleString('pt-BR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
 
         tr.innerHTML = `
             <td>${row.client}</td>
