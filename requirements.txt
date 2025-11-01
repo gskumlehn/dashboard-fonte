@@ -5,3 +5,4 @@ pyodbc
 python-dotenv
 werkzeug>=2.0
 python-dotenv==1.0.0
+tqdm
