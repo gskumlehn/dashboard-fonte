@@ -69,7 +69,12 @@ function fetchChurnData() {
     });
 
     fetch(`/comercial/churn-analysis/data?${params.toString()}`)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao buscar dados do servidor.');
+            }
+            return response.json();
+        })
         .then(result => {
             const { data, total_count } = result;
             const totalPages = Math.ceil(total_count / itemsPerPage);
@@ -77,7 +82,15 @@ function fetchChurnData() {
             updatePaginationInfo(totalPages);
             updateSortIndicators();
         })
-        .catch(error => console.error('Erro ao buscar dados:', error));
+        .catch(error => {
+            console.error('Erro ao buscar dados:', error);
+            const tbody = document.getElementById('churn-tbody');
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" style="text-align: center; color: var(--error-text);">
+                        Erro ao carregar dados. Tente novamente mais tarde.
+                    </td>
+                </tr>
 }
 
 function handleSort(column) {

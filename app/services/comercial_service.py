@@ -93,6 +93,7 @@ class ComercialService:
                 })
             return {"data": churn_data, "total_count": total_count}
         except Exception as e:
+            print(f"Erro ao executar a query no banco de dados: {e}")
             raise RuntimeError(f"Erro ao buscar dados de churn: {e}")
         finally:
             db.close_connection()
