@@ -16,14 +16,14 @@ Versão: 1.0
 
 import sys
 import os
-from pathlib import Path
 from datetime import datetime
 import json
-import re
 from tqdm import tqdm
+from dotenv import load_dotenv
 
-# Adiciona o diretório raiz ao path
-sys.path.insert(0, str(Path(__file__).parent.parent))
+load_dotenv()
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from app.infra.db_connection import Database
 
@@ -65,23 +65,22 @@ class ViewColumnAnalyzer:
         'ntext'
     ]
     
-    def __init__(self, output_dir='./data/view_analysis'):
+    def __init__(self, output_dir='#analysis/views_analysis'):
         """
         Inicializa o analisador
         
         Args:
             output_dir (str): Diretório onde os resultados serão salvos
         """
-        self.output_dir = Path(output_dir)
+        self.output_dir = os.path.abspath(output_dir)
         self.db = Database()
         self.views = []
         self.enum_patterns = []
         
     def create_output_directory(self):
         """Cria o diretório de saída se não existir"""
-        self.output_dir.mkdir(parents=True, exist_ok=True)
-        print(f"📁 Diretório de saída: {self.output_dir.absolute()}")
-        
+        os.makedirs(self.output_dir, exist_ok=True)
+
     def get_all_views(self):
         """
         Obtém lista de todas as views do banco de dados
@@ -100,10 +99,8 @@ class ViewColumnAnalyzer:
         
         try:
             results = self.db.execute_query(query)
-            print(f"✅ Encontradas {len(results)} views no banco de dados")
             return results
         except Exception as e:
-            print(f"❌ Erro ao obter lista de views: {e}")
             return []
     
     def get_view_columns(self, schema_name, view_name):
@@ -143,7 +140,6 @@ class ViewColumnAnalyzer:
                 for row in results
             ]
         except Exception as e:
-            print(f"❌ Erro ao obter colunas de {schema_name}.{view_name}: {e}")
             return []
     
     def identify_enum_patterns(self, columns):
@@ -212,10 +208,6 @@ class ViewColumnAnalyzer:
     
     def analyze_all_views(self):
         """Analisa todas as views do banco de dados"""
-        print("\n" + "=" * 80)
-        print("🔍 ANALISADOR DE VIEWS - IDENTIFICAÇÃO DE PADRÕES DE ENUM")
-        print("=" * 80)
-        
         # Cria diretório de saída
         self.create_output_directory()
         
@@ -223,10 +215,7 @@ class ViewColumnAnalyzer:
         views_list = self.get_all_views()
         
         if not views_list:
-            print("\n⚠️  Nenhuma view encontrada no banco de dados.")
             return
-        
-        print(f"\n📊 Analisando {len(views_list)} views...\n")
         
         # Analisa cada view
         with tqdm(total=len(views_list), desc="Analisando views", unit="view") as pbar:
@@ -272,35 +261,23 @@ class ViewColumnAnalyzer:
     
     def generate_reports(self):
         """Gera relatórios com os resultados da análise"""
-        print("\n" + "=" * 80)
-        print("📊 RESUMO DA ANÁLISE")
-        print("=" * 80)
-        
         views_with_patterns = [v for v in self.views if v['enum_patterns']]
         
-        print(f"✅ Views analisadas: {len(self.views)}")
-        print(f"✅ Views com padrões de enum: {len(views_with_patterns)}")
-        print(f"✅ Total de pares enum+descrição: {len(self.enum_patterns)}")
-        print("=" * 80)
-        
+        metadata = {
+            'analysis_date': datetime.now().isoformat(),
+            'total_views_analyzed': len(self.views),
+            'views_with_patterns': len(views_with_patterns),
+            'total_enum_candidates': len(self.enum_patterns),
+            'views': self.views
+        }
+
         # 1. Salva metadados em JSON
-        json_file = self.output_dir / 'view_analysis_metadata.json'
-        try:
-            metadata = {
-                'analysis_date': datetime.now().isoformat(),
-                'total_views_analyzed': len(self.views),
-                'views_with_patterns': len(views_with_patterns),
-                'total_enum_candidates': len(self.enum_patterns),
-                'views': self.views
-            }
-            
-            with open(json_file, 'w', encoding='utf-8') as f:
-                json.dump(metadata, f, indent=2, ensure_ascii=False)
-            
-            print(f"\n📄 Metadados salvos em: {json_file}")
-        except Exception as e:
-            print(f"\n❌ Erro ao salvar metadados: {e}")
-        
+        json_file = os.path.join(self.output_dir, 'view_analysis_metadata.json')
+        with open(json_file, 'w', encoding='utf-8') as f:
+            json.dump(metadata, f, indent=2, ensure_ascii=False)
+
+        print(f"📄 Metadados salvos em: {json_file}")
+
         # 2. Gera queries SQL para extração
         sql_file = self.output_dir / 'extract_enum_mappings.sql'
         try:
@@ -453,7 +430,7 @@ def main():
     parser.add_argument(
         '--output',
         '-o',
-        default='./data/view_analysis',
+        default='#analysis/views_analysis',
         help='Diretório de saída para os resultados'
     )
     
@@ -465,4 +442,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
