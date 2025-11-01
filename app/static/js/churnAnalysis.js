@@ -91,6 +91,8 @@ function fetchChurnData() {
                         Erro ao carregar dados. Tente novamente mais tarde.
                     </td>
                 </tr>
+            `;
+        });
 }
 
 function handleSort(column) {
