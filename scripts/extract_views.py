@@ -17,9 +17,14 @@ class ViewExtractor:
         self.db = Database()
         self.views_extracted = []
         self.errors = []
+        print(f"Initialized ViewExtractor with output directory: {self.output_dir_abs}")
 
     def create_output_directory(self):
-        os.makedirs(self.output_dir_abs, exist_ok=True)
+        try:
+            os.makedirs(self.output_dir_abs, exist_ok=True)
+            print(f"Output directory created or already exists: {self.output_dir_abs}")
+        except Exception as e:
+            print(f"Error creating output directory: {e}")
 
     def get_all_views(self):
         query = """
@@ -34,8 +39,10 @@ class ViewExtractor:
         """
         try:
             results = self.db.execute_query(query)
+            print(f"Fetched {len(results)} views from the database.")
             return results
         except Exception as e:
+            print(f"Error fetching views: {e}")
             return []
 
     def get_view_definition(self, schema_name, view_name):
@@ -46,10 +53,13 @@ class ViewExtractor:
         try:
             results = self.db.execute_query(query, (full_view_name,))
             if results and len(results) > 0 and results[0][0]:
+                print(f"Fetched definition for view: {full_view_name}")
                 return results[0][0]
             else:
+                print(f"No definition found for view: {full_view_name}")
                 return None
         except Exception as e:
+            print(f"Error fetching definition for view {full_view_name}: {e}")
             return None
 
     def get_view_columns(self, schema_name, view_name):
@@ -70,8 +80,10 @@ class ViewExtractor:
         """
         try:
             results = self.db.execute_query(query, (schema_name, view_name))
+            print(f"Fetched {len(results)} columns for view: {schema_name}.{view_name}")
             return results
         except Exception as e:
+            print(f"Error fetching columns for view {schema_name}.{view_name}: {e}")
             return []
 
     def save_view_to_file(self, schema_name, view_name, definition, columns, create_date, modify_date):
@@ -116,17 +128,21 @@ class ViewExtractor:
         try:
             with open(filepath, 'w', encoding='utf-8') as f:
                 f.write('\n'.join(content))
+            print(f"Saved view to file: {filepath}")
             return True
         except Exception as e:
+            print(f"Error saving view to file {filename}: {e}")
             return False
 
     def extract_all_views(self):
         views = self.get_all_views()
         if not views:
+            print("No views found or error fetching views.")
             return
         total_views = len(views)
+        print(f"Total views to process: {total_views}")
         self.create_output_directory()
-        for view_info in tqdm(views, desc="Extraindo views", unit="view"):
+        for view_info in tqdm(views, desc="Extracting views", unit="view"):
             schema_name = view_info[0]
             view_name = view_info[1]
             create_date = view_info[2]
@@ -154,17 +170,18 @@ class ViewExtractor:
                 else:
                     self.errors.append({
                         'view': f"{schema_name}.{view_name}",
-                        'error': 'Erro ao salvar arquivo'
+                        'error': 'Error saving file'
                     })
             else:
                 self.errors.append({
                     'view': f"{schema_name}.{view_name}",
-                    'error': 'Definição não encontrada ou vazia'
+                    'error': 'Definition not found or empty'
                 })
         self.generate_report()
         self.db.close_connection()
 
     def generate_report(self):
+        print("Generating extraction report...")
         metadata = {
             'extraction_date': datetime.now().isoformat(),
             'total_views': len(self.views_extracted) + len(self.errors),
@@ -177,10 +194,12 @@ class ViewExtractor:
         try:
             with open(metadata_file, 'w', encoding='utf-8') as f:
                 json.dump(metadata, f, indent=2, ensure_ascii=False)
+            print(f"Metadata saved to: {metadata_file}")
         except Exception as e:
-            pass
+            print(f"Error saving metadata: {e}")
 
     def search_in_views(self, search_term):
+        print(f"Searching for term: {search_term}")
         matches = []
         try:
             for filename in os.listdir(self.output_dir_abs):
@@ -194,16 +213,22 @@ class ViewExtractor:
                             count = content.lower().count(search_term.lower())
                             matches.append((filename, count))
                 except Exception as e:
-                    pass
+                    print(f"Error reading file {filename}: {e}")
         except FileNotFoundError:
+            print(f"Output directory not found: {self.output_dir_abs}")
             return
         if matches:
+            print(f"Found matches in {len(matches)} views.")
             for view_file, count in sorted(matches, key=lambda x: x[1], reverse=True):
-                pass
+                print(f"  {view_file}: {count} occurrences")
+        else:
+            print("No matches found.")
 
 def main():
+    print("Starting view extraction...")
     extractor = ViewExtractor()
     extractor.extract_all_views()
+    print("View extraction completed.")
 
 if __name__ == '__main__':
     main()
