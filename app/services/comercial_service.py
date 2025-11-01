@@ -94,7 +94,7 @@ class ComercialService:
                     risk = "-"
                 churn_data.append({
                     "client": client_name,
-                    "email_list": email_list,  # Use the cleaned email list
+                    "email_list": email_list,
                     "last_operation": last_date,
                     "inactive_days": inactive_days,
                     "historical_volume": historical_volume,
