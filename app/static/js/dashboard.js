@@ -21,11 +21,11 @@ class VolumeChart {
         });
 
         const endDate = new Date();
-        const startDate = dateUtils.subtractMonthsFromDate(endDate, 12);
+        const startDate = dateUtils.subtractMonthsFromDate(endDate, 1);
 
         this.startDateInput.value = dateUtils.formatDateToPattern(startDate, 'yyyy-MM-01');
         this.endDateInput.value = dateUtils.formatDateToPattern(endDate, 'yyyy-MM-01');
-        this.typeSelect.value = 'monthly';
+        this.typeSelect.value = 'daily';
 
         const data = await this.fetchVolumeData(
             this.startDateInput.value,

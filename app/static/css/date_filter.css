@@ -15,7 +15,7 @@
     flex-wrap: wrap;
     gap: var(--gap);
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 
 .filter-container label {
@@ -24,11 +24,16 @@
 }
 
 .filter-container input[type="date"],
+.filter-container select,
 .filter-container button {
     padding: 0.5rem;
     border: 1px solid var(--card-border);
     border-radius: 4px;
     font-size: 1rem;
+}
+
+.filter-container select {
+    min-width: 150px; /* Define uma largura mínima para o select */
 }
 
 .filter-container button {
@@ -45,4 +50,3 @@
 .filter-container .filter-button {
     margin-left: auto;
 }
-
