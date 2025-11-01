@@ -41,7 +41,10 @@ class VolumeChart {
             const response = await fetch(`/dashboard/volume-data?start_date=${start_date}&end_date=${end_date}&type=${type}`);
             if (!response.ok) throw new Error('Erro ao buscar dados do volume');
             const result = await response.json();
-            return result.data || [];
+            return result.data.filter(item => {
+                const date = dateUtils.convertISOToDate(item.date);
+                return date >= dateUtils.convertISOToDate(start_date) && date <= dateUtils.convertISOToDate(end_date);
+            });
         } catch (error) {
             console.error('Erro ao buscar dados do volume:', error);
             return [];

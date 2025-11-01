@@ -26,6 +26,7 @@ class DashboardService:
             period AS period_date,
             ISNULL(total_volume, 0) AS total_volume
         FROM MonthlyAggregatedData
+        WHERE period <= FORMAT('{end_date_str}', 'yyyy-MM') -- Garante que o último mês não extrapole
         ORDER BY period ASC;
         """
 
