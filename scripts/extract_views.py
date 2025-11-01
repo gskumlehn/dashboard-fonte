@@ -40,15 +40,15 @@ class ViewColumnAnalyzer:
         Args:
             output_dir (str): Diretório onde os resultados serão salvos
         """
-        self.output_dir = Path(output_dir)
+        self.output_dir = output_dir
         self.db = Database()
         self.views_analyzed = []
         self.enum_candidates = []
 
     def create_output_directory(self):
         """Cria o diretório de saída se não existir"""
-        self.output_dir.mkdir(parents=True, exist_ok=True)
-        print(f"📁 Diretório de saída: {self.output_dir.absolute()}")
+        os.makedirs(self.output_dir, exist_ok=True)
+        print(f"📁 Diretório de saída: {os.path.abspath(self.output_dir)}")
 
     def get_all_views(self):
         """
@@ -281,7 +281,7 @@ ORDER BY {enum_field};
             'enum_candidates': self.enum_candidates
         }
 
-        metadata_file = self.output_dir / 'view_analysis_metadata.json'
+        metadata_file = os.path.join(self.output_dir, 'view_analysis_metadata.json')
         try:
             with open(metadata_file, 'w', encoding='utf-8') as f:
                 json.dump(metadata, f, indent=2, ensure_ascii=False)
@@ -290,7 +290,7 @@ ORDER BY {enum_field};
             print(f"\n❌ Erro ao salvar metadados: {e}")
 
         # 2. Gera arquivo SQL com todas as queries de extração
-        sql_file = self.output_dir / 'extract_enum_mappings.sql'
+        sql_file = os.path.join(self.output_dir, 'extract_enum_mappings.sql')
         try:
             with open(sql_file, 'w', encoding='utf-8') as f:
                 f.write("-- " + "=" * 78 + "\n")
@@ -319,7 +319,7 @@ ORDER BY {enum_field};
             print(f"❌ Erro ao salvar queries SQL: {e}")
 
         # 3. Gera relatório Markdown
-        md_file = self.output_dir / 'ENUM_PATTERNS_REPORT.md'
+        md_file = os.path.join(self.output_dir, 'ENUM_PATTERNS_REPORT.md')
         try:
             with open(md_file, 'w', encoding='utf-8') as f:
                 f.write("# Relatório de Análise de Padrões de Enum\n\n")
