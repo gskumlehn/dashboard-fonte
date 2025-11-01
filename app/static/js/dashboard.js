@@ -82,7 +82,7 @@ class VolumeChart {
                         yAxisID: 'y',
                         fill: false,
                         tension: 0,
-                        pointRadius: 2
+                        pointRadius: 1
                     },
                     {
                         label: 'Ticket Médio (R$)',
@@ -91,8 +91,8 @@ class VolumeChart {
                         backgroundColor: avgColor,
                         yAxisID: 'y1',
                         fill: false,
-                        tension: 0.2,
-                        pointRadius: 2
+                        tension: 0,
+                        pointRadius: 1
                     }
                 ]
             },
@@ -127,7 +127,7 @@ class VolumeChart {
                         min: 0,
                         title: { display: true, text: 'Ticket Médio (R$)', color: textColor, font: { family: fontFamily.trim(), size: 14, weight: 'bold' } },
                         ticks: {
-                            callback: value => `R$ ${Number(value).toLocaleString('pt-BR')}`,
+                            callback: value => `${Number(value).toLocaleString('pt-BR')}`,
                             color: textColor,
                             font: { family: fontFamily.trim(), size: 13 }
                         },
