@@ -1,7 +1,6 @@
 from typing import Dict, Any
 from app.infra.db_connection import Database
 from app.utils.date_utils import DateUtils
-from sqlalchemy import text
 
 class DashboardService:
 
@@ -83,7 +82,7 @@ class DashboardService:
             db.close_connection()
 
     def get_current_default_rate(self) -> Dict[str, Any]:
-        sql = text("""
+        sql = """
             SELECT 
                 COUNT(DISTINCT CASE WHEN is_overdue = 1 THEN d.Id END) as overdue_documents,
                 COUNT(DISTINCT d.Id) as open_documents,
@@ -111,13 +110,13 @@ class DashboardService:
                   AND d.Status = 0
                   AND d.DataVencimento IS NOT NULL
             ) d
-        """)
+        """
 
         db = Database()
         try:
-            row = db.execute_query(sql)
-            if row:
-                result = row[0]
+            rows = db.execute_query(sql)
+            if rows:
+                result = rows[0]
                 overdue_documents = result[0]
                 open_documents = result[1]
                 overdue_value = round(float(result[2]), 2)
