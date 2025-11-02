@@ -65,7 +65,7 @@ class VolumeChart {
         const avgColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-5'); // Cinza
         const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text');
         const gridColor = getComputedStyle(document.documentElement).getPropertyValue('--input-border');
-        const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family');
+        const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim();
 
         if (this.chart) this.chart.destroy();
 
@@ -106,30 +106,30 @@ class VolumeChart {
                             display: true,
                             text: type === 'daily' ? 'Dia' : 'Mês',
                             color: textColor,
-                            font: { family: fontFamily.trim(), size: 14, weight: 'bold' }
+                            font: { family: fontFamily, size: 14, weight: 'bold' }
                         },
-                        ticks: { color: textColor, font: { family: fontFamily.trim(), size: 13 } },
+                        ticks: { color: textColor, font: { family: fontFamily, size: 13 } },
                         grid: { color: gridColor }
                     },
                     y: {
                         position: 'left',
                         min: 0,
-                        title: { display: true, text: 'Volume (R$)', color: textColor, font: { family: fontFamily.trim(), size: 14, weight: 'bold' } },
+                        title: { display: true, text: 'Volume (R$)', color: textColor, font: { family: fontFamily, size: 14, weight: 'bold' } },
                         ticks: {
                             callback: value => `${value}M`,
                             color: textColor,
-                            font: { family: fontFamily.trim(), size: 13 }
+                            font: { family: fontFamily, size: 13 }
                         },
                         grid: { color: gridColor }
                     },
                     y1: {
                         position: 'right',
                         min: 0,
-                        title: { display: true, text: 'Ticket Médio (R$)', color: textColor, font: { family: fontFamily.trim(), size: 14, weight: 'bold' } },
+                        title: { display: true, text: 'Ticket Médio (R$)', color: textColor, font: { family: fontFamily, size: 14, weight: 'bold' } },
                         ticks: {
                             callback: value => `${Number(value).toLocaleString('pt-BR')}`,
                             color: textColor,
-                            font: { family: fontFamily.trim(), size: 13 }
+                            font: { family: fontFamily, size: 13 }
                         },
                         grid: { drawOnChartArea: false }
                     }
@@ -137,12 +137,12 @@ class VolumeChart {
                 plugins: {
                     legend: {
                         display: true,
-                        position: 'bottom', // Move the legend below the chart
+                        position: 'bottom',
                         labels: {
-                            usePointStyle: true, // Exibe a legenda como uma bola
+                            usePointStyle: true,
                             pointStyle: 'circle',
                             color: textColor,
-                            font: { family: fontFamily.trim(), size: 13 }
+                            font: { family: fontFamily, size: 13 }
                         }
                     },
                     tooltip: {
@@ -160,6 +160,94 @@ class VolumeChart {
                     }
                 }
             }
+        });
+    }
+
+    renderCharts(data) {
+        const overdueDocumentPercent = data.open_documents > 0
+            ? (data.overdue_documents / data.open_documents) * 100
+            : 0;
+
+        const overdueValuePercent = data.open_value > 0
+            ? (data.overdue_value / data.open_value) * 100
+            : 0;
+
+        const ctxDocumentCount = document.getElementById('documentCountChart').getContext('2d');
+        const ctxDocumentValue = document.getElementById('documentValueChart').getContext('2d');
+
+        if (this.documentCountChart) this.documentCountChart.destroy();
+        if (this.documentValueChart) this.documentValueChart.destroy();
+
+        const totalColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-1').trim();
+        const overdueColor = getComputedStyle(document.documentElement).getPropertyValue('--error-text').trim();
+        const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim();
+
+        const createCenterTextPlugin = (text) => ({
+            id: 'centerText',
+            beforeDraw(chart) {
+                const { width } = chart;
+                const { height } = chart;
+                const ctx = chart.ctx;
+                ctx.save();
+                ctx.font = `bold 16px ${fontFamily}`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = overdueColor;
+                ctx.fillText(`${text}%`, width / 2, height / 2);
+                ctx.restore();
+            },
+        });
+
+        this.documentCountChart = new Chart(ctxDocumentCount, {
+            type: 'doughnut',
+            data: {
+                labels: ['Vencido', 'Em Dia'],
+                datasets: [
+                    {
+                        data: [overdueDocumentPercent, 100 - overdueDocumentPercent],
+                        backgroundColor: [overdueColor, totalColor],
+                        borderWidth: 0,
+                    },
+                ],
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: false,
+                        labels: {
+                            font: { family: fontFamily }
+                        }
+                    },
+                    centerText: createCenterTextPlugin(overdueDocumentPercent.toFixed(2)),
+                },
+                cutout: '70%',
+            },
+        });
+
+        this.documentValueChart = new Chart(ctxDocumentValue, {
+            type: 'doughnut',
+            data: {
+                labels: ['Vencido', 'Em Dia'],
+                datasets: [
+                    {
+                        data: [overdueValuePercent, 100 - overdueValuePercent],
+                        backgroundColor: [overdueColor, totalColor],
+                        borderWidth: 0,
+                    },
+                ],
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: false,
+                        labels: {
+                            font: { family: fontFamily }
+                        }
+                    },
+                    centerText: createCenterTextPlugin(overdueValuePercent.toFixed(2)),
+                },
+                cutout: '70%',
+            },
         });
     }
 }
@@ -228,8 +316,25 @@ class DocumentStats {
         if (this.documentCountChart) this.documentCountChart.destroy();
         if (this.documentValueChart) this.documentValueChart.destroy();
 
-        const totalColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
-        const overdueColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-1').trim();
+        const totalColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-1').trim();
+        const overdueColor = getComputedStyle(document.documentElement).getPropertyValue('--error-text').trim();
+        const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim();
+
+        const createCenterTextPlugin = (text) => ({
+            id: 'centerText',
+            beforeDraw(chart) {
+                const { width } = chart;
+                const { height } = chart;
+                const ctx = chart.ctx;
+                ctx.save();
+                ctx.font = `bold 16px ${fontFamily}`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = overdueColor;
+                ctx.fillText(`${text}%`, width / 2, height / 2);
+                ctx.restore();
+            },
+        });
 
         this.documentCountChart = new Chart(ctxDocumentCount, {
             type: 'doughnut',
@@ -245,7 +350,13 @@ class DocumentStats {
             },
             options: {
                 plugins: {
-                    legend: { display: false },
+                    legend: {
+                        display: false,
+                        labels: {
+                            font: { family: fontFamily }
+                        }
+                    },
+                    centerText: createCenterTextPlugin(overdueDocumentPercent.toFixed(2)),
                 },
                 cutout: '70%',
             },
@@ -265,7 +376,13 @@ class DocumentStats {
             },
             options: {
                 plugins: {
-                    legend: { display: false },
+                    legend: {
+                        display: false,
+                        labels: {
+                            font: { family: fontFamily }
+                        }
+                    },
+                    centerText: createCenterTextPlugin(overdueValuePercent.toFixed(2)),
                 },
                 cutout: '70%',
             },

@@ -106,11 +106,17 @@
 }
 
 .quadrant .info h3.overdue {
-    color: var(--chart-color-1); /* Match the "Vencido" color to the chart */
+    color: var(--error-text); /* Match the "Vencido" color to the chart */
     font-weight: bold;
 }
 
 .quadrant .info h3 span {
     color: var(--black); /* Black for the value */
     font-weight: normal; /* Remove bold for the value */
+}
+
+.quadrant .info h3 span::before {
+    content: "R$ "; /* Add currency symbol before the value */
+    font-weight: normal;
+    color: var(--black);
 }
