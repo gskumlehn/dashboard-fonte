@@ -28,13 +28,11 @@ def create_app():
     from app.controllers.root_controller import root_bp
     from app.controllers.dashboard_controller import dashboard_bp
     from app.controllers.comercial_controller import comercial_bp
-    from app.controllers.default_rate_controller import default_rate_bp
 
     app.register_blueprint(login_bp)
     app.register_blueprint(healthcheck_bp)
     app.register_blueprint(root_bp)
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(comercial_bp)
-    app.register_blueprint(default_rate_bp)
 
     return app
