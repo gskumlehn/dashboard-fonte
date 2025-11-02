@@ -117,7 +117,6 @@
 }
 
 .quadrant .info h3 span::before {
-    content: "R$ "; /* Add currency symbol before the value */
     font-weight: normal;
     color: var(--black);
 }
