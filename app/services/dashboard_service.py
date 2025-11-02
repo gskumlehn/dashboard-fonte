@@ -86,12 +86,12 @@ class DashboardService:
             SELECT 
                 COUNT(DISTINCT CASE WHEN is_overdue = 1 THEN d.Id END) as overdue_documents,
                 COUNT(DISTINCT d.Id) as open_documents,
-                SUM(CASE WHEN is_overdue = 1 THEN d.Valor ELSE 0 END) as overdue_value,
-                SUM(d.Valor) as open_value
+                SUM(CASE WHEN is_overdue = 1 THEN d.ValorFace ELSE 0 END) as overdue_value,  -- Updated column name
+                SUM(d.ValorFace) as open_value  -- Updated column name
             FROM (
                 SELECT 
                     d.Id,
-                    d.Valor,
+                    d.ValorFace,  -- Updated column name
                     CASE 
                         WHEN d.Status = 0
                          AND CAST(GETDATE() AS DATE) > 
