@@ -64,3 +64,38 @@
 .filter-container .filter-button {
     margin-left: auto; /* Move o botão para a direita */
 }
+
+.quadrant-container {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--gap);
+    margin-top: 1rem;
+}
+
+.quadrant {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.quadrant canvas {
+    max-width: 150px;
+    max-height: 150px;
+}
+
+.quadrant .info {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.quadrant .info p {
+    margin: 0.25rem 0;
+    font-size: 0.9rem;
+    color: var(--text);
+}

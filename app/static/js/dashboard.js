@@ -164,7 +164,108 @@ class VolumeChart {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+class DocumentStats {
+    constructor() {
+        this.documentCountChart = null;
+        this.documentValueChart = null;
+    }
+
+    async init() {
+        const data = await this.fetchDefaultRateData();
+        this.updateStats(data);
+        this.renderCharts(data);
+    }
+
+    async fetchDefaultRateData() {
+        try {
+            const response = await fetch('/dashboard/default-rate');
+            if (!response.ok) throw new Error('Erro ao buscar dados de inadimplência');
+            return await response.json();
+        } catch (error) {
+            console.error('Erro ao buscar dados de inadimplência:', error);
+            return {
+                overdue_documents: 0,
+                open_documents: 0,
+                overdue_value: 0,
+                open_value: 0,
+            };
+        }
+    }
+
+    updateStats(data) {
+        document.getElementById('totalDocuments').textContent = data.open_documents;
+        document.getElementById('overdueDocuments').textContent = data.overdue_documents;
+        document.getElementById('totalValue').textContent = Number(data.open_value).toLocaleString('pt-BR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        });
+        document.getElementById('overdueValue').textContent = Number(data.overdue_value).toLocaleString('pt-BR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        });
+    }
+
+    renderCharts(data) {
+        const overdueDocumentPercent = data.open_documents > 0
+            ? (data.overdue_documents / data.open_documents) * 100
+            : 0;
+
+        const overdueValuePercent = data.open_value > 0
+            ? (data.overdue_value / data.open_value) * 100
+            : 0;
+
+        const ctxDocumentCount = document.getElementById('documentCountChart').getContext('2d');
+        const ctxDocumentValue = document.getElementById('documentValueChart').getContext('2d');
+
+        if (this.documentCountChart) this.documentCountChart.destroy();
+        if (this.documentValueChart) this.documentValueChart.destroy();
+
+        this.documentCountChart = new Chart(ctxDocumentCount, {
+            type: 'doughnut',
+            data: {
+                labels: ['Vencido', 'Em Dia'],
+                datasets: [
+                    {
+                        data: [overdueDocumentPercent, 100 - overdueDocumentPercent],
+                        backgroundColor: ['#dc3545', '#28a745'],
+                        borderWidth: 0,
+                    },
+                ],
+            },
+            options: {
+                plugins: {
+                    legend: { display: false },
+                },
+                cutout: '70%',
+            },
+        });
+
+        this.documentValueChart = new Chart(ctxDocumentValue, {
+            type: 'doughnut',
+            data: {
+                labels: ['Vencido', 'Em Dia'],
+                datasets: [
+                    {
+                        data: [overdueValuePercent, 100 - overdueValuePercent],
+                        backgroundColor: ['#dc3545', '#28a745'],
+                        borderWidth: 0,
+                    },
+                ],
+            },
+            options: {
+                plugins: {
+                    legend: { display: false },
+                },
+                cutout: '70%',
+            },
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
     const volumeChart = new VolumeChart();
-    volumeChart.init();
+    await volumeChart.init();
+
+    const documentStats = new DocumentStats();
+    await documentStats.init();
 });

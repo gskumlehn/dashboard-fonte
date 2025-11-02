@@ -1,100 +1,10 @@
-# Dashboard Fonte - Especificação Técnica V5 (Simplificada)
-
-**Data**: 1 de novembro de 2025  
-**Versão**: 5.0 (Sem Views + Sem Feriados)  
-**Status**: ✅ Pronto para Implementação
-
----
-
-## 📋 Mudanças da V4 para V5
-
-### ❌ Removido da V4
-- Tabela `FeriadosBancarios` (não será criada agora)
-- Parâmetros `@Estado` e `@Cidade` nas funções
-- Lógica de feriados bancários
-
-### ✅ Mantido/Simplificado
-- Funções SQL simplificadas (apenas fins de semana)
-- Query de inadimplência histórica diária
-- Lógica de vencimento ajustado (sábado/domingo → próxima segunda)
-- Todas as queries diretas (sem views)
+# Dashboard Fonte 
 
 ---
 
 ## 🎯 Conceitos Importantes
 
-### 1. Data de Vencimento Ajustada (Simplificada)
-
-**Regra**: Se um documento vence em **fim de semana** (sábado ou domingo), o vencimento é automaticamente ajustado para a **próxima segunda-feira**.
-
-**Exemplo**:
-- Vencimento original: **Sábado, 01/nov/2025**
-- Vencimento ajustado: **Segunda, 03/nov/2025**
-
-**Implementação**: Função `dbo.fn_DataVencimentoAjustada(@DataVencimento)`
-
-**Nota**: Feriados bancários **não são considerados** nesta versão. Podem ser adicionados posteriormente.
-
----
-
-### 2. Período de Inadimplência
-
-**Regra**: Um documento está inadimplente entre:
-- **Início**: Dia seguinte ao vencimento ajustado
-- **Fim**: Dia anterior à data de baixa (ou hoje, se ainda não foi baixado)
-
-**Exemplo**:
-- Vencimento ajustado: **01/out/2025** (terça-feira)
-- Data de baixa: **10/out/2025**
-- **Inadimplente de**: 02/out a 09/out (8 dias)
-
----
-
-### 3. Dias Úteis (Simplificado)
-
-**Não são dias úteis**:
-- ✅ Sábados (DATEPART(WEEKDAY) = 7)
-- ✅ Domingos (DATEPART(WEEKDAY) = 1)
-
-**Implementação**: Função `dbo.fn_IsDiaUtilBancario(@Data)`
-
----
-
-## 🔧 Setup Inicial
-
-### Passo 1: Criar Funções SQL
-
-```sql
--- Executar script: sql/funcoes_dias_uteis_simples.sql
--- Cria 3 funções:
--- 1. fn_IsDiaUtilBancario(@Data)
--- 2. fn_ProximoDiaUtilBancario(@Data)
--- 3. fn_DataVencimentoAjustada(@DataVencimento)
-```
-
-**⚠️ IMPORTANTE**: Execute este script **UMA VEZ** antes de usar as queries do dashboard!
-
----
-
 ## 📊 TELA 1: Visão Executiva
-
-### KPI 1.1: Volume de Operações
-
-**Sem mudanças** - Não depende de views nem de dias úteis.
-
-**Query SQL**:
-```sql
-SELECT 
-    COUNT(o.Id) as total_operations,
-    SUM(o.ValorCompra) as total_value,
-    AVG(o.ValorCompra) as average_ticket
-FROM Operacao o
-WHERE o.Status = 1  -- Fechado
-  AND o.IsDeleted = 0
-  AND o.Data BETWEEN :start_date AND :end_date;
-```
-
----
 
 ### KPI 1.2: Taxa de Inadimplência ATUAL
 
@@ -121,18 +31,25 @@ FROM (
         d.Id,
         d.Valor,
         d.Status,
-        dbo.fn_DataVencimentoAjustada(d.DataVencimento) as adjusted_due_date,
         
         -- Verificar se está vencido HOJE
         CASE 
-            WHEN d.Status = 0  -- Aberto
-             AND CAST(GETDATE() AS DATE) > dbo.fn_DataVencimentoAjustada(d.DataVencimento)
+            WHEN d.Status = 0  -- Only consider documents with status "Aberto"
+             AND CAST(GETDATE() AS DATE) > 
+                 (CASE 
+                    WHEN DATEPART(WEEKDAY, CAST(d.DataVencimento AS DATE)) = 7 
+                        THEN DATEADD(DAY, 2, CAST(d.DataVencimento AS DATE))  -- Saturday -> Monday
+                    WHEN DATEPART(WEEKDAY, CAST(d.DataVencimento AS DATE)) = 1 
+                        THEN DATEADD(DAY, 1, CAST(d.DataVencimento AS DATE))  -- Sunday -> Monday
+                    ELSE CAST(d.DataVencimento AS DATE)
+                  END)
             THEN 1
             ELSE 0
         END as is_overdue
         
     FROM Documento d
     WHERE d.IsDeleted = 0
+      AND d.Status = 0  -- Only include documents with status "Aberto"
       AND d.DataVencimento IS NOT NULL
 ) d;
 ```
@@ -555,12 +472,20 @@ class InadimplenciaService:
                     d.Valor,
                     CASE 
                         WHEN d.Status = 0
-                         AND CAST(GETDATE() AS DATE) > dbo.fn_DataVencimentoAjustada(d.DataVencimento)
+                         AND CAST(GETDATE() AS DATE) > 
+                             (CASE 
+                                WHEN DATEPART(WEEKDAY, CAST(d.DataVencimento AS DATE)) = 7 
+                                    THEN DATEADD(DAY, 2, CAST(d.DataVencimento AS DATE))  -- Saturday -> Monday
+                                WHEN DATEPART(WEEKDAY, CAST(d.DataVencimento AS DATE)) = 1 
+                                    THEN DATEADD(DAY, 1, CAST(d.DataVencimento AS DATE))  -- Sunday -> Monday
+                                ELSE CAST(d.DataVencimento AS DATE)
+                              END)
                         THEN 1
                         ELSE 0
                     END as is_overdue
                 FROM Documento d
                 WHERE d.IsDeleted = :is_deleted
+                  AND d.Status = 0  -- Only include documents with status "Aberto"
                   AND d.DataVencimento IS NOT NULL
             ) d
         """)
@@ -626,4 +551,3 @@ Esta versão **não considera feriados bancários**. Apenas fins de semana (sáb
 **Última atualização**: 1 de novembro de 2025  
 **Autor**: Dashboard Fonte Team  
 **Versão**: 5.0 (Simplificada - Sem Feriados)
-
