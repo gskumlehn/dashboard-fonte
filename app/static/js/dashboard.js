@@ -193,16 +193,24 @@ class DocumentStats {
     }
 
     updateStats(data) {
+        const overdueDocumentPercent = data.open_documents > 0
+            ? ((data.overdue_documents / data.open_documents) * 100).toFixed(2)
+            : '0.00';
+
+        const overdueValuePercent = data.open_value > 0
+            ? ((data.overdue_value / data.open_value) * 100).toFixed(2)
+            : '0.00';
+
         document.getElementById('totalDocuments').textContent = data.open_documents;
-        document.getElementById('overdueDocuments').textContent = data.overdue_documents;
+        document.getElementById('overdueDocuments').textContent = `${data.overdue_documents} (${overdueDocumentPercent}%)`;
         document.getElementById('totalValue').textContent = Number(data.open_value).toLocaleString('pt-BR', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
         });
-        document.getElementById('overdueValue').textContent = Number(data.overdue_value).toLocaleString('pt-BR', {
+        document.getElementById('overdueValue').textContent = `${Number(data.overdue_value).toLocaleString('pt-BR', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
-        });
+        })} (${overdueValuePercent}%)`;
     }
 
     renderCharts(data) {
@@ -220,6 +228,9 @@ class DocumentStats {
         if (this.documentCountChart) this.documentCountChart.destroy();
         if (this.documentValueChart) this.documentValueChart.destroy();
 
+        const totalColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
+        const overdueColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-1').trim();
+
         this.documentCountChart = new Chart(ctxDocumentCount, {
             type: 'doughnut',
             data: {
@@ -227,7 +238,7 @@ class DocumentStats {
                 datasets: [
                     {
                         data: [overdueDocumentPercent, 100 - overdueDocumentPercent],
-                        backgroundColor: ['#dc3545', '#28a745'],
+                        backgroundColor: [overdueColor, totalColor],
                         borderWidth: 0,
                     },
                 ],
@@ -247,7 +258,7 @@ class DocumentStats {
                 datasets: [
                     {
                         data: [overdueValuePercent, 100 - overdueValuePercent],
-                        backgroundColor: ['#dc3545', '#28a745'],
+                        backgroundColor: [overdueColor, totalColor],
                         borderWidth: 0,
                     },
                 ],

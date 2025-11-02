@@ -99,3 +99,18 @@
     font-size: 0.9rem;
     color: var(--text);
 }
+
+.quadrant .info h3.total {
+    color: var(--primary); /* Fonte orange for "Total" */
+    font-weight: bold;
+}
+
+.quadrant .info h3.overdue {
+    color: var(--chart-color-1); /* Match the "Vencido" color to the chart */
+    font-weight: bold;
+}
+
+.quadrant .info h3 span {
+    color: var(--black); /* Black for the value */
+    font-weight: normal; /* Remove bold for the value */
+}
