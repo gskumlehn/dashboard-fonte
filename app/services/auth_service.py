@@ -15,4 +15,3 @@ class AuthService:
             return True
 
         raise Exception("Invalid username or password")
-

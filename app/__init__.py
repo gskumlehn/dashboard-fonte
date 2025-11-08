@@ -19,7 +19,8 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(user_id):
-        if user_id == os.getenv('APP_USER'):
+        env_user = os.getenv('APP_USER')
+        if user_id == env_user:
             return User(id=user_id)
         return None
 

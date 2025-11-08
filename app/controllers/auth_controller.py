@@ -1,7 +1,7 @@
 import hmac
 import os
 from flask import Blueprint, flash, redirect, render_template, request, url_for
-from flask_login import UserMixin, login_required, login_user, logout_user
+from flask_login import UserMixin, login_required, login_user, logout_user, current_user
 
 from app.services.auth_service import AuthService
 
@@ -13,6 +13,9 @@ class User(UserMixin):
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard_bp.home'))
+
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -26,7 +29,7 @@ def login():
             valid = AuthService.validate_credentials(username, password)
             if valid:
                 user = User(id=username)
-                login_user(user)
+                login_user(user, remember=True)  # Adicionado remember=True para persistência
                 return redirect(url_for('dashboard_bp.home'))
             else:
                 flash("Senha inválida. Tente novamente.", "error")
