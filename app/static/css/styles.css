@@ -131,6 +131,13 @@ button, .btn, .logout-link {
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+input,
+select,
+textarea,
+input[readonly] {
+    color: var(--black, #000000);
+}
+
 .filters select:focus,
 .filters input[type="date"]:focus,
 .filters input[type="text"]:focus,

@@ -6,49 +6,50 @@
 <div class="table-card">
     <canvas id="volumeChart" width="800" height="320"></canvas>
 </div>
-<h2>Documentos em Aberto</h2>
-
-<div class="quadrant-container">
-    <div class="quadrant">
-        <h3 class="quadrant-title">Quantidade</h3>
-        <div class="quadrant-body">
-            <div class="chart">
-                <canvas id="documentCountChart" width="200" height="200"></canvas>
-            </div>
-            <div class="stats">
-                <div class="stat-row">
-                    <label class="open-label" for="openDocuments">Em dia</label>
-                    <input id="openDocuments" type="text" value="0" readonly tabindex="-1">
+<h2>Documentos</h2>
+<div class="quadrant-wrapper">
+    <div class="quadrant-container">
+        <div class="quadrant">
+            <h3 class="quadrant-title">Quantidade</h3>
+            <div class="quadrant-body">
+                <div class="chart">
+                    <canvas id="documentCountChart" width="200" height="200"></canvas>
                 </div>
-                <div class="stat-row">
-                    <label class="overdue-label" for="overdueDocuments">Vencido</label>
-                    <input id="overdueDocuments" type="text" value="0" readonly tabindex="-1">
-                </div>
-                <div class="stat-row">
-                    <label class="total-label" for="totalDocuments">Total</label>
-                    <input id="totalDocuments" type="text" value="0" readonly tabindex="-1">
+                <div class="stats">
+                    <div class="stat-row">
+                        <label class="open-label" for="openDocuments">Abertos</label>
+                        <input id="openDocuments" type="text" value="0" readonly tabindex="-1">
+                    </div>
+                    <div class="stat-row">
+                        <label class="overdue-label" for="overdueDocuments">Vencidos</label>
+                        <input id="overdueDocuments" type="text" value="0" readonly tabindex="-1">
+                    </div>
+                    <div class="stat-row">
+                        <label class="total-label" for="totalDocuments">Total</label>
+                        <input id="totalDocuments" type="text" value="0" readonly tabindex="-1">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="quadrant">
-        <h3 class="quadrant-title">Valor</h3>
-        <div class="quadrant-body">
-            <div class="chart">
-                <canvas id="documentValueChart" width="200" height="200"></canvas>
-            </div>
-            <div class="stats">
-                <div class="stat-row">
-                    <label class="open-label" for="openValue">Em dia</label>
-                    <input id="openValue" type="text" value="R$ 0,00" readonly tabindex="-1">
+        <div class="quadrant">
+            <h3 class="quadrant-title">Valor</h3>
+            <div class="quadrant-body">
+                <div class="chart">
+                    <canvas id="documentValueChart" width="200" height="200"></canvas>
                 </div>
-                <div class="stat-row">
-                    <label class="overdue-label" for="overdueValue">Vencido</label>
-                    <input id="overdueValue" type="text" value="R$ 0,00" readonly tabindex="-1">
-                </div>
-                <div class="stat-row">
-                    <label class="total-label" for="totalValue">Total</label>
-                    <input id="totalValue" type="text" value="R$ 0,00" readonly tabindex="-1">
+                <div class="stats">
+                    <div class="stat-row">
+                        <label class="open-label" for="openValue">Abertos</label>
+                        <input id="openValue" type="text" value="R$ 0,00" readonly tabindex="-1">
+                    </div>
+                    <div class="stat-row">
+                        <label class="overdue-label" for="overdueValue">Vencidos</label>
+                        <input id="overdueValue" type="text" value="R$ 0,00" readonly tabindex="-1">
+                    </div>
+                    <div class="stat-row">
+                        <label class="total-label" for="totalValue">Total</label>
+                        <input id="totalValue" type="text" value="R$ 0,00" readonly tabindex="-1">
+                    </div>
                 </div>
             </div>
         </div>
