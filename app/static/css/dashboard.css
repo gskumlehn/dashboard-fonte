@@ -114,36 +114,26 @@
 
 /* right: stats column */
 .quadrant .stats {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.5rem;
+    display: grid;
+    grid-template-columns: 6.5rem 1fr; /* label column fixed, value column flexible */
+    column-gap: 0.75rem;
+    row-gap: 0.5rem;
+    align-items: center;
+    justify-items: start;
     flex: 1 1 auto;
 }
 
-/* each label + input row */
+/* make .stat-row transparent to layout so label and input become grid children */
 .quadrant .stat-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* keep label on left side and input fills remainder */
-    gap: 0.75rem;
+    display: contents;
 }
 
 /* labels: only the title ('Total' / 'Vencido') should be colored and bold */
 .quadrant .stat-row label {
     font-weight: 700;
     font-size: 1rem;
-    flex: 0 0 6.5rem; /* fixed width for label */
-    text-align: right; /* label text aligned to the right */
-}
-
-/* specific colors for the labels */
-.quadrant .stat-row label.total-label {
-    color: var(--primary); /* Fonte orange for "Total" */
-}
-
-.quadrant .stat-row label.overdue-label {
-    color: var(--error-text); /* color for "Vencido" */
+    text-align: right; /* label text aligned to the right (in its grid cell) */
+    align-self: center;
 }
 
 /* inputs: show the value as normal black regular text; not bold and left-aligned */
@@ -155,7 +145,7 @@
     font-size: 1rem;
     padding: 0;
     margin: 0;
-    flex: 1 1 auto; /* input fills remaining space */
+    width: 100%;
     min-width: 4rem;
     text-align: left; /* value aligned to the left */
 }
