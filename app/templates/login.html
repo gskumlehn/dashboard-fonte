@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/buttons.css') }}">
 </head>
 <body>
-    <div class="login-container">
+    <div class="container" id="login-container">
         <div class="logo-container">
             <img src="{{ url_for('static', filename='images/logo-horizontal.png') }}" alt="Fonte Inc">
         </div>
@@ -39,12 +39,12 @@
                 >
             </div>
 
-            <button type="submit" class="btn btn-primary">Entrar</button>
+            <button type="submit">Entrar</button>
         </form>
     </div>
 
-    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
     <script src="{{ url_for('static', filename='js/messaging.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
     <script src="{{ url_for('static', filename='js/buttons.js') }}" defer></script>
 </body>
 </html>

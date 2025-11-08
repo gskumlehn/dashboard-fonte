@@ -10,10 +10,6 @@
 
 html, body {
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
 }
 
 body {
@@ -50,18 +46,6 @@ select,
 textarea,
 input[readonly] {
   color: var(--black, #000000);
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid var(--input-border);
-  border-radius: 4px;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s;
-  background-color: transparent;
-}
-
-input:focus {
-  border-color: var(--primary);
 }
 
 .container {
@@ -70,6 +54,7 @@ input:focus {
   padding: 1.5rem;
 }
 
+/* Responsividade Global */
 @media (max-width: 1024px) {
   body {
     padding: 1rem;
