@@ -182,18 +182,20 @@ class VolumeChart {
         const overdueColor = getComputedStyle(document.documentElement).getPropertyValue('--error-text').trim();
         const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim();
 
-        const createCenterTextPlugin = (percent) => ({
+        const createCenterTextPlugin = (percent, color) => ({
             id: 'centerText',
             beforeDraw(chart) {
                 const width = chart.width;
                 const height = chart.height;
                 const ctx = chart.ctx;
                 ctx.save();
+                const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim();
                 ctx.font = `bold 16px ${fontFamily}`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillStyle = overdueColor;
-                const text = `${Number(percent).toFixed(1)}%`;
+                ctx.fillStyle = color;
+                const value = Number(percent) || 0;
+                const text = `${value.toFixed(1)}%`;
                 ctx.fillText(text, width / 2, height / 2);
                 ctx.restore();
             },
@@ -211,6 +213,7 @@ class VolumeChart {
                     },
                 ],
             },
+            plugins: [ createCenterTextPlugin(overdueDocumentPercent, overdueColor) ],
             options: {
                 plugins: {
                     legend: {
@@ -218,8 +221,7 @@ class VolumeChart {
                         labels: {
                             font: { family: fontFamily }
                         }
-                    },
-                    centerText: createCenterTextPlugin(overdueDocumentPercent),
+                    }
                 },
                 cutout: '70%',
             },
@@ -237,6 +239,7 @@ class VolumeChart {
                     },
                 ],
             },
+            plugins: [ createCenterTextPlugin(overdueValuePercent, overdueColor) ],
             options: {
                 plugins: {
                     legend: {
@@ -244,8 +247,7 @@ class VolumeChart {
                         labels: {
                             font: { family: fontFamily }
                         }
-                    },
-                    centerText: createCenterTextPlugin(overdueValuePercent),
+                    }
                 },
                 cutout: '70%',
             },
@@ -341,18 +343,20 @@ class DocumentStats {
         const overdueColor = getComputedStyle(document.documentElement).getPropertyValue('--error-text').trim();
         const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim();
 
-        const createCenterTextPlugin = (percent) => ({
+        const createCenterTextPlugin = (percent, color) => ({
             id: 'centerText',
             beforeDraw(chart) {
                 const width = chart.width;
                 const height = chart.height;
                 const ctx = chart.ctx;
                 ctx.save();
+                const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim();
                 ctx.font = `bold 16px ${fontFamily}`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillStyle = overdueColor;
-                const text = `${Number(percent).toFixed(1)}%`;
+                ctx.fillStyle = color;
+                const value = Number(percent) || 0;
+                const text = `${value.toFixed(1)}%`;
                 ctx.fillText(text, width / 2, height / 2);
                 ctx.restore();
             },
@@ -370,6 +374,7 @@ class DocumentStats {
                     },
                 ],
             },
+            plugins: [ createCenterTextPlugin(overdueDocumentPercent, overdueColor) ],
             options: {
                 plugins: {
                     legend: {
@@ -377,8 +382,7 @@ class DocumentStats {
                         labels: {
                             font: { family: fontFamily }
                         }
-                    },
-                    centerText: createCenterTextPlugin(overdueDocumentPercent),
+                    }
                 },
                 cutout: '70%',
             },
@@ -396,6 +400,7 @@ class DocumentStats {
                     },
                 ],
             },
+            plugins: [ createCenterTextPlugin(overdueValuePercent, overdueColor) ],
             options: {
                 plugins: {
                     legend: {
@@ -403,8 +408,7 @@ class DocumentStats {
                         labels: {
                             font: { family: fontFamily }
                         }
-                    },
-                    centerText: createCenterTextPlugin(overdueValuePercent),
+                    }
                 },
                 cutout: '70%',
             },
