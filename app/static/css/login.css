@@ -1,5 +1,5 @@
-@import url('buttons.css');
-@import url('root.css');
+@import url('/static/css/buttons.css');
+@import url('/static/css/root.css');
 
 * {
     margin: 0;
