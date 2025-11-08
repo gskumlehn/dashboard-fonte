@@ -98,7 +98,7 @@ class Login {
             }
             
             setTimeout(() => {
-                window.location.href = '/volume-operations.html';
+                window.location.href = '/dashboard/';
             }, 1000);
         } else {
             if (window.toast) {
