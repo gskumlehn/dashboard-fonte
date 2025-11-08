@@ -117,29 +117,31 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 0; /* removed spacing so components sit glued together */
-    justify-content: center; /* center chart + stats as a group */
+    gap: 0;
+    justify-content: center;
 }
 
 .quadrant .chart {
-    flex: 0 0 auto; /* size to content so it sits next to stats without forcing 50% width */
+    flex: 0 0 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: auto;
+    width: 50%;
     height: 160px;
 }
 
 .quadrant canvas {
-    max-width: 90%;
-    max-height: 150px;
+    max-width: 100%;
+    width: 100%;
+    max-height: 220px;
+    height: auto;
 }
 
 .quadrant .stats {
-    flex: 0 0 auto; /* size to content so it hugs the chart */
+    flex: 0 0 50%;
     display: grid;
     grid-template-columns: 3.6rem 1fr;
-    column-gap: 0.3rem; /* tighten label/input spacing */
+    column-gap: 0.3rem;
     row-gap: 0.5rem;
     align-items: center;
     justify-items: start;
@@ -231,8 +233,9 @@
     }
 
     .quadrant .chart {
-        flex: 0 0 auto; /* keep auto sizing on tablet */
+        flex: 0 0 auto;
         height: 140px;
+        width: auto;
     }
     .quadrant .stats {
         flex: 0 0 auto;
