@@ -183,7 +183,7 @@
     color: var(--black, #000000);
     font-weight: 400;
     font-size: 1rem;
-    padding: 0 0.5rem;
+    padding: 0 2rem;
     margin: 0;
     width: 100%;
     min-width: 4rem;
@@ -299,7 +299,7 @@
     .quadrant .stat-row input {
         font-size: 0.95rem;
         text-align: right;
-        padding: 0 0.4rem;
+        padding: 0 1.6rem;
         box-sizing: border-box; /* mobile: ensure padding included */
         max-width: 100%;
     }
