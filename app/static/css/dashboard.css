@@ -183,7 +183,7 @@
     color: var(--black, #000000);
     font-weight: 400;
     font-size: 1rem;
-    padding: 0;
+    padding: 0 1.5rem; /* 3x larger horizontal padding for all textual inputs in quadrant */
     margin: 0;
     width: 100%;
     min-width: 4rem;
@@ -196,7 +196,7 @@
     gap: 0.5rem;
     width: 100%;
     box-sizing: border-box;
-    padding: 0 0.5rem; /* added horizontal padding to prevent overflow */
+    padding: 0 1.5rem; /* 3x larger horizontal padding so monetary area matches other inputs */
 }
 
 .quadrant .money-symbol {
@@ -309,6 +309,7 @@
     .quadrant .stat-row input {
         font-size: 0.95rem;
         text-align: right;
+        padding: 0 1.2rem; /* mobile: keep proportional increased padding */
     }
 
     .quadrant .stat-row input.monetary {
@@ -316,7 +317,7 @@
     }
 
     .quadrant .monetary-wrapper {
-        padding: 0 0.4rem;
+        padding: 0 1.2rem; /* mobile: 3x of previous 0.4rem -> 1.2rem */
     }
     .quadrant .monetary-input {
         font-size: 0.95rem;
