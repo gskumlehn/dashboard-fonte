@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
-from flask_login import UserMixin, login_user, logout_user, login_required
-from app.services.auth_service import AuthService
-import os
 import hmac
+import os
+from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask_login import UserMixin, login_required, login_user, logout_user
+
+from app.services.auth_service import AuthService
 
 auth_bp = Blueprint('auth_bp', __name__, url_prefix='/auth')
 

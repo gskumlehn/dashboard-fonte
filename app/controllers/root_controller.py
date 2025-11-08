@@ -4,4 +4,4 @@ root_bp = Blueprint('root_bp', __name__)
 
 @root_bp.route('/')
 def root():
-    return redirect(url_for('login_bp.login'))
+    return redirect(url_for('auth_bp.login'))

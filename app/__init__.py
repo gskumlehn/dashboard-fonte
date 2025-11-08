@@ -1,6 +1,6 @@
+from dotenv import load_dotenv
 from flask import Flask
 from flask_login import LoginManager, UserMixin
-from dotenv import load_dotenv
 import os
 
 def create_app():
@@ -23,16 +23,16 @@ def create_app():
             return User(id=user_id)
         return None
 
-    from app.controllers.auth_controller import auth_bp  # Atualizado de login_controller para auth_controller
+    from app.controllers.auth_controller import auth_bp
+    from app.controllers.comercial_controller import comercial_bp
+    from app.controllers.dashboard_controller import dashboard_bp
     from app.controllers.healthcheck_controller import healthcheck_bp
     from app.controllers.root_controller import root_bp
-    from app.controllers.dashboard_controller import dashboard_bp
-    from app.controllers.comercial_controller import comercial_bp
 
-    app.register_blueprint(auth_bp)  # Atualizado de login_bp para auth_bp
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(comercial_bp)
+    app.register_blueprint(dashboard_bp)
     app.register_blueprint(healthcheck_bp)
     app.register_blueprint(root_bp)
-    app.register_blueprint(dashboard_bp)
-    app.register_blueprint(comercial_bp)
 
     return app
