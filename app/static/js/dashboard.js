@@ -289,7 +289,6 @@ class DocumentStats {
             ? ((data.overdue_value / data.open_value) * 100).toFixed(2)
             : '0.00';
 
-        // write plain values into readonly inputs (no percent in the inputs)
         const totalDocsInput = document.getElementById('totalDocuments');
         const overdueDocsInput = document.getElementById('overdueDocuments');
         const totalValueInput = document.getElementById('totalValue');
@@ -298,16 +297,22 @@ class DocumentStats {
         if (totalDocsInput) totalDocsInput.value = data.open_documents;
         if (overdueDocsInput) overdueDocsInput.value = data.overdue_documents;
 
-        if (totalValueInput) totalValueInput.value = Number(data.open_value).toLocaleString('pt-BR', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-        });
-        if (overdueValueInput) overdueValueInput.value = Number(data.overdue_value).toLocaleString('pt-BR', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-        });
+        if (totalValueInput) {
+            const formattedTotal = Number(data.open_value).toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            });
+            totalValueInput.value = `R$ ${formattedTotal}`;
+        }
+        if (overdueValueInput) {
+            const formattedOverdue = Number(data.overdue_value).toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            });
+            overdueValueInput.value = `R$ ${formattedOverdue}`;
+        }
 
-        // percentages remain rendered on the canvas (do not include in inputs)
+        // percentages remain rendered on the canvas
     }
 
     renderCharts(data) {
