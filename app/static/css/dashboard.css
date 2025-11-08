@@ -90,10 +90,15 @@
 .quadrant .quadrant-title {
     margin: 0;
     text-align: center;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 600;
     color: var(--text, #3d3d3d);
     font-family: var(--font-family);
+
+    /* subtle separator between title and body */
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(0,0,0,0.06); /* subtle gray line */
 }
 
 /* wrapper that keeps chart left and stats right */
@@ -104,31 +109,31 @@
     gap: 1rem;
 }
 
-/* left: chart block (unchanged sizing) */
+/* make chart take 60% and stats 40% of the quadrant-body */
 .quadrant .chart {
-    flex: 0 0 auto;
+    flex: 0 0 60%;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 160px;
+    width: 100%;
     height: 160px;
 }
 
-/* canvas sizing within chart area */
+/* ensure canvas scales inside the 60% area */
 .quadrant canvas {
-    max-width: 150px;
+    max-width: 90%;
     max-height: 150px;
 }
 
-/* right: stats column */
+/* stats area becomes 40% of the body */
 .quadrant .stats {
+    flex: 0 0 40%;
     display: grid;
-    grid-template-columns: 6.5rem 1fr; /* label column fixed, value column flexible */
+    grid-template-columns: 4.5rem 1fr; /* reduced from 6.5rem to ~70% (4.5rem) */
     column-gap: 0.75rem;
     row-gap: 0.5rem;
     align-items: center;
     justify-items: start;
-    flex: 1 1 auto;
 }
 
 /* make .stat-row transparent to layout so label and input become grid children */
@@ -146,7 +151,7 @@
     color: #ffffff; /* label text as white to contrast with colored background */
     font-weight: 700;
     font-size: 0.95rem;
-    min-width: 6.5rem; /* keep column sizing consistent with grid */
+    min-width: 4.5rem; /* keep column sizing consistent with grid */
     height: 32px;
     box-sizing: border-box;
     text-align: right;
