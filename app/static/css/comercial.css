@@ -1,9 +1,6 @@
 @import url('./colors.css');
 @import url('./styles.css');
 
-/* .table-card styles were moved to styles.css to be shared across pages. */
-
-/* Keep table-specific rules (thead, th, td, badges, pagination, filters) */
 #client-table {
     width: 100%;
     border-collapse: collapse;
@@ -76,8 +73,8 @@
 }
 
 .risk-churned {
-    background-color: var(--black); /* Fundo preto */
-    color: var(--white); /* Texto branco */
+    background-color: var(--black);
+    color: var(--white);
 }
 
 .risk-high {
@@ -111,7 +108,7 @@
 .pagination-btn {
     background: none;
     border: 1px solid rgba(0, 0, 0, 0.1);
-    color: var(--text);
+    color: var(--black);
     font-size: 1.25rem;
     width: 32px;
     height: 32px;
@@ -137,7 +134,7 @@
 
 .pagination-info {
     font-size: 0.875rem;
-    color: var(--text);
+    color: var(--black);
     min-width: 80px;
     text-align: center;
 }
@@ -147,14 +144,14 @@
         padding: 1rem;
     }
 
-    /* .table-card responsive padding is handled in styles.css */
+    .pagination {
+        gap: 0.5rem;
+    }
+
     #client-table th,
     #client-table td {
         padding: 0.5rem;
         font-size: 0.8rem;
-    }
-
-    .pagination {
-        gap: 0.5rem;
+        color: var(--black);
     }
 }

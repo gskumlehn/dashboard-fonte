@@ -19,9 +19,9 @@
 
 .filter-group {
     display: flex;
-    flex-direction: row; /* Change to row to align label and input side by side */
-    align-items: center; /* Align label and input vertically */
-    gap: 0.5rem; /* Add spacing between label and input */
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .filter-group label {
@@ -44,7 +44,7 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-left: auto; /* Push the button to the right */
+    margin-left: auto;
 }
 
 .filter-container button:hover {

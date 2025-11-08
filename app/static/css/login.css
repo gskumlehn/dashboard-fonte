@@ -13,7 +13,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--text);
+    color: var(--black);
 }
 
 .container {
@@ -45,7 +45,7 @@ body {
 label {
     display: block;
     margin-bottom: 0.5rem;
-    color: var(--text);
+    color: var(--black);
     font-size: 14px;
     font-weight: 500;
 }
@@ -59,7 +59,7 @@ input {
     outline: none;
     transition: border-color 0.2s;
     background-color: transparent;
-    color: var(--text);
+    color: var(--black);
 }
 
 input:focus {
@@ -118,7 +118,6 @@ button:active {
     transform: translateX(0);
 }
 
-/* container global no body, direita superior */
 .global-messages-container {
     position: fixed;
     top: 1rem;

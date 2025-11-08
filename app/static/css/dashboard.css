@@ -106,7 +106,7 @@
     text-align: center;
     font-size: 1.1rem;
     font-weight: 600;
-    color: var(--text, #3d3d3d);
+    color: var(--black, #3d3d3d);
     font-family: var(--font-family);
     padding-bottom: 0.5rem;
     margin-bottom: 0.5rem;
@@ -169,7 +169,7 @@
 }
 
 .quadrant .stat-row label.open-label {
-    background: var(--chart-color-1);
+    background: var(--primary);
 }
 
 .quadrant .stat-row label.overdue-label {
@@ -177,7 +177,7 @@
 }
 
 .quadrant .stat-row label.total-label {
-    background: var(--chart-color-5);
+    background: var(--blue);
 }
 
 .quadrant .stat-row input {
@@ -186,10 +186,10 @@
     color: var(--black, #000000);
     font-weight: 400;
     font-size: 1rem;
-    padding: 0 0.75rem; /* reduced lateral padding so value fits */
+    padding: 0 0.75rem;
     margin: 0;
     width: 100%;
-    min-width: 0; /* allow inputs to shrink inside the grid */
+    min-width: 0;
     text-align: right;
     box-sizing: border-box;
     max-width: 100%;
@@ -201,7 +201,7 @@
     gap: 0.5rem;
     width: 100%;
     box-sizing: border-box;
-    padding: 0 1.25rem; /* modest padding so symbol has space but not force truncation */
+    padding: 0 1.25rem;
 }
 
 .quadrant .monetary-input {
@@ -215,8 +215,8 @@
     flex: 1 1 auto;
     width: 100%;
     text-align: right;
-    box-sizing: border-box; /* include padding in width */
-    min-width: 0; /* ensure it can shrink to available space without overflow */
+    box-sizing: border-box;
+    min-width: 0;
     max-width: 100%;
     overflow: visible;
 }
@@ -263,7 +263,7 @@
 
     .quadrant .quadrant-body {
         flex-direction: column;
-        gap: 0.25rem; /* minimal vertical gap when stacked on mobile */
+        gap: 0.25rem;
         align-items: center;
     }
 
@@ -288,7 +288,7 @@
         width: 100%;
         flex: 0 0 auto;
         grid-template-columns: 3.6rem 1fr;
-        column-gap: 0.25rem; /* tighten on mobile too */
+        column-gap: 0.25rem;
         row-gap: 0.4rem;
         justify-content: center;
     }
@@ -306,7 +306,7 @@
         font-size: 0.95rem;
         text-align: right;
         padding: 0 0.9rem;
-        box-sizing: border-box; /* mobile: ensure padding included */
+        box-sizing: border-box;
         max-width: 100%;
     }
 
