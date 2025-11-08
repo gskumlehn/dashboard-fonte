@@ -309,15 +309,15 @@ class DocumentStats {
 
         if (openValueInput) {
             const formattedOpen = Number(openValueAmount).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            openValueInput.value = `R$ ${formattedOpen}`;
+            openValueInput.value = formattedOpen;
         }
         if (overdueValueInput) {
             const formattedOverdue = Number(data.overdue_value).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            overdueValueInput.value = `R$ ${formattedOverdue}`;
+            overdueValueInput.value = formattedOverdue;
         }
         if (totalValueInput) {
             const formattedTotal = Number(data.open_value).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            totalValueInput.value = `R$ ${formattedTotal}`;
+            totalValueInput.value = formattedTotal;
         }
     }
 

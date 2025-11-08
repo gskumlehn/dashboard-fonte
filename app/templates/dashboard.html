@@ -40,15 +40,24 @@
                 <div class="stats">
                     <div class="stat-row">
                         <label class="open-label" for="openValue">Abertos</label>
-                        <input id="openValue" type="text" value="R$ 0,00" readonly tabindex="-1">
+                        <div class="monetary-wrapper">
+                            <span class="money-symbol">R$</span>
+                            <input id="openValue" class="monetary-input" type="text" value="0,00" readonly tabindex="-1">
+                        </div>
                     </div>
                     <div class="stat-row">
                         <label class="overdue-label" for="overdueValue">Vencidos</label>
-                        <input id="overdueValue" type="text" value="R$ 0,00" readonly tabindex="-1">
+                        <div class="monetary-wrapper">
+                            <span class="money-symbol">R$</span>
+                            <input id="overdueValue" class="monetary-input" type="text" value="0,00" readonly tabindex="-1">
+                        </div>
                     </div>
                     <div class="stat-row">
                         <label class="total-label" for="totalValue">Total</label>
-                        <input id="totalValue" type="text" value="R$ 0,00" readonly tabindex="-1">
+                        <div class="monetary-wrapper">
+                            <span class="money-symbol">R$</span>
+                            <input id="totalValue" class="monetary-input" type="text" value="0,00" readonly tabindex="-1">
+                        </div>
                     </div>
                 </div>
             </div>
