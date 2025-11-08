@@ -75,18 +75,36 @@
 .quadrant {
     flex: 1;
     display: flex;
-    flex-direction: row; /* chart left, stats right */
-    align-items: center;
+    flex-direction: column; /* title above, body below */
+    align-items: stretch;
     background-color: var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: 8px;
     padding: 1rem;
-    padding-top: 1rem; /* requested padding-top */
+    padding-top: 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    gap: 0.5rem;
+}
+
+/* new: quadrant title centered above chart+stats */
+.quadrant .quadrant-title {
+    margin: 0;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text, #3d3d3d);
+    font-family: var(--font-family);
+}
+
+/* wrapper that keeps chart left and stats right */
+.quadrant .quadrant-body {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     gap: 1rem;
 }
 
-/* left: chart block */
+/* left: chart block (unchanged sizing) */
 .quadrant .chart {
     flex: 0 0 auto;
     display: flex;
@@ -94,16 +112,6 @@
     justify-content: center;
     width: 160px;
     height: 160px;
-    flex-direction: column; /* allow title above canvas */
-}
-
-/* title shown above each canvas */
-.quadrant .chart .chart-title {
-    margin: 0 0 0.5rem 0;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--text, #3d3d3d);
-    font-family: var(--font-family);
 }
 
 /* canvas sizing within chart area */
@@ -130,10 +138,29 @@
 
 /* labels: only the title ('Total' / 'Vencido') should be colored and bold */
 .quadrant .stat-row label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end; /* text aligned to the right inside the "button" */
+    padding: 0.25rem 0.6rem; /* button-like padding */
+    border-radius: 6px;
+    color: #ffffff; /* label text as white to contrast with colored background */
     font-weight: 700;
-    font-size: 1rem;
-    text-align: right; /* label text aligned to the right (in its grid cell) */
+    font-size: 0.95rem;
+    min-width: 6.5rem; /* keep column sizing consistent with grid */
+    height: 32px;
+    box-sizing: border-box;
+    text-align: right;
     align-self: center;
+    border: none;
+}
+
+/* specific colors for the labels */
+.quadrant .stat-row label.total-label {
+    background: var(--primary); /* Fonte orange for "Total" */
+}
+
+.quadrant .stat-row label.overdue-label {
+    background: var(--error-text); /* color for "Vencido" */
 }
 
 /* inputs: show the value as normal black regular text; not bold and left-aligned */
