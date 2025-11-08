@@ -84,19 +84,19 @@ class Login {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ username, password }),
+                body: JSON.stringify({ username, password }), // Enviando os dados como JSON
             });
 
             if (response.ok) {
                 const result = await response.json();
                 if (result.success) {
-                    localStorage.setItem('user', JSON.stringify(result.user));
+                    localStorage.setItem('user', JSON.stringify(result.user || { username }));
                     localStorage.setItem('isAuthenticated', 'true');
 
                     if (window.toast) {
-                        window.toast.success('Login realizado com sucesso!');
+                        window.toast.success(result.message || 'Login realizado com sucesso!');
                     } else {
-                        this.showMessage('Login realizado com sucesso!', 'success');
+                        this.showMessage(result.message || 'Login realizado com sucesso!', 'success');
                     }
 
                     setTimeout(() => {
@@ -106,7 +106,8 @@ class Login {
                     this.showMessage(result.message || 'Usuário ou senha inválidos', 'error');
                 }
             } else {
-                this.showMessage('Erro ao tentar realizar login. Tente novamente.', 'error');
+                const error = await response.json();
+                this.showMessage(error.message || 'Erro ao tentar realizar login.', 'error');
             }
         } catch (error) {
             this.showMessage('Erro ao tentar realizar login. Tente novamente.', 'error');

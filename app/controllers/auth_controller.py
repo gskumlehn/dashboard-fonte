@@ -1,6 +1,6 @@
 import hmac
 import os
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import Blueprint, flash, redirect, render_template, request, url_for, jsonify
 from flask_login import UserMixin, login_required, login_user, logout_user, current_user
 from app.services.auth_service import AuthService
 
@@ -16,26 +16,27 @@ def login():
         return redirect(url_for('dashboard_bp.home'))
 
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        data = request.get_json()  # Alterado para aceitar JSON
+        if not data or 'username' not in data or 'password' not in data:
+            return jsonify({'success': False, 'message': 'Dados inválidos'}), 400
+
+        username = data['username']
+        password = data['password']
 
         env_user = os.getenv('APP_USER')
         if env_user and not hmac.compare_digest(username, env_user):
-            flash("Usuário não existe. Verifique o usuário informado.", "error")
-            return render_template('login.html', username='', clear_username=True, clear_password=True)
+            return jsonify({'success': False, 'message': 'Usuário não existe'}), 401
 
         try:
             valid = AuthService.validate_credentials(username, password)
             if valid:
                 user = User(id=username)
                 login_user(user, remember=True)
-                return redirect(url_for('dashboard_bp.home'))
+                return jsonify({'success': True, 'message': 'Login realizado com sucesso!'}), 200
             else:
-                flash("Senha inválida. Tente novamente.", "error")
-                return render_template('login.html', username=username, clear_password=True)
-        except Exception:
-            flash("Erro na autenticação. Tente novamente.", "error")
-            return render_template('login.html', username=username, clear_password=True)
+                return jsonify({'success': False, 'message': 'Senha inválida'}), 401
+        except Exception as e:
+            return jsonify({'success': False, 'message': f'Erro na autenticação: {str(e)}'}), 500
 
     return render_template('login.html', username='', clear_username=False, clear_password=False)
 
