@@ -37,7 +37,7 @@ class Login {
     }
 
     clearFieldsIfNeeded() {
-        const container = document.getElementById('login-container');
+        const container = document.querySelector('.login-container');
         if (!container) return;
 
         const clearUsername = this.boolFromString(container.dataset.clearUsername);
@@ -78,34 +78,38 @@ class Login {
             return;
         }
 
-        await new Promise(resolve => setTimeout(resolve, 500));
+        try {
+            const response = await fetch('/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            });
 
-        if (username && password) {
-            const userData = {
-                id: '1',
-                username: username,
-                email: username,
-                role: username.includes('admin') ? 'admin' : 'user'
-            };
+            if (response.ok) {
+                const result = await response.json();
+                if (result.success) {
+                    localStorage.setItem('user', JSON.stringify(result.user));
+                    localStorage.setItem('isAuthenticated', 'true');
 
-            localStorage.setItem('user', JSON.stringify(userData));
-            localStorage.setItem('isAuthenticated', 'true');
-            
-            if (window.toast) {
-                window.toast.success('Login realizado com sucesso!');
+                    if (window.toast) {
+                        window.toast.success('Login realizado com sucesso!');
+                    } else {
+                        this.showMessage('Login realizado com sucesso!', 'success');
+                    }
+
+                    setTimeout(() => {
+                        window.location.href = '/dashboard/';
+                    }, 1000);
+                } else {
+                    this.showMessage(result.message || 'Usuário ou senha inválidos', 'error');
+                }
             } else {
-                this.showMessage('Login realizado com sucesso!', 'success');
+                this.showMessage('Erro ao tentar realizar login. Tente novamente.', 'error');
             }
-            
-            setTimeout(() => {
-                window.location.href = '/dashboard/';
-            }, 1000);
-        } else {
-            if (window.toast) {
-                window.toast.error('Usuário ou senha inválidos');
-            } else {
-                this.showMessage('Usuário ou senha inválidos', 'error');
-            }
+        } catch (error) {
+            this.showMessage('Erro ao tentar realizar login. Tente novamente.', 'error');
         }
     }
 
@@ -121,7 +125,7 @@ class Login {
     static logout() {
         localStorage.removeItem('user');
         localStorage.removeItem('isAuthenticated');
-        window.location.href = '/login.html';
+        window.location.href = '/auth/login';
     }
 }
 
