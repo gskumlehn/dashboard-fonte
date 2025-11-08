@@ -190,7 +190,6 @@ class VolumeChart {
                 const ctx = chart.ctx;
                 ctx.save();
                 const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim();
-                // 16px * 1.5 => 24px (50% larger) and keep bold
                 ctx.font = `bold 24px ${fontFamily}`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';

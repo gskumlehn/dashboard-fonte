@@ -268,4 +268,17 @@
     .quadrant .stat-row input {
         font-size: 0.95rem;
     }
+
+    /* Mobile: center labels and inputs */
+    .quadrant .stats {
+        justify-items: center; /* center grid cells horizontally */
+    }
+    .quadrant .stat-row label {
+        justify-content: center; /* center label content in its "button" */
+        text-align: center;      /* center label text */
+        min-width: 3.5rem;      /* allow labels to shrink */
+    }
+    .quadrant .stat-row input {
+        text-align: center;     /* center input value */
+    }
 }
