@@ -190,7 +190,8 @@ class VolumeChart {
                 const ctx = chart.ctx;
                 ctx.save();
                 const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim();
-                ctx.font = `bold 16px ${fontFamily}`;
+                // 16px * 1.5 => 24px (50% larger) and keep bold
+                ctx.font = `bold 24px ${fontFamily}`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.fillStyle = color;
@@ -351,7 +352,8 @@ class DocumentStats {
                 const ctx = chart.ctx;
                 ctx.save();
                 const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim();
-                ctx.font = `bold 16px ${fontFamily}`;
+                // 16px * 1.5 => 24px (50% larger) and keep bold
+                ctx.font = `bold 24px ${fontFamily}`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.fillStyle = color;
