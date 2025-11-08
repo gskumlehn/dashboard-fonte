@@ -7,15 +7,13 @@
   --gap: 1rem;
 }
 
-/* Ensure the chart canvas has a fixed height so the graph height is always constant */
 .table-card canvas,
 #volumeChart {
-    height: 360px !important; /* fixed height */
+    height: 360px !important;
     max-height: 360px !important;
     display: block;
 }
 
-/* In case container uses flex, ensure chart area doesn't collapse */
 .table-card {
     align-items: stretch;
 }
@@ -23,10 +21,10 @@
 .filter-card {
     background-color: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: 8px; /* bordas arredondadas */
+    border-radius: 8px;
     padding: var(--gap);
     margin-bottom: var(--gap);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* sombra leve */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .filter-container {
@@ -34,7 +32,7 @@
     flex-wrap: wrap;
     gap: var(--gap);
     align-items: center;
-    justify-content: space-between; /* Adicionado para distribuir os elementos */
+    justify-content: space-between;
 }
 
 .filter-container label {
@@ -51,18 +49,18 @@
 }
 
 .filter-container button {
-    background-color: var(--primary); /* Cor primária */
-    color: var(--white); /* Texto branco */
+    background-color: var(--primary);
+    color: var(--white);
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .filter-container button:hover {
-    background-color: var(--primary-dark); /* Cor primária escura no hover */
+    background-color: var(--primary-dark);
 }
 
 .filter-container .filter-button {
-    margin-left: auto; /* Move o botão para a direita */
+    margin-left: auto;
 }
 
 .quadrant-container {
@@ -75,7 +73,7 @@
 .quadrant {
     flex: 1;
     display: flex;
-    flex-direction: column; /* title above, body below */
+    flex-direction: column;
     align-items: stretch;
     background-color: var(--card-bg);
     border: 1px solid var(--card-border);
@@ -86,7 +84,6 @@
     gap: 0.5rem;
 }
 
-/* new: quadrant title centered above chart+stats */
 .quadrant .quadrant-title {
     margin: 0;
     text-align: center;
@@ -94,14 +91,11 @@
     font-weight: 600;
     color: var(--text, #3d3d3d);
     font-family: var(--font-family);
-
-    /* subtle separator between title and body */
     padding-bottom: 0.5rem;
     margin-bottom: 0.5rem;
-    border-bottom: 1px solid rgba(0,0,0,0.06); /* subtle gray line */
+    border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 
-/* wrapper that keeps chart left and stats right */
 .quadrant .quadrant-body {
     display: flex;
     flex-direction: row;
@@ -109,7 +103,6 @@
     gap: 1rem;
 }
 
-/* make chart take 50% and stats 50% of the quadrant-body */
 .quadrant .chart {
     flex: 0 0 50%;
     display: flex;
@@ -119,39 +112,35 @@
     height: 160px;
 }
 
-/* ensure canvas scales inside the 50% area */
 .quadrant canvas {
     max-width: 90%;
     max-height: 150px;
 }
 
-/* stats area becomes 50% of the body */
 .quadrant .stats {
     flex: 0 0 50%;
     display: grid;
-    grid-template-columns: 4.5rem 1fr; /* reduced from 6.5rem to ~70% (4.5rem) */
+    grid-template-columns: 4.5rem 1fr;
     column-gap: 0.75rem;
     row-gap: 0.5rem;
     align-items: center;
     justify-items: start;
 }
 
-/* make .stat-row transparent to layout so label and input become grid children */
 .quadrant .stat-row {
     display: contents;
 }
 
-/* labels: only the title ('Total' / 'Vencido') should be colored and bold */
 .quadrant .stat-row label {
     display: inline-flex;
     align-items: center;
-    justify-content: flex-end; /* text aligned to the right inside the "button" */
-    padding: 0.25rem 0.6rem; /* button-like padding */
+    justify-content: flex-end;
+    padding: 0.25rem 0.6rem;
     border-radius: 6px;
-    color: #ffffff; /* label text as white to contrast with colored background */
+    color: #ffffff;
     font-weight: 700;
     font-size: 0.95rem;
-    min-width: 4.5rem; /* keep column sizing consistent with grid */
+    min-width: 4.5rem;
     height: 32px;
     box-sizing: border-box;
     text-align: right;
@@ -159,21 +148,18 @@
     border: none;
 }
 
-/* specific colors for the labels */
 .quadrant .stat-row label.open-label {
-    background: var(--chart-color-1); /* Em dia (open): chart color 1 */
+    background: var(--chart-color-1);
 }
 
 .quadrant .stat-row label.overdue-label {
-    background: var(--error-text); /* Vencido */
+    background: var(--error-text);
 }
 
-/* Total must be gray (same as ticket médio) */
 .quadrant .stat-row label.total-label {
-    background: var(--chart-color-5); /* Total: gray like ticket médio */
+    background: var(--chart-color-5);
 }
 
-/* inputs: show the value as normal black regular text; not bold and left-aligned */
 .quadrant .stat-row input {
     border: none;
     background: transparent;
@@ -184,16 +170,14 @@
     margin: 0;
     width: 100%;
     min-width: 4rem;
-    text-align: left; /* value aligned to the left */
+    text-align: left;
 }
 
-/* remove default focus outline for readonly inputs */
 .quadrant .stat-row input:focus {
     outline: none;
     box-shadow: none;
 }
 
-/* Responsive: stack quadrants vertically on narrower screens */
 @media (max-width: 900px) {
     .quadrant-container {
         flex-direction: column;
@@ -205,7 +189,6 @@
         padding: 0.75rem;
     }
 
-    /* give a bit more room to stats on tablet-ish screens */
     .quadrant .chart {
         flex: 0 0 45%;
         height: 140px;
@@ -220,7 +203,6 @@
     }
 }
 
-/* Mobile: chart above stats inside each quadrant for very small screens */
 @media (max-width: 480px) {
     .quadrant {
         padding: 0.6rem;
@@ -263,22 +245,12 @@
         height: 28px;
         padding: 0.2rem 0.5rem;
         font-size: 0.9rem;
+        justify-content: flex-end;
+        text-align: right;
     }
 
     .quadrant .stat-row input {
         font-size: 0.95rem;
-    }
-
-    /* Mobile: center labels and inputs */
-    .quadrant .stats {
-        justify-items: center; /* center grid cells horizontally */
-    }
-    .quadrant .stat-row label {
-        justify-content: center; /* center label content in its "button" */
-        text-align: center;      /* center label text */
-        min-width: 3.5rem;      /* allow labels to shrink */
-    }
-    .quadrant .stat-row input {
-        text-align: center;     /* center input value */
+        text-align: left;
     }
 }

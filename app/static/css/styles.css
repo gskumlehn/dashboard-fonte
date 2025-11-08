@@ -38,8 +38,6 @@ button, .btn, .logout-link {
   margin: 0 auto;
 }
 
-/* Shared card used by churn table and dashboard chart (moved here so dashboard.html
-   does not need to import churnAnalysis.css) */
 .table-card,
 .chart-card {
     background: var(--card-bg, #ffffff);
@@ -50,7 +48,6 @@ button, .btn, .logout-link {
     overflow: hidden;
 }
 
-/* Ensure canvas fills the card area nicely */
 .table-card canvas,
 .chart-card canvas {
     width: 100% !important;
@@ -58,7 +55,6 @@ button, .btn, .logout-link {
     display: block;
 }
 
-/* Optional: consistent inner spacing for loader/error inside card */
 .table-card #chart-loader,
 .table-card #chart-error,
 .chart-card #chart-loader,
@@ -66,8 +62,6 @@ button, .btn, .logout-link {
     margin-top: 1rem;
 }
 
-/* ===== filtros (copiado de churnAnalysis.css) ===== */
-/* Shared filter card used by churn and dashboard pages */
 .filters {
     background: var(--card-bg, #ffffff);
     border: 1px solid rgba(0, 0, 0, 0.06);
@@ -78,11 +72,10 @@ button, .btn, .logout-link {
     display: flex;
     align-items: center;
     gap: 1rem;
-    flex-wrap: nowrap; /* primary row layout */
-    justify-content: space-between; /* left buttons / right selects */
+    flex-wrap: nowrap;
+    justify-content: space-between;
 }
 
-/* left and right groups inside filters */
 .filters-left,
 .filters-right {
     display: flex;
@@ -90,7 +83,6 @@ button, .btn, .logout-link {
     gap: 0.75rem;
 }
 
-/* keep small divider spacing if present */
 .filters-left > .divider,
 .filters-right > .divider {
     width: 1px;
@@ -99,18 +91,15 @@ button, .btn, .logout-link {
     margin: 0 12px;
 }
 
-/* ensure selects are aligned to right group */
 .filters-right {
     margin-left: auto;
 }
 
-/* Visual cue for disabled month select */
 #month-select[disabled] {
     opacity: 0.6;
     pointer-events: none;
 }
 
-/* Responsive: stack controls on small screens */
 @media (max-width: 768px) {
     .filters {
         flex-direction: column;
@@ -129,7 +118,6 @@ button, .btn, .logout-link {
     }
 }
 
-/* selects and inputs inside filters */
 .filters select,
 .filters input[type="date"],
 .filters input[type="text"],
@@ -159,7 +147,6 @@ button, .btn, .logout-link {
     border-color: var(--primary, #0066cc);
 }
 
-/* button styling for .btn */
 .btn {
     padding: 0.5rem 0.75rem;
     font-size: 0.9rem;
@@ -180,7 +167,6 @@ button, .btn, .logout-link {
     transform: translateY(0);
 }
 
-/* responsive tweaks for filters */
 @media (max-width: 768px) {
     .filters {
         padding: 0.75rem;
@@ -198,7 +184,6 @@ button, .btn, .logout-link {
     }
 }
 
-/* Ensure any custom/external Chart.js tooltip DOM element has white background */
 .chartjs-tooltip {
     background: var(--white, #ffffff) !important;
     color: var(--text, #3d3d3d) !important;

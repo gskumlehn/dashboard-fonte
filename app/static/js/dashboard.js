@@ -62,7 +62,7 @@ class VolumeChart {
         const ticketValues = data.map(item => Number(Number(item.average_ticket).toFixed(2)));
 
         const borderColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-1');
-        const avgColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-5'); // Cinza
+        const avgColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-5');
         const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text');
         const gridColor = getComputedStyle(document.documentElement).getPropertyValue('--input-border');
         const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim();
@@ -292,37 +292,34 @@ class DocumentStats {
             ? ((data.overdue_value / data.open_value) * 100).toFixed(2)
             : '0.00';
 
-        // compute "Open (Em dia)" as open - overdue
         const openDocumentsCount = Math.max(0, (data.open_documents || 0) - (data.overdue_documents || 0));
         const openValueAmount = Math.max(0, (Number(data.open_value) || 0) - (Number(data.overdue_value) || 0));
 
         const openDocsInput = document.getElementById('openDocuments');
-         const overdueDocsInput = document.getElementById('overdueDocuments');
-         const totalDocsInput = document.getElementById('totalDocuments');
+        const overdueDocsInput = document.getElementById('overdueDocuments');
+        const totalDocsInput = document.getElementById('totalDocuments');
 
-         const openValueInput = document.getElementById('openValue');
-         const overdueValueInput = document.getElementById('overdueValue');
-         const totalValueInput = document.getElementById('totalValue');
+        const openValueInput = document.getElementById('openValue');
+        const overdueValueInput = document.getElementById('overdueValue');
+        const totalValueInput = document.getElementById('totalValue');
 
         if (openDocsInput) openDocsInput.value = openDocumentsCount;
-         if (overdueDocsInput) overdueDocsInput.value = data.overdue_documents;
-         if (totalDocsInput) totalDocsInput.value = data.open_documents;
+        if (overdueDocsInput) overdueDocsInput.value = data.overdue_documents;
+        if (totalDocsInput) totalDocsInput.value = data.open_documents;
 
-         if (openValueInput) {
+        if (openValueInput) {
             const formattedOpen = Number(openValueAmount).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             openValueInput.value = `R$ ${formattedOpen}`;
-         }
-         if (overdueValueInput) {
-             const formattedOverdue = Number(data.overdue_value).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-             overdueValueInput.value = `R$ ${formattedOverdue}`;
-         }
-         if (totalValueInput) {
-             const formattedTotal = Number(data.open_value).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-             totalValueInput.value = `R$ ${formattedTotal}`;
-         }
-
-         // percentages remain rendered on the canvas
-     }
+        }
+        if (overdueValueInput) {
+            const formattedOverdue = Number(data.overdue_value).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            overdueValueInput.value = `R$ ${formattedOverdue}`;
+        }
+        if (totalValueInput) {
+            const formattedTotal = Number(data.open_value).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            totalValueInput.value = `R$ ${formattedTotal}`;
+        }
+    }
 
     renderCharts(data) {
         const overdueDocumentPercent = data.open_documents > 0
@@ -351,7 +348,6 @@ class DocumentStats {
                 const ctx = chart.ctx;
                 ctx.save();
                 const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim();
-                // 16px * 1.5 => 24px (50% larger) and keep bold
                 ctx.font = `bold 24px ${fontFamily}`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
