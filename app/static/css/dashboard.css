@@ -75,48 +75,79 @@
 .quadrant {
     flex: 1;
     display: flex;
-    flex-direction: column;
+    flex-direction: row; /* chart left, stats right */
     align-items: center;
     background-color: var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: 8px;
     padding: 1rem;
-    padding-top: 3rem; /* Add padding-top */
+    padding-top: 1rem; /* requested padding-top */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    gap: 1rem;
 }
 
+/* left: chart block */
+.quadrant .chart {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 160px;
+    height: 160px;
+}
+
+/* canvas sizing within chart area */
 .quadrant canvas {
     max-width: 150px;
     max-height: 150px;
 }
 
-.quadrant .info {
-    margin-top: 1rem;
-    text-align: center;
+/* right: stats column */
+.quadrant .stats {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+    flex: 1 1 auto;
 }
 
-.quadrant .info p {
-    margin: 0.25rem 0;
-    font-size: 0.9rem;
-    color: var(--text);
+/* each label + input row */
+.quadrant .stat-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
 }
 
-.quadrant .info h3.total {
+/* labels: only the title ('Total' / 'Vencido') should be colored and bold */
+.quadrant .stat-row label {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+/* specific colors for the labels */
+.quadrant .stat-row label.total-label {
     color: var(--primary); /* Fonte orange for "Total" */
-    font-weight: bold;
 }
 
-.quadrant .info h3.overdue {
-    color: var(--error-text); /* Match the "Vencido" color to the chart */
-    font-weight: bold;
+.quadrant .stat-row label.overdue-label {
+    color: var(--error-text); /* color for "Vencido" */
 }
 
-.quadrant .info h3 span {
-    color: var(--black); /* Black for the value */
-    font-weight: normal; /* Remove bold for the value */
+/* inputs: show the value as normal black regular text; not bold */
+.quadrant .stat-row input {
+    border: none;
+    background: transparent;
+    color: var(--black, #000000);
+    font-weight: 400;
+    font-size: 1rem;
+    padding: 0;
+    margin: 0;
+    width: auto;
+    min-width: 4rem;
 }
 
-.quadrant .info h3 span::before {
-    font-weight: normal;
-    color: var(--black);
+/* remove default focus outline for readonly inputs */
+.quadrant .stat-row input:focus {
+    outline: none;
+    box-shadow: none;
 }

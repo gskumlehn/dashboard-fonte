@@ -289,16 +289,25 @@ class DocumentStats {
             ? ((data.overdue_value / data.open_value) * 100).toFixed(2)
             : '0.00';
 
-        document.getElementById('totalDocuments').textContent = data.open_documents;
-        document.getElementById('overdueDocuments').textContent = `${data.overdue_documents} (${overdueDocumentPercent}%)`;
-        document.getElementById('totalValue').textContent = Number(data.open_value).toLocaleString('pt-BR', {
+        // write plain values into readonly inputs (no percent in the inputs)
+        const totalDocsInput = document.getElementById('totalDocuments');
+        const overdueDocsInput = document.getElementById('overdueDocuments');
+        const totalValueInput = document.getElementById('totalValue');
+        const overdueValueInput = document.getElementById('overdueValue');
+
+        if (totalDocsInput) totalDocsInput.value = data.open_documents;
+        if (overdueDocsInput) overdueDocsInput.value = data.overdue_documents;
+
+        if (totalValueInput) totalValueInput.value = Number(data.open_value).toLocaleString('pt-BR', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
         });
-        document.getElementById('overdueValue').textContent = `${Number(data.overdue_value).toLocaleString('pt-BR', {
+        if (overdueValueInput) overdueValueInput.value = Number(data.overdue_value).toLocaleString('pt-BR', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
-        })} (${overdueValuePercent}%)`;
+        });
+
+        // percentages remain rendered on the canvas (do not include in inputs)
     }
 
     renderCharts(data) {
