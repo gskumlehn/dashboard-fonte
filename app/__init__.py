@@ -11,7 +11,7 @@ def create_app():
 
     login_manager = LoginManager()
     login_manager.init_app(app)
-    login_manager.login_view = 'login_bp.login'
+    login_manager.login_view = 'auth_bp.login'
 
     class User(UserMixin):
         def __init__(self, id):
@@ -23,13 +23,13 @@ def create_app():
             return User(id=user_id)
         return None
 
-    from app.controllers.login_controller import login_bp
+    from app.controllers.auth_controller import auth_bp  # Atualizado de login_controller para auth_controller
     from app.controllers.healthcheck_controller import healthcheck_bp
     from app.controllers.root_controller import root_bp
     from app.controllers.dashboard_controller import dashboard_bp
     from app.controllers.comercial_controller import comercial_bp
 
-    app.register_blueprint(login_bp)
+    app.register_blueprint(auth_bp)  # Atualizado de login_bp para auth_bp
     app.register_blueprint(healthcheck_bp)
     app.register_blueprint(root_bp)
     app.register_blueprint(dashboard_bp)

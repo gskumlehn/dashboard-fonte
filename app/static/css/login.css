@@ -1,28 +1,13 @@
-@import url('colors.css');
-@import url('styles.css');
+@import url('/static/css/root.css');
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background-color: var(--bg);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--black);
-}
-
-.container {
-    background-color: var(--card-bg);
+.login-container {
+    background-color: var(--white, #ffffff);
     padding: 3rem 2rem;
-    border-radius: 4px;
-    box-shadow: 0 1px 3px var(--shadow);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px var(--shadow, rgba(0, 0, 0, 0.1));
     width: 100%;
     max-width: 400px;
+    animation: fadeInUp 0.4s ease-out;
 }
 
 .logo-container {
@@ -32,6 +17,8 @@ body {
 
 .logo-container img {
     height: 60px;
+    max-width: 100%;
+    object-fit: contain;
 }
 
 .form-group {
@@ -45,94 +32,27 @@ body {
 label {
     display: block;
     margin-bottom: 0.5rem;
-    color: var(--black);
+    color: var(--text);
     font-size: 14px;
     font-weight: 500;
 }
 
-input {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid var(--input-border);
-    border-radius: 4px;
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.2s;
-    background-color: transparent;
-    color: var(--black);
+@media (max-width: 768px) {
+    body {
+        padding: 0.5rem;
+    }
+
+    .container {
+        padding: 2rem 1.5rem;
+    }
+
+    .logo-container img {
+        height: 50px;
+    }
 }
 
-input:focus {
-    border-color: var(--primary);
-}
-
-button {
-    width: 100%;
-    padding: 0.75rem;
-    background-color: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-button:hover {
-    background-color: var(--primary-dark);
-}
-
-button:active {
-    transform: translateY(1px);
-}
-
-.message {
-    margin: 0;
-    padding: 0.75rem;
-    border-radius: 4px;
-    font-size: 14px;
-    text-align: center;
-    opacity: 0;
-    transform: translateX(10px);
-    transition: opacity 0.25s ease, transform 0.25s ease;
-    max-width: 360px;
-    box-sizing: border-box;
-    word-break: break-word;
-}
-
-.message.success {
-    background-color: var(--success-bg);
-    color: var(--success-text);
-    border: 1px solid var(--success-border);
-}
-
-.message.error {
-    background-color: var(--error-bg);
-    color: var(--error-text);
-    border: 1px solid var(--error-border);
-}
-
-.message.show {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.global-messages-container {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    z-index: 10000;
-    max-width: 360px;
-    pointer-events: none;
-    align-items: flex-end;
-    padding: 0 0.25rem;
-}
-
-.global-messages-container .message {
-    width: 100%;
-    pointer-events: auto;
+@media (max-width: 480px) {
+    .container {
+        padding: 1.5rem 1rem;
+    }
 }

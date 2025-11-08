@@ -1,0 +1,107 @@
+@import url('/static/css/root.css');
+
+.message {
+    margin: 0;
+    padding: 1.5rem;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: left;
+    opacity: 0;
+    transform: translateX(10px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    max-width: 540px;
+    box-sizing: border-box;
+    word-break: break-word;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.message::before {
+    content: '';
+    font-size: 18px;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.message.success::before {
+    content: '✓';
+    color: var(--success-text);
+}
+
+.message.success {
+    background-color: var(--success-bg);
+    color: var(--success-text);
+    border: 1px solid var(--success-border);
+}
+
+.message.error::before {
+    content: '✕';
+    color: var(--error-text);
+}
+
+.message.error {
+    background-color: var(--error-bg);
+    color: var(--error-text);
+    border: 1px solid var(--error-border);
+}
+
+.message.warning::before {
+    content: '⚠';
+    color: var(--warning-text);
+}
+
+.message.warning {
+    background-color: var(--warning-bg);
+    color: var(--warning-text);
+    border: 1px solid var(--warning-border);
+}
+
+.message.info::before {
+    content: 'ℹ';
+    color: var(--info-text);
+}
+
+.message.info {
+    background-color: var(--info-bg);
+    color: var(--info-text);
+    border: 1px solid var(--info-border);
+}
+
+.message.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.global-messages-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    z-index: 10000;
+    max-width: 540px;
+    pointer-events: none;
+    align-items: flex-end;
+    padding: 0 0.25rem;
+}
+
+.global-messages-container .message {
+    width: 100%;
+    pointer-events: auto;
+}
+
+@media (max-width: 480px) {
+    .global-messages-container {
+        left: 0.5rem;
+        right: 0.5rem;
+        top: 0.5rem;
+        max-width: none;
+    }
+
+    .message {
+        font-size: 13px;
+        padding: 1.25rem;
+    }
+}

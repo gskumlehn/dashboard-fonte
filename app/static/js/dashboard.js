@@ -61,9 +61,9 @@ class VolumeChart {
         const volumeValues = data.map(item => Number((item.total_volume / 1_000_000).toFixed(2)));
         const ticketValues = data.map(item => Number(Number(item.average_ticket).toFixed(2)));
 
-        const borderColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-1');
-        const avgColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-5');
-        const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text');
+        const borderColor = getComputedStyle(document.documentElement).getPropertyValue('--primary');
+        const avgColor = getComputedStyle(document.documentElement).getPropertyValue('--blue');
+        const textColor = getComputedStyle(document.documentElement).getPropertyValue('--black');
         const gridColor = getComputedStyle(document.documentElement).getPropertyValue('--input-border');
         const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim();
 
@@ -178,7 +178,7 @@ class VolumeChart {
         if (this.documentCountChart) this.documentCountChart.destroy();
         if (this.documentValueChart) this.documentValueChart.destroy();
 
-        const totalColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-1').trim();
+        const totalColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
         const overdueColor = getComputedStyle(document.documentElement).getPropertyValue('--error-text').trim();
         const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim();
 
@@ -336,7 +336,7 @@ class DocumentStats {
         if (this.documentCountChart) this.documentCountChart.destroy();
         if (this.documentValueChart) this.documentValueChart.destroy();
 
-        const totalColor = getComputedStyle(document.documentElement).getPropertyValue('--chart-color-1').trim();
+        const totalColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
         const overdueColor = getComputedStyle(document.documentElement).getPropertyValue('--error-text').trim();
         const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim();
 

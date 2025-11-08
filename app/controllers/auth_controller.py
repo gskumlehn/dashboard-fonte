@@ -1,16 +1,16 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
-from flask_login import UserMixin, login_user, login_required, logout_user
+from flask_login import UserMixin, login_user, logout_user, login_required
 from app.services.auth_service import AuthService
 import os
 import hmac
 
-login_bp = Blueprint('login_bp', __name__, template_folder='../../templates')
+auth_bp = Blueprint('auth_bp', __name__, url_prefix='/auth')
 
 class User(UserMixin):
     def __init__(self, id):
         self.id = id
 
-@login_bp.route('/login', methods=['GET', 'POST'])
+@auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
@@ -36,8 +36,8 @@ def login():
 
     return render_template('login.html', username='', clear_username=False, clear_password=False)
 
-@login_bp.route('/logout')
+@auth_bp.route('/logout', methods=['GET'])
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('login_bp.login'))
+    return redirect(url_for('auth_bp.login'))

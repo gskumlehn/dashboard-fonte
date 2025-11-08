@@ -1,5 +1,17 @@
-(function messagingModule() {
-    function ensureContainer() {
+class Messaging {
+    constructor() {
+        this.init();
+    }
+
+    init() {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.autoHandleExistingMessages());
+        } else {
+            this.autoHandleExistingMessages();
+        }
+    }
+
+    ensureContainer() {
         let container = document.getElementById('global-messages');
         if (!container) {
             container = document.createElement('div');
@@ -10,62 +22,73 @@
         return container;
     }
 
-    function removeShowClass(el) {
+    removeShowClass(el) {
         el.classList.remove('show');
     }
 
-    function scheduleHide(el, timeout) {
+    scheduleHide(el, timeout) {
         if (!timeout || timeout <= 0) return;
         setTimeout(() => {
-            removeShowClass(el);
-            // remove element after transition (give 300ms)
+            this.removeShowClass(el);
             setTimeout(() => {
                 if (el.parentNode) el.parentNode.removeChild(el);
             }, 300);
         }, timeout);
     }
 
-    function autoHandleExistingMessages(defaultTimeout = 3000) {
+    autoHandleExistingMessages(defaultTimeout = 3000) {
         const messages = document.querySelectorAll('.message');
         if (!messages.length) return;
-        const container = ensureContainer();
+        const container = this.ensureContainer();
         messages.forEach((el) => {
             if (el.parentElement !== container) {
                 el.parentElement && el.parentElement.removeChild(el);
                 container.appendChild(el);
             }
-            // se já tem classe show, agendar esconder; se não tiver, não faz nada
             if (el.classList.contains('show')) {
-                scheduleHide(el, defaultTimeout);
+                this.scheduleHide(el, defaultTimeout);
             }
         });
     }
 
-    function createMessageElement(text, type = 'success') {
+    createMessageElement(text, type = 'success') {
         const div = document.createElement('div');
         div.className = `message ${type} show`;
         div.textContent = text;
         return div;
     }
 
-    function show(text, type = 'success', timeout = 3000) {
-        const container = ensureContainer();
-        const el = createMessageElement(text, type);
+    show(text, type = 'success', timeout = 3000) {
+        const container = this.ensureContainer();
+        const el = this.createMessageElement(text, type);
         container.appendChild(el);
-        scheduleHide(el, timeout);
+        this.scheduleHide(el, timeout);
         return el;
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        autoHandleExistingMessages();
-    });
+    success(text, timeout = 3000) {
+        return this.show(text, 'success', timeout);
+    }
 
-    window.Messaging = {
-        show,
-        _internal: {
-            scheduleHide,
-            removeShowClass,
-            ensureContainer
-        }
-    };
-})();
+    error(text, timeout = 3000) {
+        return this.show(text, 'error', timeout);
+    }
+
+    warning(text, timeout = 3000) {
+        return this.show(text, 'warning', timeout);
+    }
+
+    info(text, timeout = 3000) {
+        return this.show(text, 'info', timeout);
+    }
+}
+
+window.messaging = new Messaging();
+
+window.toast = {
+    success: (text, timeout) => window.messaging.success(text, timeout),
+    error: (text, timeout) => window.messaging.error(text, timeout),
+    warning: (text, timeout) => window.messaging.warning(text, timeout),
+    info: (text, timeout) => window.messaging.info(text, timeout),
+    show: (text, type, timeout) => window.messaging.show(text, type, timeout)
+};

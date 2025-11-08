@@ -4,28 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Fonte Inc</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/messaging.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='favicon/logo.png') }}" type="image/png">
 </head>
 <body>
-    <div class="container" id="login-container"
-         data-clear-username="{{ 'true' if clear_username else 'false' }}"
-         data-clear-password="{{ 'true' if clear_password else 'false' }}">
+    <div class="container" id="login-container">
         <div class="logo-container">
             <img src="{{ url_for('static', filename='images/logo-horizontal.png') }}" alt="Fonte Inc">
         </div>
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div id="message" class="message {{ category }} show">{{ message }}</div>
-                {% endfor %}
-            {% else %}
-                <div id="message" class="message"></div>
-            {% endif %}
-        {% endwith %}
+        <div id="message" class="message"></div>
 
-        <form id="loginForm" method="POST" action="{{ url_for('login_bp.login') }}">
+        <form id="loginForm">
             <div class="form-group">
                 <label for="username">Usuário</label>
                 <input
@@ -34,7 +24,6 @@
                     name="username"
                     required
                     autocomplete="username"
-                    value="{{ username|default('') }}"
                 >
             </div>
 
@@ -49,11 +38,12 @@
                 >
             </div>
 
-            <button type="submit">Entrar</button>
+            <button type="submit" class="btn btn-primary">Entrar</button>
         </form>
     </div>
 
-    <script src="{{ url_for('static', filename='js/messaging.js') }}"></script>
     <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/messaging.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/buttons.js') }}" defer></script>
 </body>
 </html>
