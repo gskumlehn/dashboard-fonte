@@ -182,18 +182,19 @@ class VolumeChart {
         const overdueColor = getComputedStyle(document.documentElement).getPropertyValue('--error-text').trim();
         const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim();
 
-        const createCenterTextPlugin = (text) => ({
+        const createCenterTextPlugin = (percent) => ({
             id: 'centerText',
             beforeDraw(chart) {
-                const { width } = chart;
-                const { height } = chart;
+                const width = chart.width;
+                const height = chart.height;
                 const ctx = chart.ctx;
                 ctx.save();
                 ctx.font = `bold 16px ${fontFamily}`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.fillStyle = overdueColor;
-                ctx.fillText(`${text}%`, width / 2, height / 2);
+                const text = `${Number(percent).toFixed(1)}%`;
+                ctx.fillText(text, width / 2, height / 2);
                 ctx.restore();
             },
         });
@@ -218,7 +219,7 @@ class VolumeChart {
                             font: { family: fontFamily }
                         }
                     },
-                    centerText: createCenterTextPlugin(overdueDocumentPercent.toFixed(2)),
+                    centerText: createCenterTextPlugin(overdueDocumentPercent),
                 },
                 cutout: '70%',
             },
@@ -244,7 +245,7 @@ class VolumeChart {
                             font: { family: fontFamily }
                         }
                     },
-                    centerText: createCenterTextPlugin(overdueValuePercent.toFixed(2)),
+                    centerText: createCenterTextPlugin(overdueValuePercent),
                 },
                 cutout: '70%',
             },
@@ -289,31 +290,37 @@ class DocumentStats {
             ? ((data.overdue_value / data.open_value) * 100).toFixed(2)
             : '0.00';
 
-        const totalDocsInput = document.getElementById('totalDocuments');
-        const overdueDocsInput = document.getElementById('overdueDocuments');
-        const totalValueInput = document.getElementById('totalValue');
-        const overdueValueInput = document.getElementById('overdueValue');
+        // compute "Open (Em dia)" as open - overdue
+        const openDocumentsCount = Math.max(0, (data.open_documents || 0) - (data.overdue_documents || 0));
+        const openValueAmount = Math.max(0, (Number(data.open_value) || 0) - (Number(data.overdue_value) || 0));
 
-        if (totalDocsInput) totalDocsInput.value = data.open_documents;
-        if (overdueDocsInput) overdueDocsInput.value = data.overdue_documents;
+        const openDocsInput = document.getElementById('openDocuments');
+         const overdueDocsInput = document.getElementById('overdueDocuments');
+         const totalDocsInput = document.getElementById('totalDocuments');
 
-        if (totalValueInput) {
-            const formattedTotal = Number(data.open_value).toLocaleString('pt-BR', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-            });
-            totalValueInput.value = `R$ ${formattedTotal}`;
-        }
-        if (overdueValueInput) {
-            const formattedOverdue = Number(data.overdue_value).toLocaleString('pt-BR', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-            });
-            overdueValueInput.value = `R$ ${formattedOverdue}`;
-        }
+         const openValueInput = document.getElementById('openValue');
+         const overdueValueInput = document.getElementById('overdueValue');
+         const totalValueInput = document.getElementById('totalValue');
 
-        // percentages remain rendered on the canvas
-    }
+        if (openDocsInput) openDocsInput.value = openDocumentsCount;
+         if (overdueDocsInput) overdueDocsInput.value = data.overdue_documents;
+         if (totalDocsInput) totalDocsInput.value = data.open_documents;
+
+         if (openValueInput) {
+            const formattedOpen = Number(openValueAmount).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            openValueInput.value = `R$ ${formattedOpen}`;
+         }
+         if (overdueValueInput) {
+             const formattedOverdue = Number(data.overdue_value).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+             overdueValueInput.value = `R$ ${formattedOverdue}`;
+         }
+         if (totalValueInput) {
+             const formattedTotal = Number(data.open_value).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+             totalValueInput.value = `R$ ${formattedTotal}`;
+         }
+
+         // percentages remain rendered on the canvas
+     }
 
     renderCharts(data) {
         const overdueDocumentPercent = data.open_documents > 0
@@ -334,18 +341,19 @@ class DocumentStats {
         const overdueColor = getComputedStyle(document.documentElement).getPropertyValue('--error-text').trim();
         const fontFamily = getComputedStyle(document.documentElement).getPropertyValue('--font-family').trim();
 
-        const createCenterTextPlugin = (text) => ({
+        const createCenterTextPlugin = (percent) => ({
             id: 'centerText',
             beforeDraw(chart) {
-                const { width } = chart;
-                const { height } = chart;
+                const width = chart.width;
+                const height = chart.height;
                 const ctx = chart.ctx;
                 ctx.save();
                 ctx.font = `bold 16px ${fontFamily}`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.fillStyle = overdueColor;
-                ctx.fillText(`${text}%`, width / 2, height / 2);
+                const text = `${Number(percent).toFixed(1)}%`;
+                ctx.fillText(text, width / 2, height / 2);
                 ctx.restore();
             },
         });
@@ -370,7 +378,7 @@ class DocumentStats {
                             font: { family: fontFamily }
                         }
                     },
-                    centerText: createCenterTextPlugin(overdueDocumentPercent.toFixed(2)),
+                    centerText: createCenterTextPlugin(overdueDocumentPercent),
                 },
                 cutout: '70%',
             },
@@ -396,7 +404,7 @@ class DocumentStats {
                             font: { family: fontFamily }
                         }
                     },
-                    centerText: createCenterTextPlugin(overdueValuePercent.toFixed(2)),
+                    centerText: createCenterTextPlugin(overdueValuePercent),
                 },
                 cutout: '70%',
             },
