@@ -188,7 +188,7 @@
     width: 100%;
     min-width: 4rem;
     text-align: right;
-    box-sizing: border-box; /* ensure padding doesn't cause overflow */
+    box-sizing: border-box;
     max-width: 100%;
 }
 
