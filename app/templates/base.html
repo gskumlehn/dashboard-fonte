@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Fonte Inc{% endblock %}</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon/logo.png') }}" type="image/png">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
-    {% block extra_css %}{% endblock %}
     {% include 'partials/messaging.html' %}
 </head>
 <body>
@@ -19,7 +17,6 @@
     </main>
 
     <script src="{{ url_for('static', filename='js/utils/dateUtils.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/buttons.js') }}" defer></script>
-    {% block extra_js %}{% endblock %}
+    <script src="{{ url_for('static', filename='js/buttons.js') }}"></script>
 </body>
 </html>
