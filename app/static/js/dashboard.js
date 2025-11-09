@@ -38,7 +38,7 @@ class VolumeChart {
 
     async fetchVolumeData(start_date, end_date, type = 'monthly') {
         try {
-            const response = await fetch(`/dashboard/volume-data?start_date=${start_date}&end_date=${end_date}&type=${type}`);
+            const response = await fetch(`/operations/volume-data?start_date=${start_date}&end_date=${end_date}&type=${type}`);
             if (!response.ok) throw new Error('Erro ao buscar dados do volume');
             const result = await response.json();
             return result.data || [];
@@ -269,7 +269,7 @@ class DocumentStats {
 
     async fetchDefaultRateData() {
         try {
-            const response = await fetch('/dashboard/default-rate');
+            const response = await fetch('/operations/default-rate');
             if (!response.ok) throw new Error('Erro ao buscar dados de inadimplência');
             return await response.json();
         } catch (error) {

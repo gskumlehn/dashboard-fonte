@@ -2,7 +2,7 @@ from typing import Dict, Any
 from app.infra.db_connection import Database
 from app.utils.date_utils import DateUtils
 
-class DashboardService:
+class OperationsService:
 
     def get_monthly_volume_data(self, start_date: str, end_date: str) -> Dict[str, Any]:
         start_date_obj = DateUtils.get_start_of_month(DateUtils.parse_date(start_date))
@@ -86,12 +86,12 @@ class DashboardService:
             SELECT 
                 COUNT(DISTINCT CASE WHEN is_overdue = 1 THEN d.Id END) as overdue_documents,
                 COUNT(DISTINCT d.Id) as open_documents,
-                SUM(CASE WHEN is_overdue = 1 THEN d.ValorFace ELSE 0 END) as overdue_value,  -- Updated column name
-                SUM(d.ValorFace) as open_value  -- Updated column name
+                SUM(CASE WHEN is_overdue = 1 THEN d.ValorFace ELSE 0 END) as overdue_value,
+                SUM(d.ValorFace) as open_value
             FROM (
                 SELECT 
                     d.Id,
-                    d.ValorFace,  -- Updated column name
+                    d.ValorFace,
                     CASE 
                         WHEN d.Status = 0
                          AND CAST(GETDATE() AS DATE) > 
@@ -136,3 +136,4 @@ class DashboardService:
             return {}
         finally:
             db.close_connection()
+

@@ -1,0 +1,117 @@
+/* Este CSS está disponível em: public/static/css/filters.css */
+/* Para usar, adicione no seu HTML: <link rel="stylesheet" href="static/css/filters.css"> */
+
+@import './colors.css';
+
+/* Componente de Filtros */
+.filters-card {
+    background: var(--white, #ffffff);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 8px;
+    padding: 1.125rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+    margin-bottom: 1.5rem;
+}
+
+.filters-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    gap: 1rem;
+}
+
+.filters-header h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text, #3d3d3d);
+}
+
+.filter-shortcuts {
+    display: flex;
+    gap: 0.375rem;
+    flex-wrap: wrap;
+}
+
+.filters-content {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.filter-field {
+    flex: 1;
+    min-width: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.filter-field label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text, #3d3d3d);
+}
+
+.filter-field .input,
+.filter-field input,
+.filter-field select {
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    border: 1px solid var(--input-border, #e0e0e0);
+    border-radius: 4px;
+    height: 36px;
+    transition: border-color 0.2s;
+    background: var(--white, #ffffff);
+    color: var(--text, #3d3d3d);
+}
+
+.filter-field .input:focus,
+.filter-field input:focus,
+.filter-field select:focus {
+    outline: none;
+    border-color: var(--primary, #BB5927);
+    box-shadow: 0 0 0 1px var(--primary, #BB5927);
+}
+
+/* Responsividade - Mobile */
+@media (max-width: 768px) {
+    .filters-card {
+        padding: 0.875rem;
+    }
+
+    .filters-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .filter-shortcuts {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .filters-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+
+    .filter-field {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .filter-field .input,
+    .filter-field input,
+    .filter-field select {
+        height: 44px;
+        font-size: 0.9375rem;
+        padding: 0.625rem;
+    }
+}
+
+/* Veja o arquivo completo em public/static/css/filters.css para todas as media queries */

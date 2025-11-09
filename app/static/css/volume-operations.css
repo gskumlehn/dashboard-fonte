@@ -1,0 +1,255 @@
+@import url('/static/css/root.css');
+@import url('/static/css/filters.css');
+
+/* Estilos específicos da página Volume de Operações */
+
+/* Header Section */
+.header-section {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.title-section {
+    text-align: right;
+    width: 35%;
+    flex-shrink: 0;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
+
+.filters-card {
+    width: 65%;
+}
+
+/* KPIs Grid */
+.kpis-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.kpi-card {
+    background: var(--white, #ffffff);
+    padding: 18px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.kpi-card h3 {
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.kpi-value {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--black, #1a1a1a);
+    line-height: 1.2;
+}
+
+/* Chart Container */
+.chart-container {
+    background: var(--white, #ffffff);
+    padding: 18px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    position: relative;
+}
+
+.chart-container canvas {
+    width: 100% !important;
+    height: 400px !important;
+}
+
+.chart-legends {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+    margin-top: -1rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.legend-color {
+    width: 16px;
+    height: 2px;
+}
+
+.legend-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* Responsividade - Tablet (1024px e abaixo) */
+@media (max-width: 1024px) {
+    .header-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .title-section {
+        text-align: left;
+        width: 100%;
+    }
+
+    .filters-card {
+        width: 100%;
+    }
+
+    .kpis-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+
+    .chart-container {
+        padding: 16px;
+    }
+
+    .chart-container canvas {
+        height: 350px !important;
+    }
+}
+
+/* Responsividade - Mobile (768px e abaixo) */
+@media (max-width: 768px) {
+    .header-section {
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .subtitle {
+        font-size: 0.875rem;
+    }
+
+    .kpis-grid {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .kpi-card {
+        padding: 12px;
+    }
+
+    .kpi-card h3 {
+        font-size: 0.75rem;
+    }
+
+    .kpi-value {
+        font-size: 1.5rem;
+    }
+
+    .chart-container {
+        padding: 12px;
+    }
+
+    .chart-container canvas {
+        height: 300px !important;
+    }
+
+    .chart-legends {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0 0.5rem;
+        align-items: flex-start;
+    }
+
+    .legend-item {
+        width: 100%;
+    }
+}
+
+/* Responsividade - Mobile pequeno (480px e abaixo) */
+@media (max-width: 480px) {
+    .header-section {
+        margin-bottom: 0.75rem;
+    }
+
+    .kpis-grid {
+        gap: 0.5rem;
+    }
+
+    .kpi-card {
+        padding: 10px;
+    }
+
+    .kpi-value {
+        font-size: 1.25rem;
+    }
+
+    .chart-container {
+        padding: 10px;
+    }
+
+    .chart-container canvas {
+        height: 250px !important;
+    }
+
+    .legend-label {
+        font-size: 0.7rem;
+    }
+}
+
+/* Landscape mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .header-section {
+        margin-bottom: 0.5rem;
+    }
+
+    .kpis-grid {
+        grid-template-columns: repeat(4, 1fr);
+        margin-bottom: 0.75rem;
+    }
+
+    .kpi-card {
+        padding: 8px;
+    }
+
+    .kpi-card h3 {
+        font-size: 0.7rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .kpi-value {
+        font-size: 1rem;
+    }
+
+    .chart-container canvas {
+        height: 200px !important;
+    }
+}
+
+/* Print styles */
+@media print {
+    body {
+        padding: 0;
+    }
+
+    .header-section {
+        page-break-after: avoid;
+    }
+
+    .kpis-grid {
+        page-break-inside: avoid;
+    }
+
+    .chart-container {
+        page-break-inside: avoid;
+    }
+}
