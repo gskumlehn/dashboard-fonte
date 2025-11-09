@@ -24,12 +24,11 @@
     color: #666;
     font-size: 1rem;
     margin-top: 0.5rem;
-    text-align: center;
-    justify-content: center;
-    align-self: flex-start;
+    text-align: center; /* Center-align the subtitle */
+    justify-content: center; /* Ensure it is centered vertically */
+    align-items: center; /* Ensure it is centered horizontally */
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
 .filters-card {
