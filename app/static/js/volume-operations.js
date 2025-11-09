@@ -23,22 +23,12 @@ class VolumeOperations {
     }
 
     initializeFilters() {
-        const shortcuts = [
-            { label: 'Últimos 7 dias', days: 7 },
-            { label: 'Último mês', days: 30 },
-            { label: 'Últimos 3 meses', days: 90 },
-            { label: 'Último ano', days: 365 }
-        ];
-
         const shortcutsContainer = document.getElementById('filter-shortcuts');
         if (shortcutsContainer) {
-            shortcuts.forEach(shortcut => {
-                const button = document.createElement('button');
-                button.className = 'btn-outline btn-sm';
-                button.textContent = shortcut.label;
-                button.dataset.days = shortcut.days;
-                button.addEventListener('click', () => this.setPeriod(shortcut.days));
-                shortcutsContainer.appendChild(button);
+            const buttons = shortcutsContainer.querySelectorAll('button[data-days]');
+            buttons.forEach(button => {
+                const days = parseInt(button.dataset.days, 10);
+                button.addEventListener('click', () => this.setPeriod(days));
             });
         }
 

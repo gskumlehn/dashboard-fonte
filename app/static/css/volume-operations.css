@@ -1,9 +1,6 @@
 @import url('/static/css/root.css');
 @import url('/static/css/filters.css');
 
-/* Estilos específicos da página Volume de Operações */
-
-/* Header Section */
 .header-section {
     display: flex;
     align-items: center;
