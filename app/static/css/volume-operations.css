@@ -5,23 +5,24 @@
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    margin-bottom: 0.5rem; /* Reduced to one-third of the original margin */
-    margin-top: 0.75rem; /* Reduced top margin by half */
-    text-align: center; /* Center-align the content */
-    justify-content: center; /* Center the content horizontally */
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
 }
 
 .title-section {
-    text-align: center; /* Ensure the title and subtitle are centered */
+    text-align: center;
     width: 35%;
     flex-shrink: 0;
-    margin: 0 auto; /* Center the section within the container */
+    margin: 0 auto;
+    justify-content: center;
 }
 
 .subtitle {
     color: #666;
     font-size: 1rem;
     margin-top: 0.5rem;
+    text-align: center;
+    justify-content: center;
 }
 
 .filters-card {
@@ -87,7 +88,7 @@
 
 .chart-legends {
     display: flex;
-    justify-content: space-between; /* Garante que cada legenda fique abaixo do respectivo eixo */
+    justify-content: space-between;
     align-items: center;
     margin-top: 1rem;
     padding: 0 1rem;
@@ -103,26 +104,31 @@
     width: 24px;
     height: 2px;
     display: inline-block;
-    background-color: currentColor; /* Usa a cor do texto */
+    background-color: currentColor;
 }
 
 .legend-label {
     font-size: 0.875rem;
-    font-weight: bold; /* Texto em negrito */
+    font-weight: bold;
 }
 
 .legend-volume {
-    color: var(--primary); /* Cor da legenda Volume */
+    color: var(--primary);
 }
 
 .legend-ticket {
-    color: var(--blue); /* Cor da legenda Ticket Médio */
+    color: var(--blue);
 }
 
 .filters-content .filter-field .input {
-    width: 100%; /* Ensure all inputs are the same width */
-    max-width: 200px; /* Set a consistent max width for all inputs */
-    box-sizing: border-box; /* Ensure padding and border are included in the width */
+    width: 100%;
+    max-width: 200px;
+    box-sizing: border-box;
+}
+
+.filters-content .filter-field label {
+    text-align: left;
+    display: block;
 }
 
 @media (max-width: 1024px) {

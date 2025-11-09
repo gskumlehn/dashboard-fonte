@@ -237,8 +237,8 @@ class VolumeOperations {
                         backgroundColor: primaryBgColor,
                         tension: 0,
                         yAxisID: 'y',
-                        borderWidth: 1,
-                        pointRadius: 2,
+                        borderWidth: 2,
+                        pointRadius: 1,
                         pointBackgroundColor: primaryColor
                     },
                     {
@@ -249,7 +249,7 @@ class VolumeOperations {
                         tension: 0,
                         yAxisID: 'y1',
                         borderWidth: 2,
-                        pointRadius: 2,
+                        pointRadius: 1,
                         pointBackgroundColor: blueColor
                     }
                 ]
