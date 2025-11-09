@@ -158,6 +158,13 @@ class VolumeOperations {
         }
     }
 
+    formatDateInput(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`; // Format as YYYY-MM-DD for input[type="date"]
+    }
+
     updateKPIs(data) {
         const totalVolume = data.reduce((sum, d) => sum + d.volume, 0);
         const avgTicket = data.reduce((sum, d) => sum + d.ticket, 0) / data.length;
