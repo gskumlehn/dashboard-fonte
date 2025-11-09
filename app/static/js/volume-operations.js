@@ -152,7 +152,7 @@ class VolumeOperations {
             const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
             return `${months[month]}/${year}`;
         } else {
-            const day = String(date.getDate()).padStart(2, '0');
+            const day = String(date.getDate() + 1).padStart(2, '0');
             const month = String(date.getMonth() + 1).padStart(2, '0');
             return `${day}/${month}`;
         }
