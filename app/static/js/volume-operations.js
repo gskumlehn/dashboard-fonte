@@ -132,25 +132,28 @@ class VolumeOperations {
     }
 
     processData(data, periodType) {
-        return data.map(item => ({
-            date: item.date,
-            dateFormatted: this.formatDate(item.date, periodType),
-            volume: parseFloat(item.total_volume) || 0,
-            ticket: parseFloat(item.average_ticket) || 0,
-            numOperations: Math.round(item.total_volume / item.average_ticket) || 0
-        }));
+        return data.map(item => {
+            const date = new Date(item.date); // Corrige o formato da data retornada
+            return {
+                date: item.date,
+                dateFormatted: this.formatDate(date, periodType), // Passa o objeto Date para formatar corretamente
+                volume: parseFloat(item.total_volume) || 0,
+                ticket: parseFloat(item.average_ticket) || 0,
+                numOperations: Math.round(item.total_volume / item.average_ticket) || 0
+            };
+        });
     }
 
-    formatDate(dateString, type) {
+    formatDate(date, type) {
         if (type === 'monthly') {
-            const [year, month] = dateString.split('-');
+            const year = date.getFullYear();
+            const month = date.getMonth();
             const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-            return `${months[parseInt(month) - 1]}/${year}`;
+            return `${months[month]}/${year}`;
         } else {
-            const date = new Date(dateString + 'T00:00:00');
             const day = String(date.getDate()).padStart(2, '0');
             const month = String(date.getMonth() + 1).padStart(2, '0');
-            return `${day}/${month}`;
+            return `${day}/${month}`; // Formato DD/MM
         }
     }
 
@@ -283,7 +286,8 @@ class VolumeOperations {
                         type: 'linear',
                         position: 'left',
                         ticks: {
-                            callback: (value) => this.formatCurrencyShort(value)
+                            callback: (value) => this.formatCurrencyShort(value),
+                            stepSize: 5000
                         },
                         grid: {
                             color: 'rgba(0, 0, 0, 0.05)'
@@ -296,7 +300,8 @@ class VolumeOperations {
                             drawOnChartArea: false
                         },
                         ticks: {
-                            callback: (value) => this.formatCurrencyShort(value)
+                            callback: (value) => this.formatCurrencyShort(value),
+                            stepSize: 5000 // Reduz o espaçamento entre as linhas do eixo Y1
                         }
                     }
                 }
