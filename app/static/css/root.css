@@ -51,7 +51,7 @@ input[readonly] {
 .container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 9rem 1.5rem;
+  padding: 1.5rem 9rem;
 }
 
 /* Responsividade Global */
