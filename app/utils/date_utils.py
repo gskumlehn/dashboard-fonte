@@ -27,12 +27,23 @@ class DateUtils:
     def create_brazilian_date_without_altering(input_date) -> datetime:
         """
         Cria uma data com timezone brasileiro (UTC-3) sem alterar o dia, mês ou ano.
-        Aceita tanto strings no formato 'yyyy-MM-dd' quanto objetos datetime.date.
+        Aceita:
+        - Strings no formato 'yyyy-MM-dd' (data completa).
+        - Strings no formato 'yyyy-MM' (ano e mês, atribuindo o dia 15 às 00:00).
+        - Objetos datetime.date.
         """
+        brazil_tz = timezone(timedelta(hours=-3))
+
         if isinstance(input_date, date) and not isinstance(input_date, datetime):
             input_date = input_date.strftime('%Y-%m-%d')
-        utc_date = datetime.strptime(input_date, '%Y-%m-%d').replace(tzinfo=timezone.utc)
-        brazil_tz = timezone(timedelta(hours=-3))
+
+        if isinstance(input_date, str):
+            if len(input_date) == 7:  # Format 'yyyy-MM'
+                input_date += '-15'  # Assign the 15th day of the month
+            utc_date = datetime.strptime(input_date, '%Y-%m-%d').replace(tzinfo=timezone.utc)
+        else:
+            raise ValueError("Unsupported input type for date conversion.")
+
         brazil_date = datetime(
             year=utc_date.year,
             month=utc_date.month,
