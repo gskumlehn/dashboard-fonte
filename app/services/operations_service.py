@@ -1,9 +1,9 @@
+from datetime import datetime, timezone, timedelta
 from typing import Dict, Any
 from app.infra.db_connection import Database
 from app.utils.date_utils import DateUtils
 
 class OperationsService:
-
     def get_monthly_volume_data(self, start_date: str, end_date: str) -> Dict[str, Any]:
         start_date_obj = DateUtils.get_start_of_month(DateUtils.parse_date(start_date))
         end_date_obj = DateUtils.get_end_of_month(DateUtils.parse_date(end_date))
@@ -35,7 +35,11 @@ class OperationsService:
         try:
             rows = db.execute_query(sql)
             result = [
-                {"date": r[0], "total_volume": round(float(r[1]), 2), "average_ticket": round(float(r[2]), 2)}
+                {
+                    "date": DateUtils.create_brazilian_date_without_altering(r[0]).strftime('%Y-%m-%d'),
+                    "total_volume": round(float(r[1]), 2),
+                    "average_ticket": round(float(r[2]), 2)
+                }
                 for r in rows
             ]
             return {"data": result}
@@ -74,7 +78,11 @@ class OperationsService:
         try:
             rows = db.execute_query(sql)
             result = [
-                {"date": r[0], "total_volume": round(float(r[1]), 2), "average_ticket": round(float(r[2]), 2)}
+                {
+                    "date": DateUtils.create_brazilian_date_without_altering(r[0]).strftime('%Y-%m-%d'),
+                    "total_volume": round(float(r[1]), 2),
+                    "average_ticket": round(float(r[2]), 2)
+                }
                 for r in rows
             ]
             return {"data": result}
@@ -136,4 +144,3 @@ class OperationsService:
             return {}
         finally:
             db.close_connection()
-
