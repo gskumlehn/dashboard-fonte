@@ -45,6 +45,8 @@
     gap: 1rem;
     min-width: 320px;
     max-width: 320px;
+    height: auto; /* Match the height of the chart container */
+    flex-grow: 1; /* Ensure it grows proportionally with the chart container */
 }
 
 .kpi-card {
@@ -72,18 +74,22 @@
 }
 
 .chart-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     background: var(--white);
     padding: 18px;
     border-radius: 1px;
     box-shadow: var(--shadow);
     border: 1px solid var(--input-border);
-    position: relative;
-    flex: 1;
+    height: auto; /* Allow dynamic height */
 }
 
 .chart-container canvas {
     width: 100% !important;
-    height: 340px !important;
+    height: auto !important; /* Allow the chart to scale dynamically */
+    aspect-ratio: 2; /* Maintain a consistent aspect ratio */
 }
 
 .chart-legends {
@@ -155,6 +161,7 @@
         max-width: 100%;
         flex-direction: row;
         flex-wrap: wrap;
+        height: auto; /* Ensure it adapts dynamically */
     }
 
     .kpi-card {
@@ -168,7 +175,7 @@
     }
 
     .chart-container canvas {
-        height: 297.5px !important;
+        aspect-ratio: 2; /* Maintain aspect ratio on smaller screens */
     }
 }
 
@@ -191,6 +198,7 @@
         flex-direction: column;
         gap: 0.5rem;
         margin-bottom: 1rem;
+        height: auto;
     }
 
     .kpi-card {
@@ -211,7 +219,7 @@
     }
 
     .chart-container canvas {
-        height: 255px !important;
+        aspect-ratio: 2; /* Maintain aspect ratio */
     }
 
     .chart-legends {
