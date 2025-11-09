@@ -135,9 +135,10 @@ class VolumeOperations {
     processData(data, periodType) {
         return data.map(item => {
             const date = new Date(item.date);
+            const brazilDate = new Date(date.toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));
             return {
                 date: item.date,
-                dateFormatted: this.formatDate(date, periodType),
+                dateFormatted: this.formatDate(brazilDate, periodType),
                 volume: parseFloat(item.total_volume) || 0,
                 ticket: parseFloat(item.average_ticket) || 0,
                 numOperations: Math.round(item.total_volume / item.average_ticket) || 0
@@ -148,7 +149,7 @@ class VolumeOperations {
     formatDate(date, type) {
         if (type === 'monthly') {
             const year = date.getFullYear();
-            const month = date.getMonth();
+            const month = date.getMonth() -1;
             const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
             return `${months[month]}/${year}`;
         } else {
@@ -159,9 +160,9 @@ class VolumeOperations {
     }
 
     formatDateInput(date) {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
+        const year = date.getUTCFullYear();
+        const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+        const day = String(date.getUTCDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
     }
 
