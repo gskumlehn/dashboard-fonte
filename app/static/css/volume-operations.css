@@ -22,6 +22,10 @@
 
 .filters-card {
     width: 65%;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    box-shadow: var(--shadow);
 }
 
 .main-content {
@@ -42,7 +46,7 @@
     background: var(--white);
     padding: 6px 18px;
     border-radius: 1px;
-    box-shadow: 0 2px 8px var(--shadow);
+    box-shadow: var(--shadow);
     border: 1px solid var(--input-border);
     height: 85px;
 }
@@ -63,10 +67,10 @@
 }
 
 .chart-container {
-    background: var(--white, #ffffff);
+    background: var(--white);
     padding: 18px;
     border-radius: 1px;
-    box-shadow: 0 2px 8px var(--shadow);
+    box-shadow: var(--shadow);
     border: 1px solid var(--input-border);
     position: relative;
     flex: 1;

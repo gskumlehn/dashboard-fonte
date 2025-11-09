@@ -1,4 +1,4 @@
-:root{
+:root {
   --primary: #BB5927;
   --secondary: #363432;
   --orange: #BB5927;
@@ -15,7 +15,7 @@
   --white: #ffffff;
   --black: #000000;
   --input-border: #e0e0e0;
-  --shadow: rgba(0,0,0,0.1);
+  --shadow: rgba(0, 0, 0, 0.1);
   --success-bg: #d4edda;
   --success-text: #155724;
   --success-border: #c3e6cb;
