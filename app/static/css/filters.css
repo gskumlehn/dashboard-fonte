@@ -1,9 +1,6 @@
-/* Este CSS está disponível em: public/static/css/filters.css */
-/* Para usar, adicione no seu HTML: <link rel="stylesheet" href="static/css/filters.css"> */
+@import url('/static/css/colors.css');
+@import url('/static/css/buttons.css');
 
-@import './colors.css';
-
-/* Componente de Filtros */
 .filters-card {
     background: var(--white, #ffffff);
     border: 1px solid rgba(0, 0, 0, 0.06);
@@ -76,7 +73,6 @@
     box-shadow: 0 0 0 1px var(--primary, #BB5927);
 }
 
-/* Responsividade - Mobile */
 @media (max-width: 768px) {
     .filters-card {
         padding: 0.875rem;
@@ -113,5 +109,3 @@
         padding: 0.625rem;
     }
 }
-
-/* Veja o arquivo completo em public/static/css/filters.css para todas as media queries */
