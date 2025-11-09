@@ -28,7 +28,7 @@ class VolumeOperations {
             const buttons = shortcutsContainer.querySelectorAll('button[data-days]');
             buttons.forEach(button => {
                 const days = parseInt(button.dataset.days, 10);
-                button.classList.add('btn-outline'); // Ensure the ButtonOutline class is applied
+                button.classList.add('btn-outline');
                 button.addEventListener('click', () => {
                     let type = (days === 7 || days === 30) ? 'daily' : 'monthly';
                     this.setPeriodAndFilter(days, type);
@@ -59,7 +59,7 @@ class VolumeOperations {
     }
 
     loadInitialData() {
-        this.setPeriodAndFilter(30, 'daily'); // Default to last 30 days with daily type
+        this.setPeriodAndFilter(30, 'daily');
     }
 
     validateDates(startDate, endDate) {
@@ -162,7 +162,7 @@ class VolumeOperations {
         const year = date.getFullYear();
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`; // Format as YYYY-MM-DD for input[type="date"]
+        return `${year}-${month}-${day}`;
     }
 
     updateKPIs(data) {
