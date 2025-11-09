@@ -36,6 +36,7 @@ class VolumeOperations {
                 const button = document.createElement('button');
                 button.className = 'btn-outline btn-sm';
                 button.textContent = shortcut.label;
+                button.dataset.days = shortcut.days;
                 button.addEventListener('click', () => this.setPeriod(shortcut.days));
                 shortcutsContainer.appendChild(button);
             });
