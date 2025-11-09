@@ -46,6 +46,7 @@
     border-radius: 1px;
     box-shadow: 0 2px 8px var(--shadow);
     border: 1px solid var(--input-border);
+    height: 85px; /* 1/4 da altura do gráfico (340px / 4) */
 }
 
 .kpi-card h3 {
@@ -74,7 +75,7 @@
 
 .chart-container canvas {
     width: 100% !important;
-    height: 400px !important;
+    height: 340px !important; /* Reduzido em 15% de 400px */
 }
 
 .chart-legends {
@@ -130,6 +131,7 @@
     .kpi-card {
         flex: 1;
         min-width: 200px;
+        height: 74px; /* 1/4 da altura do gráfico (297.5px / 4) */
     }
 
     .chart-container {
@@ -137,7 +139,7 @@
     }
 
     .chart-container canvas {
-        height: 350px !important;
+        height: 297.5px !important; /* Reduzido em 15% de 350px */
     }
 }
 
@@ -165,6 +167,7 @@
 
     .kpi-card {
         padding: 12px;
+        height: 63.75px; /* 1/4 da altura do gráfico (255px / 4) */
     }
 
     .kpi-card h3 {
@@ -180,7 +183,7 @@
     }
 
     .chart-container canvas {
-        height: 300px !important;
+        height: 255px !important; /* Reduzido em 15% de 300px */
     }
 
     .chart-legends {
@@ -207,6 +210,7 @@
 
     .kpi-card {
         padding: 10px;
+        height: 53.125px; /* 1/4 da altura do gráfico (212.5px / 4) */
     }
 
     .kpi-value {
@@ -218,7 +222,7 @@
     }
 
     .chart-container canvas {
-        height: 250px !important;
+        height: 212.5px !important; /* Reduzido em 15% de 250px */
     }
 
     .legend-label {
@@ -239,6 +243,7 @@
 
     .kpi-card {
         padding: 8px;
+        height: 42.5px; /* 1/4 da altura do gráfico (170px / 4) */
     }
 
     .kpi-card h3 {
@@ -251,7 +256,7 @@
     }
 
     .chart-container canvas {
-        height: 200px !important;
+        height: 170px !important; /* Reduzido em 15% de 200px */
     }
 }
 
