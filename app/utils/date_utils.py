@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone, date
 
 class DateUtils:
     @staticmethod
@@ -24,11 +24,14 @@ class DateUtils:
         return start_of_next_month - timedelta(milliseconds=1)
 
     @staticmethod
-    def create_brazilian_date_without_altering(date_str: str) -> datetime:
+    def create_brazilian_date_without_altering(input_date) -> datetime:
         """
         Cria uma data com timezone brasileiro (UTC-3) sem alterar o dia, mês ou ano.
+        Aceita tanto strings no formato 'yyyy-MM-dd' quanto objetos datetime.date.
         """
-        utc_date = datetime.strptime(date_str, '%Y-%m-%d').replace(tzinfo=timezone.utc)
+        if isinstance(input_date, date) and not isinstance(input_date, datetime):
+            input_date = input_date.strftime('%Y-%m-%d')
+        utc_date = datetime.strptime(input_date, '%Y-%m-%d').replace(tzinfo=timezone.utc)
         brazil_tz = timezone(timedelta(hours=-3))
         brazil_date = datetime(
             year=utc_date.year,
