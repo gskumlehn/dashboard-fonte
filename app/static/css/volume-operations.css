@@ -24,14 +24,12 @@
     width: 65%;
 }
 
-/* Main Content Layout */
 .main-content {
     display: flex;
     gap: 1.5rem;
     margin-bottom: 1.5rem;
 }
 
-/* KPIs Grid - Vertical on Right */
 .kpis-grid {
     display: flex;
     flex-direction: column;
@@ -46,7 +44,7 @@
     border-radius: 1px;
     box-shadow: 0 2px 8px var(--shadow);
     border: 1px solid var(--input-border);
-    height: 85px; /* 1/4 da altura do gráfico (340px / 4) */
+    height: 85px;
 }
 
 .kpi-card h3 {
@@ -61,6 +59,7 @@
     font-weight: 600;
     color: var(--black);
     line-height: 1.2;
+    margin: 0;
 }
 
 .chart-container {
@@ -75,7 +74,7 @@
 
 .chart-container canvas {
     width: 100% !important;
-    height: 340px !important; /* Reduzido em 15% de 400px */
+    height: 340px !important;
 }
 
 .chart-legends {
@@ -101,7 +100,6 @@
     font-weight: 500;
 }
 
-/* Responsividade - Tablet (1024px e abaixo) */
 @media (max-width: 1024px) {
     .header-section {
         flex-direction: column;
@@ -131,7 +129,7 @@
     .kpi-card {
         flex: 1;
         min-width: 200px;
-        height: 74px; /* 1/4 da altura do gráfico (297.5px / 4) */
+        height: 74px;
     }
 
     .chart-container {
@@ -139,11 +137,10 @@
     }
 
     .chart-container canvas {
-        height: 297.5px !important; /* Reduzido em 15% de 350px */
+        height: 297.5px !important;
     }
 }
 
-/* Responsividade - Mobile (768px e abaixo) */
 @media (max-width: 768px) {
     .header-section {
         gap: 0.75rem;
@@ -167,7 +164,7 @@
 
     .kpi-card {
         padding: 12px;
-        height: 63.75px; /* 1/4 da altura do gráfico (255px / 4) */
+        height: 63.75px;
     }
 
     .kpi-card h3 {
@@ -183,7 +180,7 @@
     }
 
     .chart-container canvas {
-        height: 255px !important; /* Reduzido em 15% de 300px */
+        height: 255px !important;
     }
 
     .chart-legends {
@@ -198,7 +195,6 @@
     }
 }
 
-/* Responsividade - Mobile pequeno (480px e abaixo) */
 @media (max-width: 480px) {
     .header-section {
         margin-bottom: 0.75rem;
@@ -210,7 +206,7 @@
 
     .kpi-card {
         padding: 10px;
-        height: 53.125px; /* 1/4 da altura do gráfico (212.5px / 4) */
+        height: 53.125px;
     }
 
     .kpi-value {
@@ -222,7 +218,7 @@
     }
 
     .chart-container canvas {
-        height: 212.5px !important; /* Reduzido em 15% de 250px */
+        height: 212.5px !important;
     }
 
     .legend-label {
@@ -230,7 +226,6 @@
     }
 }
 
-/* Landscape mobile */
 @media (max-height: 500px) and (orientation: landscape) {
     .header-section {
         margin-bottom: 0.5rem;
@@ -243,7 +238,7 @@
 
     .kpi-card {
         padding: 8px;
-        height: 42.5px; /* 1/4 da altura do gráfico (170px / 4) */
+        height: 42.5px;
     }
 
     .kpi-card h3 {
@@ -256,11 +251,10 @@
     }
 
     .chart-container canvas {
-        height: 170px !important; /* Reduzido em 15% de 200px */
+        height: 170px !important;
     }
 }
 
-/* Print styles */
 @media print {
     body {
         padding: 0;
