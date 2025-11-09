@@ -28,7 +28,15 @@ class VolumeOperations {
             const buttons = shortcutsContainer.querySelectorAll('button[data-days]');
             buttons.forEach(button => {
                 const days = parseInt(button.dataset.days, 10);
-                button.addEventListener('click', () => this.setPeriod(days));
+                button.addEventListener('click', () => {
+                    let type;
+                    if (days === 7 || days === 30) {
+                        type = 'daily'; // Últimos 7 dias e Último mês -> daily
+                    } else {
+                        type = 'monthly'; // Últimos 3 meses e Último ano -> monthly
+                    }
+                    this.setPeriod(days, type);
+                });
             });
         }
 
@@ -38,15 +46,18 @@ class VolumeOperations {
         }
     }
 
-    setPeriod(days) {
+    setPeriod(days, type) {
         const endDate = new Date();
         const startDate = new Date();
         startDate.setDate(startDate.getDate() - days);
 
         const startDateInput = document.getElementById('start-date');
         const endDateInput = document.getElementById('end-date');
+        const periodTypeSelect = document.getElementById('period-type');
+
         if (startDateInput) startDateInput.value = this.formatDateInput(startDate);
         if (endDateInput) endDateInput.value = this.formatDateInput(endDate);
+        if (periodTypeSelect) periodTypeSelect.value = type; // Update the select element
     }
 
     formatDateInput(date) {
@@ -57,7 +68,7 @@ class VolumeOperations {
     }
 
     loadInitialData() {
-        this.setPeriod(30);
+        this.setPeriod(30, 'daily'); // Default to last 30 days with daily type
         this.loadData();
     }
 
