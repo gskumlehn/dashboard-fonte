@@ -84,7 +84,7 @@ class Login {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ username, password }), // Enviando os dados como JSON
+                body: JSON.stringify({ username, password }),
             });
 
             if (response.ok) {
@@ -110,6 +110,7 @@ class Login {
                 this.showMessage(error.message || 'Erro ao tentar realizar login.', 'error');
             }
         } catch (error) {
+            console.error('Erro ao tentar realizar login:', error);
             this.showMessage('Erro ao tentar realizar login. Tente novamente.', 'error');
         }
     }

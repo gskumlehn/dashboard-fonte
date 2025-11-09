@@ -7,7 +7,7 @@ dashboard_bp = Blueprint('dashboard_bp', __name__, url_prefix='/dashboard')
 @dashboard_bp.route('/', methods=['GET'])
 @login_required
 def home():
-    return render_template('dashboard.html', user=current_user)
+    return render_template('dashboard.html')
 
 @dashboard_bp.route('/volume-data', methods=['GET'])
 @login_required
