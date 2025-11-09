@@ -5,79 +5,78 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/volume-operations.css') }}">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<div class="container">
-    <div class="header-section">
-        <div class="title-section">
-            <h1>Volume de Operações</h1>
-            <p class="subtitle">Análise de volume e ticket médio das operações</p>
-        </div>
-
-        <div class="filters-card">
-            <div class="filters-header">
-                <h3>Filtros</h3>
-                <div class="filter-shortcuts" id="filter-shortcuts">
-                    <button class="btn btn-outline btn-sm" data-days="7">Últimos 7 dias</button>
-                    <button class="btn btn-outline btn-sm" data-days="30">Último mês</button>
-                    <button class="btn btn-outline btn-sm" data-days="90">Últimos 3 meses</button>
-                    <button class="btn btn-outline btn-sm" data-days="365">Último ano</button>
-                </div>
-            </div>
-            <div class="filters-content">
-                <div class="filter-field">
-                    <label for="start-date">Data Início</label>
-                    <input type="date" id="start-date" class="input">
-                </div>
-                <div class="filter-field">
-                    <label for="end-date">Data Fim</label>
-                    <input type="date" id="end-date" class="input">
-                </div>
-                <div class="filter-field">
-                    <label for="period-type">Período</label>
-                    <select id="period-type" class="input">
-                        <option value="daily">Diário</option>
-                        <option value="monthly">Mensal</option>
-                    </select>
-                </div>
-                <button class="btn btn-primary" id="filter-button">Filtrar</button>
-            </div>
-        </div>
+<div class="header-section">
+    <div class="title-section">
+        <h1>Volume de Operações</h1>
+        <p class="subtitle">Análise de volume e ticket médio das operações</p>
     </div>
 
-    <div class="main-content">
-        <div class="chart-container">
-            <canvas id="volumeChart"></canvas>
-            <div class="chart-legends">
-                <div class="legend-item legend-volume">
-                    <span class="legend-line"></span>
-                    <span class="legend-label">Volume</span>
-                </div>
-                <div class="legend-item legend-ticket">
-                    <span class="legend-line"></span>
-                    <span class="legend-label">Ticket Médio</span>
-                </div>
+    <div class="filters-card">
+        <div class="filters-header">
+            <h3>Filtros</h3>
+            <div class="filter-shortcuts" id="filter-shortcuts">
+                <button class="btn btn-outline btn-sm" data-days="7">Últimos 7 dias</button>
+                <button class="btn btn-outline btn-sm" data-days="30">Último mês</button>
+                <button class="btn btn-outline btn-sm" data-days="90">Últimos 3 meses</button>
+                <button class="btn btn-outline btn-sm" data-days="365">Último ano</button>
             </div>
         </div>
-
-        <div class="kpis-grid">
-            <div class="kpi-card">
-                <h3>Volume Total</h3>
-                <p class="kpi-value" id="totalVolume">-</p>
+        <div class="filters-content">
+            <div class="filter-field">
+                <label for="start-date">Data Início</label>
+                <input type="date" id="start-date" class="input">
             </div>
-            <div class="kpi-card">
-                <h3>Ticket Médio</h3>
-                <p class="kpi-value" id="avgTicket">-</p>
+            <div class="filter-field">
+                <label for="end-date">Data Fim</label>
+                <input type="date" id="end-date" class="input">
             </div>
-            <div class="kpi-card">
-                <h3>Nº de Operações</h3>
-                <p class="kpi-value" id="numOperations">-</p>
+            <div class="filter-field">
+                <label for="period-type">Período</label>
+                <select id="period-type" class="input">
+                    <option value="daily">Diário</option>
+                    <option value="monthly">Mensal</option>
+                </select>
             </div>
-            <div class="kpi-card">
-                <h3>Maior Volume</h3>
-                <p class="kpi-value" id="maxVolume">-</p>
-            </div>
+            <button class="btn btn-primary" id="filter-button">Filtrar</button>
         </div>
     </div>
 </div>
+
+<div class="main-content">
+    <div class="chart-container">
+        <canvas id="volumeChart"></canvas>
+        <div class="chart-legends">
+            <div class="legend-item legend-volume">
+                <span class="legend-line"></span>
+                <span class="legend-label">Volume</span>
+            </div>
+            <div class="legend-item legend-ticket">
+                <span class="legend-line"></span>
+                <span class="legend-label">Ticket Médio</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="kpis-grid">
+        <div class="kpi-card">
+            <h3>Volume Total</h3>
+            <p class="kpi-value" id="totalVolume">-</p>
+        </div>
+        <div class="kpi-card">
+            <h3>Ticket Médio</h3>
+            <p class="kpi-value" id="avgTicket">-</p>
+        </div>
+        <div class="kpi-card">
+            <h3>Nº de Operações</h3>
+            <p class="kpi-value" id="numOperations">-</p>
+        </div>
+        <div class="kpi-card">
+            <h3>Maior Volume</h3>
+            <p class="kpi-value" id="maxVolume">-</p>
+        </div>
+    </div>
+</div>
+
 
 <script src="{{ url_for('static', filename='js/volume-operations.js') }}"></script>
 {% endblock %}
