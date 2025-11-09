@@ -287,7 +287,6 @@ class VolumeOperations {
                         position: 'left',
                         ticks: {
                             callback: (value) => this.formatCurrencyShort(value),
-                            stepSize: 5000
                         },
                         grid: {
                             color: 'rgba(0, 0, 0, 0.05)'
@@ -301,7 +300,6 @@ class VolumeOperations {
                         },
                         ticks: {
                             callback: (value) => this.formatCurrencyShort(value),
-                            stepSize: 5000 // Reduz o espaçamento entre as linhas do eixo Y1
                         }
                     }
                 }

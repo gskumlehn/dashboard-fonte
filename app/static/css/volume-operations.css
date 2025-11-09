@@ -55,7 +55,7 @@
 
 .chart-container {
     background: var(--white);
-    padding: 18px;
+    padding: 12px;
     border-radius: 8px;
     box-shadow: 0 2px 8px var(--shadow);
     border: 1px solid var(--input-border);
@@ -63,6 +63,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    max-height: 400px;
 }
 
 .chart-container canvas {
