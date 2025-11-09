@@ -36,7 +36,7 @@ class OperationsService:
             rows = db.execute_query(sql)
             result = [
                 {
-                    "date": DateUtils.create_brazilian_date_without_altering(r[0]).strftime('%Y-%m'),
+                    "date": DateUtils.create_brazilian_date_without_altering(r[0]),
                     "total_volume": round(float(r[1]), 2),
                     "average_ticket": round(float(r[2]), 2)
                 }
