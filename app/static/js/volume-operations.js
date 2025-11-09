@@ -28,14 +28,10 @@ class VolumeOperations {
             const buttons = shortcutsContainer.querySelectorAll('button[data-days]');
             buttons.forEach(button => {
                 const days = parseInt(button.dataset.days, 10);
+                button.classList.add('btn-outline'); // Ensure the ButtonOutline class is applied
                 button.addEventListener('click', () => {
-                    let type;
-                    if (days === 7 || days === 30) {
-                        type = 'daily';
-                    } else {
-                        type = 'monthly';
-                    }
-                    this.setPeriod(days, type);
+                    let type = (days === 7 || days === 30) ? 'daily' : 'monthly';
+                    this.setPeriodAndFilter(days, type);
                 });
             });
         }
@@ -46,7 +42,7 @@ class VolumeOperations {
         }
     }
 
-    setPeriod(days, type) {
+    async setPeriodAndFilter(days, type) {
         const endDate = new Date();
         const startDate = new Date();
         startDate.setDate(startDate.getDate() - days);
@@ -58,18 +54,12 @@ class VolumeOperations {
         if (startDateInput) startDateInput.value = this.formatDateInput(startDate);
         if (endDateInput) endDateInput.value = this.formatDateInput(endDate);
         if (periodTypeSelect) periodTypeSelect.value = type;
-    }
 
-    formatDateInput(date) {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
+        await this.loadData();
     }
 
     loadInitialData() {
-        this.setPeriod(30, 'daily');
-        this.loadData();
+        this.setPeriodAndFilter(30, 'daily'); // Default to last 30 days with daily type
     }
 
     validateDates(startDate, endDate) {
