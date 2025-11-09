@@ -83,9 +83,10 @@
 
 .chart-legends {
     display: flex;
-    justify-content: center;
-    gap: 1.5rem;
+    justify-content: space-between; /* Garante que cada legenda fique abaixo do respectivo eixo */
+    align-items: center;
     margin-top: 1rem;
+    padding: 0 1rem;
 }
 
 .legend-item {
@@ -94,16 +95,24 @@
     gap: 0.5rem;
 }
 
-.legend-color {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
+.legend-line {
+    width: 24px;
+    height: 2px;
+    display: inline-block;
+    background-color: currentColor; /* Usa a cor do texto */
 }
 
 .legend-label {
     font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--text, #3d3d3d);
+    font-weight: bold; /* Texto em negrito */
+}
+
+.legend-volume {
+    color: var(--primary); /* Cor da legenda Volume */
+}
+
+.legend-ticket {
+    color: var(--blue); /* Cor da legenda Ticket Médio */
 }
 
 @media (max-width: 1024px) {

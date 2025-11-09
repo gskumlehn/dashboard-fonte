@@ -224,10 +224,10 @@ class VolumeOperations {
                         data: data.map(d => d.volume),
                         borderColor: primaryColor,
                         backgroundColor: primaryBgColor,
-                        tension: 0.1,
+                        tension: 0,
                         yAxisID: 'y',
-                        borderWidth: 2,
-                        pointRadius: 3,
+                        borderWidth: 1,
+                        pointRadius: 2,
                         pointBackgroundColor: primaryColor
                     },
                     {
@@ -235,10 +235,10 @@ class VolumeOperations {
                         data: data.map(d => d.ticket),
                         borderColor: blueColor,
                         backgroundColor: blueBgColor,
-                        tension: 0.1,
+                        tension: 0,
                         yAxisID: 'y1',
-                        borderWidth: 2,
-                        pointRadius: 3,
+                        borderWidth: 1,
+                        pointRadius: 2,
                         pointBackgroundColor: blueColor
                     }
                 ]
