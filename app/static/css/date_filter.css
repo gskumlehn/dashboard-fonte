@@ -4,7 +4,7 @@
 .filter-card {
     background-color: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: 8px;
+    border-radius: 1px;
     padding: var(--gap);
     margin-bottom: var(--gap);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -32,7 +32,7 @@
 .filter-group select {
     padding: 0.5rem;
     border: 1px solid var(--card-border);
-    border-radius: 4px;
+    border-radius: 1px;
     font-size: 1rem;
 }
 

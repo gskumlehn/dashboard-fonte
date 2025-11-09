@@ -43,7 +43,7 @@
 .kpi-card {
     background: var(--white);
     padding: 6px 18px;
-    border-radius: 8px;
+    border-radius: 1px;
     box-shadow: 0 2px 8px var(--shadow);
     border: 1px solid var(--input-border);
 }
@@ -65,7 +65,7 @@
 .chart-container {
     background: var(--white, #ffffff);
     padding: 18px;
-    border-radius: 8px;
+    border-radius: 1px;
     box-shadow: 0 2px 8px var(--shadow);
     border: 1px solid var(--input-border);
     position: relative;
