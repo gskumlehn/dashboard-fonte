@@ -191,6 +191,10 @@ class VolumeOperations {
         return this.formatCurrency(value);
     }
 
+    getCSSVariable(variableName) {
+        return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
+    }
+
     updateChart(data, periodType) {
         const ctx = document.getElementById('volumeChart');
         if (!ctx) return;
@@ -198,6 +202,14 @@ class VolumeOperations {
         if (this.chartInstance) {
             this.chartInstance.destroy();
         }
+
+        const primaryColor = this.getCSSVariable('--primary');
+        const primaryBgColor = this.getCSSVariable('--primary').replace(')', ', 0.1)').replace('rgb', 'rgba');
+        const blueColor = this.getCSSVariable('--blue');
+        const blueBgColor = this.getCSSVariable('--blue').replace(')', ', 0.1)').replace('rgb', 'rgba');
+        const whiteColor = this.getCSSVariable('--white');
+        const blackColor = this.getCSSVariable('--black');
+        const inputBorderColor = this.getCSSVariable('--input-border');
 
         this.chartInstance = new Chart(ctx.getContext('2d'), {
             type: 'line',
@@ -207,24 +219,24 @@ class VolumeOperations {
                     {
                         label: 'Volume',
                         data: data.map(d => d.volume),
-                        borderColor: 'var(--primary)',
-                        backgroundColor: 'rgba(187, 89, 39, 0.1)',
+                        borderColor: primaryColor,
+                        backgroundColor: primaryBgColor,
                         tension: 0.1,
                         yAxisID: 'y',
                         borderWidth: 2,
                         pointRadius: 3,
-                        pointBackgroundColor: 'var(--primary)'
+                        pointBackgroundColor: primaryColor
                     },
                     {
                         label: 'Ticket Médio',
                         data: data.map(d => d.ticket),
-                        borderColor: 'var(--blue)',
-                        backgroundColor: 'rgba(27, 77, 107, 0.1)',
+                        borderColor: blueColor,
+                        backgroundColor: blueBgColor,
                         tension: 0.1,
                         yAxisID: 'y1',
                         borderWidth: 2,
                         pointRadius: 3,
-                        pointBackgroundColor: 'var(--blue)'
+                        pointBackgroundColor: blueColor
                     }
                 ]
             },
@@ -240,10 +252,10 @@ class VolumeOperations {
                         display: false
                     },
                     tooltip: {
-                        backgroundColor: 'var(--white)',
-                        titleColor: 'var(--black)',
-                        bodyColor: 'var(--black)',
-                        borderColor: 'var(--input-border)',
+                        backgroundColor: whiteColor,
+                        titleColor: blackColor,
+                        bodyColor: blackColor,
+                        borderColor: inputBorderColor,
                         borderWidth: 1,
                         padding: 12,
                         boxPadding: 6,

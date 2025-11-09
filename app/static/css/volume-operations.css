@@ -15,7 +15,7 @@
 }
 
 .subtitle {
-    color: #666;
+    color: var(--text, #666);
     font-size: 1rem;
     margin-top: 0.5rem;
 }
@@ -24,7 +24,6 @@
     width: 65%;
 }
 
-/* KPIs Grid */
 .kpis-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -33,16 +32,16 @@
 }
 
 .kpi-card {
-    background: var(--white, #ffffff);
+    background: var(--white);
     padding: 18px;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 8px var(--shadow);
+    border: 1px solid var(--input-border);
 }
 
 .kpi-card h3 {
     font-size: 0.875rem;
-    color: #666;
+    color: var(--text, #666);
     margin-bottom: 0.5rem;
     font-weight: 500;
 }
@@ -50,23 +49,25 @@
 .kpi-value {
     font-size: 1.75rem;
     font-weight: 600;
-    color: var(--black, #1a1a1a);
+    color: var(--black);
     line-height: 1.2;
 }
 
-/* Chart Container */
 .chart-container {
-    background: var(--white, #ffffff);
+    background: var(--white);
     padding: 18px;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 8px var(--shadow);
+    border: 1px solid var(--input-border);
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .chart-container canvas {
-    width: 100% !important;
-    height: 400px !important;
+    max-width: 100%;
+    height: auto !important;
 }
 
 .chart-legends {
@@ -92,7 +93,6 @@
     font-weight: 500;
 }
 
-/* Responsividade - Tablet (1024px e abaixo) */
 @media (max-width: 1024px) {
     .header-section {
         flex-direction: column;
@@ -119,11 +119,10 @@
     }
 
     .chart-container canvas {
-        height: 350px !important;
+        height: auto !important;
     }
 }
 
-/* Responsividade - Mobile (768px e abaixo) */
 @media (max-width: 768px) {
     .header-section {
         gap: 0.75rem;
@@ -157,7 +156,7 @@
     }
 
     .chart-container canvas {
-        height: 300px !important;
+        height: auto !important;
     }
 
     .chart-legends {
@@ -172,7 +171,6 @@
     }
 }
 
-/* Responsividade - Mobile pequeno (480px e abaixo) */
 @media (max-width: 480px) {
     .header-section {
         margin-bottom: 0.75rem;
@@ -195,7 +193,7 @@
     }
 
     .chart-container canvas {
-        height: 250px !important;
+        height: auto !important;
     }
 
     .legend-label {
@@ -203,7 +201,6 @@
     }
 }
 
-/* Landscape mobile */
 @media (max-height: 500px) and (orientation: landscape) {
     .header-section {
         margin-bottom: 0.5rem;
@@ -228,11 +225,10 @@
     }
 
     .chart-container canvas {
-        height: 200px !important;
+        height: auto !important;
     }
 }
 
-/* Print styles */
 @media print {
     body {
         padding: 0;
