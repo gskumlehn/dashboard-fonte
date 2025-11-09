@@ -52,6 +52,6 @@ html, body {
 }
 
 .header-nav a:hover {
-    background-color: var(--input-border);
-    color: var(--primary);
+    background-color: transparent; /* Remove gray background */
+    color: var(--primary); /* Apply Primary color to text */
 }

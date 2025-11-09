@@ -80,9 +80,9 @@
 }
 
 .btn-outline:hover:not(:disabled) {
-    background: rgba(0, 0, 0, 0.05);
-    border-color: var(--primary, #BB5927);
-    color: var(--primary, #BB5927);
+    background: var(--primary, #BB5927); /* Solid Primary background */
+    border-color: var(--primary, #BB5927); /* Primary border */
+    color: var(--white, #ffffff); /* White text */
 }
 
 .btn-outline:active:not(:disabled) {

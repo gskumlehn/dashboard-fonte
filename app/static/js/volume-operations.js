@@ -31,9 +31,9 @@ class VolumeOperations {
                 button.addEventListener('click', () => {
                     let type;
                     if (days === 7 || days === 30) {
-                        type = 'daily'; // Últimos 7 dias e Último mês -> daily
+                        type = 'daily';
                     } else {
-                        type = 'monthly'; // Últimos 3 meses e Último ano -> monthly
+                        type = 'monthly';
                     }
                     this.setPeriod(days, type);
                 });
@@ -57,7 +57,7 @@ class VolumeOperations {
 
         if (startDateInput) startDateInput.value = this.formatDateInput(startDate);
         if (endDateInput) endDateInput.value = this.formatDateInput(endDate);
-        if (periodTypeSelect) periodTypeSelect.value = type; // Update the select element
+        if (periodTypeSelect) periodTypeSelect.value = type;
     }
 
     formatDateInput(date) {
@@ -68,7 +68,7 @@ class VolumeOperations {
     }
 
     loadInitialData() {
-        this.setPeriod(30, 'daily'); // Default to last 30 days with daily type
+        this.setPeriod(30, 'daily');
         this.loadData();
     }
 
@@ -144,10 +144,10 @@ class VolumeOperations {
 
     processData(data, periodType) {
         return data.map(item => {
-            const date = new Date(item.date); // Corrige o formato da data retornada
+            const date = new Date(item.date);
             return {
                 date: item.date,
-                dateFormatted: this.formatDate(date, periodType), // Passa o objeto Date para formatar corretamente
+                dateFormatted: this.formatDate(date, periodType),
                 volume: parseFloat(item.total_volume) || 0,
                 ticket: parseFloat(item.average_ticket) || 0,
                 numOperations: Math.round(item.total_volume / item.average_ticket) || 0
@@ -164,7 +164,7 @@ class VolumeOperations {
         } else {
             const day = String(date.getDate()).padStart(2, '0');
             const month = String(date.getMonth() + 1).padStart(2, '0');
-            return `${day}/${month}`; // Formato DD/MM
+            return `${day}/${month}`;
         }
     }
 
@@ -248,7 +248,7 @@ class VolumeOperations {
                         backgroundColor: blueBgColor,
                         tension: 0,
                         yAxisID: 'y1',
-                        borderWidth: 1,
+                        borderWidth: 2,
                         pointRadius: 2,
                         pointBackgroundColor: blueColor
                     }
@@ -270,7 +270,7 @@ class VolumeOperations {
                         titleColor: blackColor,
                         bodyColor: blackColor,
                         borderColor: inputBorderColor,
-                        borderWidth: 1,
+                        borderWidth: 2,
                         padding: 12,
                         boxPadding: 6,
                         usePointStyle: true,

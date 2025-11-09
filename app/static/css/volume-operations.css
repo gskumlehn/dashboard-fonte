@@ -7,12 +7,15 @@
     gap: 1.5rem;
     margin-bottom: 0.5rem; /* Reduced to one-third of the original margin */
     margin-top: 0.75rem; /* Reduced top margin by half */
+    text-align: center; /* Center-align the content */
+    justify-content: center; /* Center the content horizontally */
 }
 
 .title-section {
-    text-align: right;
+    text-align: center; /* Ensure the title and subtitle are centered */
     width: 35%;
     flex-shrink: 0;
+    margin: 0 auto; /* Center the section within the container */
 }
 
 .subtitle {
