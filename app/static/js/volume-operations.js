@@ -25,13 +25,19 @@ class VolumeOperations {
     initializeFilters() {
         const shortcutsContainer = document.getElementById('filter-shortcuts');
         if (shortcutsContainer) {
-            const buttons = shortcutsContainer.querySelectorAll('button[data-days]');
-            buttons.forEach(button => {
+            const dayButtons = shortcutsContainer.querySelectorAll('button[data-days]');
+            dayButtons.forEach(button => {
                 const days = parseInt(button.dataset.days, 10);
-                button.classList.add('btn-outline');
                 button.addEventListener('click', () => {
-                    let type = (days === 7 || days === 30) ? 'daily' : 'monthly';
-                    this.setPeriodAndFilter(days, type);
+                    this.setPeriodAndFilter('daily', days);
+                });
+            });
+
+            const monthButtons = shortcutsContainer.querySelectorAll('button[data-months]');
+            monthButtons.forEach(button => {
+                const months = parseInt(button.dataset.months, 10);
+                button.addEventListener('click', () => {
+                    this.setPeriodAndFilter('monthly', null, months);
                 });
             });
         }
@@ -42,10 +48,23 @@ class VolumeOperations {
         }
     }
 
-    async setPeriodAndFilter(days, type) {
+    async setPeriodAndFilter(type, days = null, months = null) {
+        const today = new Date();
+        let startDate = new Date();
+
+        if (type === 'daily' && days !== null && Number.isInteger(days)) {
+            startDate.setHours(0, 0, 0, 0);
+            startDate.setDate(startDate.getDate() - days);
+        } else if (type === 'monthly' && months !== null && Number.isInteger(months)) {
+            const startMonthIndex = today.getMonth() - (months - 1);
+            startDate = new Date(today.getFullYear(), startMonthIndex, 1);
+            startDate.setHours(0, 0, 0, 0);
+        } else {
+            throw new Error('Invalid parameters provided for setPeriodAndFilter.');
+        }
+
         const endDate = new Date();
-        const startDate = new Date();
-        startDate.setDate(startDate.getDate() - days);
+        endDate.setHours(0, 0, 0, 0);
 
         const startDateInput = document.getElementById('start-date');
         const endDateInput = document.getElementById('end-date');
@@ -59,7 +78,7 @@ class VolumeOperations {
     }
 
     loadInitialData() {
-        this.setPeriodAndFilter(30, 'daily');
+        this.setPeriodAndFilter('daily', 30);
     }
 
     validateDates(startDate, endDate) {
