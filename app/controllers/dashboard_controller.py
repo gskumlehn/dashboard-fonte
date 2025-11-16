@@ -13,12 +13,12 @@ def index():
 def home():
     return render_template('dashboard.html')
 
-@dashboard_bp.route('/volume-operations', methods=['GET'])
+@dashboard_bp.route('/operations', methods=['GET'])
 @login_required
 def volume_operations():
     return render_template('volume-operations.html')
 
-@dashboard_bp.route('/default-rate', methods=['GET'])
+@dashboard_bp.route('/default', methods=['GET'])
 @login_required
 def default_rate():
     return render_template('default-rate.html')
