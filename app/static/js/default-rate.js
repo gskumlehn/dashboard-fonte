@@ -7,7 +7,6 @@ class DefaultRate {
         this.lineChart = null;
         this.quantityBarChart = null;
         this.valueBarChart = null;
-        this.currentChartType = 'quantity';
         this.initialize();
     }
 
@@ -24,7 +23,6 @@ class DefaultRate {
         const applyBtn = document.getElementById('dr-apply-filter');
         if (applyBtn) applyBtn.addEventListener('click', () => this.loadData());
         this.setPeriodAndFilter('daily', 7); // Default load: last 7 days in daily mode
-        this.setupChartTypeButtons();
     }
 
     bindShortcuts() {
@@ -306,46 +304,6 @@ class DefaultRate {
                 }
             }
         });
-    }
-
-    setupChartTypeButtons() {
-        const quantityBtn = document.getElementById('chart-type-quantity');
-        const valueBtn = document.getElementById('chart-type-value');
-
-        if (quantityBtn) {
-            quantityBtn.addEventListener('click', () => {
-                this.currentChartType = 'quantity';
-                this.renderLineChart();
-                this.updateButtonStates();
-            });
-        }
-
-        if (valueBtn) {
-            valueBtn.addEventListener('click', () => {
-                this.currentChartType = 'value';
-                this.renderLineChart();
-                this.updateButtonStates();
-            });
-        }
-    }
-
-    updateButtonStates() {
-        const quantityBtn = document.getElementById('chart-type-quantity');
-        const valueBtn = document.getElementById('chart-type-value');
-
-        if (quantityBtn && valueBtn) {
-            if (this.currentChartType === 'quantity') {
-                quantityBtn.classList.add('btn-primary');
-                quantityBtn.classList.remove('btn-outline');
-                valueBtn.classList.add('btn-outline');
-                valueBtn.classList.remove('btn-primary');
-            } else {
-                valueBtn.classList.add('btn-primary');
-                valueBtn.classList.remove('btn-outline');
-                quantityBtn.classList.add('btn-outline');
-                quantityBtn.classList.remove('btn-primary');
-            }
-        }
     }
 
     getCSSVariable(variableName) {
