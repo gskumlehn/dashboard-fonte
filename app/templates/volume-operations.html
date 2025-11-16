@@ -5,41 +5,21 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/volume-operations.css') }}">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<div class="header-section">
-    <div class="title-section">
-        <h1>Volume de Operações</h1>
-        <p class="subtitle">Análise de volume e ticket médio das operações</p>
-    </div>
+{% from 'components/header.html' import title_section %}
+{% from 'components/filters.html' import filters_card %}
 
-    <div class="filters-card">
-        <div class="filters-header">
-            <h3>Filtros</h3>
-            <div class="filter-shortcuts" id="filter-shortcuts">
-                <button class="btn btn-outline btn-sm" data-days="7">Últimos 7 dias</button>
-                <button class="btn btn-outline btn-sm" data-days="30">Último mês</button>
-                <button class="btn btn-outline btn-sm" data-months="3">Últimos 3 meses</button>
-                <button class="btn btn-outline btn-sm" data-months="12">Último ano</button>
-            </div>
-        </div>
-        <div class="filters-content">
-            <div class="filter-field">
-                <label for="start-date">Data Início</label>
-                <input type="date" id="start-date" class="input">
-            </div>
-            <div class="filter-field">
-                <label for="end-date">Data Fim</label>
-                <input type="date" id="end-date" class="input">
-            </div>
-            <div class="filter-field">
-                <label for="period-type">Período</label>
-                <select id="period-type" class="input">
-                    <option value="daily">Diário</option>
-                    <option value="monthly">Mensal</option>
-                </select>
-            </div>
-            <button class="btn btn-primary" id="filter-button">Filtrar</button>
-        </div>
-    </div>
+<div class="header-section">
+  {{ title_section('Volume de Operações', 'Análise de volume e ticket médio das operações') }}
+  {{ filters_card(
+      'filter-shortcuts',
+      [
+        {'attr': 'data-days',   'value': '7',  'label': 'Últimos 7 dias'},
+        {'attr': 'data-days',   'value': '30', 'label': 'Último mês'},
+        {'attr': 'data-months', 'value': '3',  'label': 'Últimos 3 meses'},
+        {'attr': 'data-months', 'value': '12', 'label': 'Último ano'}
+      ],
+      'start-date', 'end-date', 'period-type', 'filter-button'
+    ) }}
 </div>
 
 <div class="main-content">

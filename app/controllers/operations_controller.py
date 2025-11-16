@@ -27,13 +27,3 @@ def get_volume_data():
         return jsonify(result), 200
     except Exception as e:
         return jsonify({"error": f"Error fetching volume data: {str(e)}"}), 500
-
-@operations_bp.route('/default-rate', methods=['GET'])
-@login_required
-def get_default_rate():
-    try:
-        result = operations_service.get_current_default_rate()
-        return jsonify(result), 200
-    except Exception as e:
-        return jsonify({"error": f"Error fetching default rate: {str(e)}"}), 500
-

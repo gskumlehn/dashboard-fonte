@@ -1,43 +1,6 @@
 @import url('/static/css/root.css');
 @import url('/static/css/filters.css');
-
-.header-section {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    margin-bottom: 0.5rem;
-    margin-top: 0.5rem;
-}
-
-.title-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    text-align: center;
-    width: 35%;
-    flex-shrink: 0;
-    margin: 0 auto;
-}
-
-.subtitle {
-    color: #666;
-    font-size: 1rem;
-    margin-top: 0.5rem;
-    text-align: center; /* Center-align the subtitle */
-    justify-content: center; /* Ensure it is centered vertically */
-    align-items: center; /* Ensure it is centered horizontally */
-    display: flex;
-    flex-direction: column;
-}
-
-.filters-card {
-    width: 65%;
-    max-width: 100%;
-    overflow: hidden;
-    box-sizing: border-box;
-    box-shadow: var(--shadow);
-}
+@import url('/static/css/header-component.css');
 
 .main-content {
     display: flex;

@@ -1,0 +1,32 @@
+{% macro filters_card(shortcuts_id, shortcuts_buttons, start_id, end_id, type_id, filter_btn_id) -%}
+<div class="filters-card">
+  <div class="filters-header">
+    <h3>Filtros</h3>
+    <div class="filter-shortcuts" id="{{ shortcuts_id }}">
+      {%- for b in shortcuts_buttons %}
+        <button class="{{ b.classes | default('btn btn-outline btn-sm') }}"
+                {{ b.attr }}="{{ b.value }}">{{ b.label }}</button>
+      {%- endfor %}
+    </div>
+  </div>
+  <div class="filters-content">
+    <div class="filter-field">
+      <label for="{{ start_id }}">Data Início</label>
+      <input type="date" id="{{ start_id }}" class="input">
+    </div>
+    <div class="filter-field">
+      <label for="{{ end_id }}">Data Fim</label>
+      <input type="date" id="{{ end_id }}" class="input">
+    </div>
+    <div class="filter-field">
+      <label for="{{ type_id }}">Período</label>
+      <select id="{{ type_id }}" class="input">
+        <option value="daily">Diário</option>
+        <option value="monthly">Mensal</option>
+      </select>
+    </div>
+    <button id="{{ filter_btn_id }}" class="btn btn-primary">Filtrar</button>
+  </div>
+</div>
+{%- endmacro %}
+

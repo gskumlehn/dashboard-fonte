@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block title %}Taxa de Inadimplência{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/default-rate.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/volume-operations.css') }}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{% from 'components/header.html' import title_section %}
+{% from 'components/filters.html' import filters_card %}
+
+<div class="header-section">
+  {{ title_section('Taxa de Inadimplência', 'Análise de inadimplência e vencimentos') }}
+  {{ filters_card(
+      'default-rate-shortcuts',
+      [
+        {'attr': 'data-period', 'value': '7',   'label': 'Últimos 7 dias',  'classes': 'btn-outline btn-sm'},
+        {'attr': 'data-period', 'value': '30',  'label': 'Último mês',      'classes': 'btn-outline btn-sm'},
+        {'attr': 'data-period', 'value': '90',  'label': 'Últimos 3 meses', 'classes': 'btn-outline btn-sm'},
+        {'attr': 'data-period', 'value': '365', 'label': 'Último ano',      'classes': 'btn-outline btn-sm'}
+      ],
+      'dr-start-date', 'dr-end-date', 'dr-period-type', 'dr-apply-filter'
+    ) }}
+</div>
+
+<div class="content-grid">
+<div class="chart-section">
+  <h3>Taxa de Inadimplência Histórica (%)</h3>
+  <canvas id="default-rate-chart"></canvas>
+</div>
+
+<div class="metrics-section">
+  <div class="metric-card">
+    <h3>Quantidade (Atual)</h3>
+    <div class="metric-bars">
+      <div class="metric-bar-segmented">
+        <div class="metric-segment" style="height: 9%; background: #5C2E2E;"></div>
+        <div class="metric-segment" style="height: 91%; background: #CD7F32;"></div>
+      </div>
+
+      <div class="metric-legend">
+        <div class="metric-legend-item">
+          <div class="metric-legend-color" style="background: #CD7F32;"></div>
+          <span>Abertos: <span class="metric-value">9884</span></span>
+        </div>
+        <div class="metric-legend-item">
+          <div class="metric-legend-color" style="background: #5C2E2E;"></div>
+          <span>Vencidos: <span class="metric-value">973</span></span>
+        </div>
+      </div>
+
+      <div class="metric-total">
+        <div class="metric-bar-header">
+          <span>Total</span>
+          <span class="metric-value">10857</span>
+        </div>
+        <div class="metric-rate">9.0%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="metric-card">
+    <h3>Valor (Atual)</h3>
+    <div class="metric-bars">
+      <div class="metric-bar-segmented">
+        <div class="metric-segment" style="height: 7.7%; background: #5C2E2E;"></div>
+        <div class="metric-segment" style="height: 92.3%; background: #CD7F32;"></div>
+      </div>
+
+      <div class="metric-legend">
+        <div class="metric-legend-item">
+          <div class="metric-legend-color" style="background: #CD7F32;"></div>
+          <span>Abertos: <span class="metric-value">R$ 19.9M</span></span>
+        </div>
+        <div class="metric-legend-item">
+          <div class="metric-legend-color" style="background: #5C2E2E;"></div>
+          <span>Vencidos: <span class="metric-value">R$ 1.7M</span></span>
+        </div>
+      </div>
+
+      <div class="metric-total">
+        <div class="metric-bar-header">
+          <span>Total</span>
+          <span class="metric-value">R$ 21.6M</span>
+        </div>
+        <div class="metric-rate">7.7%</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script src="{{ url_for('static', filename='js/default-rate.js') }}"></script>
+{% endblock %}

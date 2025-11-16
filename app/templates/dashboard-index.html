@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="dashboard-index">
+    <h1>Bem-vindo ao Dashboard</h1>
+    <p>Escolha a tela que deseja visualizar:</p>
+    <div class="dashboard-links">
+        <a href="/volume-operations" class="btn btn-primary">Volume de Operações</a>
+        <a href="/default-rate" class="btn btn-primary">Taxa de Inadimplência</a>
+    </div>
+</div>
+{% endblock %}
+
