@@ -4,7 +4,10 @@ class DefaultRate {
             currentRateEndpoint: '/default-rate',
             historicalDataEndpoint: '/default-rate/data'
         };
-        this.chart = null;
+        this.lineChart = null;
+        this.quantityBarChart = null;
+        this.valueBarChart = null;
+        this.currentChartType = 'quantity';
         this.initialize();
     }
 
@@ -20,8 +23,8 @@ class DefaultRate {
         this.bindShortcuts();
         const applyBtn = document.getElementById('dr-apply-filter');
         if (applyBtn) applyBtn.addEventListener('click', () => this.loadData());
-        // Default load: last 7 days in daily mode
-        this.setPeriodAndFilter('daily', 7);
+        this.setPeriodAndFilter('daily', 7); // Default load: last 7 days in daily mode
+        this.setupChartTypeButtons();
     }
 
     bindShortcuts() {
@@ -74,6 +77,28 @@ class DefaultRate {
         return `${year}-${month}-${day}`;
     }
 
+    async loadData() {
+        const start = document.getElementById('dr-start-date')?.value;
+        const end = document.getElementById('dr-end-date')?.value;
+        const type = document.getElementById('dr-period-type')?.value || 'daily';
+
+        try {
+            if (!start || !end) throw new Error('Selecione datas válidas');
+
+            // Fetch current default rate
+            const currentRate = await this.fetchCurrentRate();
+            this.updateCurrentMetrics(currentRate);
+
+            // Fetch historical data
+            const historicalData = await this.fetchHistoricalData(start, end, type);
+            const processed = this.processHistoricalData(historicalData, type);
+            this.renderLineChart(processed.labels, processed.values);
+            this.renderMetricCharts(currentRate);
+        } catch (err) {
+            alert(err.message || 'Erro ao carregar dados');
+        }
+    }
+
     async fetchCurrentRate() {
         try {
             const url = this.API_CONFIG.currentRateEndpoint;
@@ -101,93 +126,61 @@ class DefaultRate {
         }
     }
 
-    async loadData() {
-        const start = document.getElementById('dr-start-date')?.value;
-        const end = document.getElementById('dr-end-date')?.value;
-        const type = document.getElementById('dr-period-type')?.value || 'daily';
-
-        try {
-            if (!start || !end) throw new Error('Selecione datas válidas');
-
-            // Fetch current default rate
-            const currentRate = await this.fetchCurrentRate();
-            this.updateCurrentMetrics(currentRate);
-
-            // Fetch historical data
-            const historicalData = await this.fetchHistoricalData(start, end, type);
-            const processed = this.processHistoricalData(historicalData, type);
-            this.renderChart(processed.labels, processed.values);
-        } catch (err) {
-            alert(err.message || 'Erro ao carregar dados');
-        }
-    }
-
-    updateCurrentMetrics(data) {
-        const overdueDocumentsEl = document.querySelector('.metric-value[data-metric="overdue-documents"]');
-        const openDocumentsEl = document.querySelector('.metric-value[data-metric="open-documents"]');
-        const overdueValueEl = document.querySelector('.metric-value[data-metric="overdue-value"]');
-        const openValueEl = document.querySelector('.metric-value[data-metric="open-value"]');
-        const defaultRatePercentEl = document.querySelector('.metric-rate[data-metric="default-rate-percent"]');
-
-        if (overdueDocumentsEl) overdueDocumentsEl.textContent = data.overdue_documents || 0;
-        if (openDocumentsEl) openDocumentsEl.textContent = data.open_documents || 0;
-        if (overdueValueEl) overdueValueEl.textContent = `R$ ${data.overdue_value?.toFixed(2) || '0.00'}`;
-        if (openValueEl) openValueEl.textContent = `R$ ${data.open_value?.toFixed(2) || '0.00'}`;
-        if (defaultRatePercentEl) defaultRatePercentEl.textContent = `${data.default_rate_percent?.toFixed(2) || '0.00'}%`;
-    }
-
-    processHistoricalData(data, type) {
-        const labels = [];
-        const values = [];
-        data.forEach(item => {
-            const d = new Date(item.date);
-            const label = type === 'monthly'
-                ? `${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`
-                : `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}`;
-            labels.push(label);
-            values.push(parseFloat(item.rate) || 0);
-        });
-        return { labels, values };
-    }
-
-    getCSSVariable(variableName) {
-        return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
-    }
-
-    renderChart(labels, values) {
+    renderLineChart(labels, values) {
         const ctx = document.getElementById('default-rate-chart');
         if (!ctx) return;
-        if (this.chart) this.chart.destroy();
+        if (this.lineChart) this.lineChart.destroy();
 
-        const primaryColor = this.getCSSVariable('--primary');
-        const primaryBgColor = this.getCSSVariable('--primary').replace(')', ', 0.1)').replace('rgb', 'rgba');
-        const blueColor = this.getCSSVariable('--blue');
-        const blueBgColor = this.getCSSVariable('--blue').replace(')', ', 0.1)').replace('rgb', 'rgba');
+        const redColor = this.getCSSVariable('--red');
+        const redBgColor = this.getCSSVariable('--red').replace(')', ', 0.1)').replace('rgb', 'rgba');
 
-        this.chart = new Chart(ctx.getContext('2d'), {
-            type: 'bar',
+        this.lineChart = new Chart(ctx.getContext('2d'), {
+            type: 'line',
             data: {
                 labels,
                 datasets: [{
                     label: 'Taxa de Inadimplência (%)',
                     data: values,
-                    backgroundColor: primaryBgColor,
-                    borderColor: primaryColor,
-                    borderWidth: 2
+                    borderColor: redColor,
+                    backgroundColor: redBgColor,
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    tension: 0.4
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: { display: false }
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Taxa: ' + context.parsed.y + '%';
+                            }
+                        }
+                    }
                 },
                 scales: {
-                    x: { stacked: true },
-                    y: {
-                        stacked: true,
-                        beginAtZero: true,
+                    x: {
+                        grid: {
+                            color: '#f0f0f0',
+                            drawBorder: false
+                        },
                         ticks: {
+                            color: '#666',
+                            font: { size: 12 }
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: '#f0f0f0',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            color: '#666',
+                            font: { size: 12 },
                             callback: function(value) {
                                 return value + '%';
                             }
@@ -196,6 +189,147 @@ class DefaultRate {
                 }
             }
         });
+    }
+
+    renderMetricCharts(currentRate) {
+        this.renderQuantityChart(currentRate);
+        this.renderValueChart(currentRate);
+    }
+
+    renderQuantityChart(currentRate) {
+        const ctx = document.getElementById('quantity-bar-chart');
+        if (!ctx) return;
+
+        if (this.quantityBarChart) {
+            this.quantityBarChart.destroy();
+        }
+
+        this.quantityBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [''],
+                datasets: [{
+                    label: 'Vencidos',
+                    data: [currentRate.overdue_documents || 0],
+                    backgroundColor: '#5C2E2E',
+                    barThickness: 48
+                }, {
+                    label: 'Abertos',
+                    data: [currentRate.open_documents || 0],
+                    backgroundColor: '#CD7F32',
+                    barThickness: 48
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false }
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                        display: false
+                    },
+                    y: {
+                        stacked: true,
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+
+    renderValueChart(currentRate) {
+        const ctx = document.getElementById('value-bar-chart');
+        if (!ctx) return;
+
+        if (this.valueBarChart) {
+            this.valueBarChart.destroy();
+        }
+
+        this.valueBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [''],
+                datasets: [{
+                    label: 'Vencidos',
+                    data: [currentRate.overdue_value || 0],
+                    backgroundColor: '#5C2E2E',
+                    barThickness: 48
+                }, {
+                    label: 'Abertos',
+                    data: [currentRate.open_value || 0],
+                    backgroundColor: '#CD7F32',
+                    barThickness: 48
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false }
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                        display: false
+                    },
+                    y: {
+                        stacked: true,
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+
+    setupChartTypeButtons() {
+        const quantityBtn = document.getElementById('chart-type-quantity');
+        const valueBtn = document.getElementById('chart-type-value');
+
+        if (quantityBtn) {
+            quantityBtn.addEventListener('click', () => {
+                this.currentChartType = 'quantity';
+                this.renderLineChart();
+                this.updateButtonStates();
+            });
+        }
+
+        if (valueBtn) {
+            valueBtn.addEventListener('click', () => {
+                this.currentChartType = 'value';
+                this.renderLineChart();
+                this.updateButtonStates();
+            });
+        }
+    }
+
+    updateButtonStates() {
+        const quantityBtn = document.getElementById('chart-type-quantity');
+        const valueBtn = document.getElementById('chart-type-value');
+
+        if (quantityBtn && valueBtn) {
+            if (this.currentChartType === 'quantity') {
+                quantityBtn.classList.add('btn-primary');
+                quantityBtn.classList.remove('btn-outline');
+                valueBtn.classList.add('btn-outline');
+                valueBtn.classList.remove('btn-primary');
+            } else {
+                valueBtn.classList.add('btn-primary');
+                valueBtn.classList.remove('btn-outline');
+                quantityBtn.classList.add('btn-outline');
+                quantityBtn.classList.remove('btn-primary');
+            }
+        }
+    }
+
+    getCSSVariable(variableName) {
+        return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
     }
 }
 
