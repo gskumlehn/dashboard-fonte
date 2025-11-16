@@ -5,9 +5,8 @@
     <h1>Bem-vindo ao Dashboard</h1>
     <p>Escolha a tela que deseja visualizar:</p>
     <div class="dashboard-links">
-        <a href="dashboard/volume-operations" class="btn btn-primary">Volume de Operações</a>
-        <a href="dashboard/default-rate" class="btn btn-primary">Taxa de Inadimplência</a>
+        <a href="{{ url_for('dashboard_bp.volume_operations') }}" class="btn btn-primary">Volume de Operações</a>
+        <a href="{{ url_for('dashboard_bp.default_rate') }}" class="btn btn-primary">Taxa de Inadimplência</a>
     </div>
 </div>
 {% endblock %}
-
