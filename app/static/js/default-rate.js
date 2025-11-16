@@ -99,6 +99,20 @@ class DefaultRate {
         }
     }
 
+    updateCurrentMetrics(data) {
+        const overdueDocumentsEl = document.querySelector('.metric-value[data-metric="overdue-documents"]');
+        const openDocumentsEl = document.querySelector('.metric-value[data-metric="open-documents"]');
+        const overdueValueEl = document.querySelector('.metric-value[data-metric="overdue-value"]');
+        const openValueEl = document.querySelector('.metric-value[data-metric="open-value"]');
+        const defaultRatePercentEl = document.querySelector('.metric-rate[data-metric="default-rate-percent"]');
+
+        if (overdueDocumentsEl) overdueDocumentsEl.textContent = data.overdue_documents || 0;
+        if (openDocumentsEl) openDocumentsEl.textContent = data.open_documents || 0;
+        if (overdueValueEl) overdueValueEl.textContent = `R$ ${data.overdue_value?.toFixed(2) || '0.00'}`;
+        if (openValueEl) openValueEl.textContent = `R$ ${data.open_value?.toFixed(2) || '0.00'}`;
+        if (defaultRatePercentEl) defaultRatePercentEl.textContent = `${data.default_rate_percent?.toFixed(2) || '0.00'}%`;
+    }
+
     async fetchCurrentRate() {
         try {
             const url = this.API_CONFIG.currentRateEndpoint;
@@ -204,6 +218,9 @@ class DefaultRate {
             this.quantityBarChart.destroy();
         }
 
+        const primaryColor = this.getCSSVariable('--primary');
+        const overdueColor = this.getCSSVariable('--red');
+
         this.quantityBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -211,12 +228,12 @@ class DefaultRate {
                 datasets: [{
                     label: 'Vencidos',
                     data: [currentRate.overdue_documents || 0],
-                    backgroundColor: '#5C2E2E',
+                    backgroundColor: overdueColor,
                     barThickness: 48
                 }, {
                     label: 'Abertos',
                     data: [currentRate.open_documents || 0],
-                    backgroundColor: '#CD7F32',
+                    backgroundColor: primaryColor,
                     barThickness: 48
                 }]
             },
@@ -250,6 +267,9 @@ class DefaultRate {
             this.valueBarChart.destroy();
         }
 
+        const primaryColor = this.getCSSVariable('--primary');
+        const overdueColor = this.getCSSVariable('--red');
+
         this.valueBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -257,12 +277,12 @@ class DefaultRate {
                 datasets: [{
                     label: 'Vencidos',
                     data: [currentRate.overdue_value || 0],
-                    backgroundColor: '#5C2E2E',
+                    backgroundColor: overdueColor,
                     barThickness: 48
                 }, {
                     label: 'Abertos',
                     data: [currentRate.open_value || 0],
-                    backgroundColor: '#CD7F32',
+                    backgroundColor: primaryColor,
                     barThickness: 48
                 }]
             },
