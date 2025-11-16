@@ -1,6 +1,9 @@
 class DefaultRate {
     constructor() {
-        this.API_ENDPOINT = '/default-rate/data';
+        this.API_CONFIG = {
+            currentRateEndpoint: '/default-rate',
+            historicalDataEndpoint: '/default-rate/data'
+        };
         this.chart = null;
         this.initialize();
     }
@@ -17,8 +20,8 @@ class DefaultRate {
         this.bindShortcuts();
         const applyBtn = document.getElementById('dr-apply-filter');
         if (applyBtn) applyBtn.addEventListener('click', () => this.loadData());
-        // default load: last 30 days
-        this.setPeriodAndFilter('daily', 30);
+        // Default load: last 7 days in daily mode
+        this.setPeriodAndFilter('daily', 7);
     }
 
     bindShortcuts() {
@@ -71,33 +74,69 @@ class DefaultRate {
         return `${year}-${month}-${day}`;
     }
 
-    async fetchData(start_date, end_date, type) {
-        const params = new URLSearchParams({ start_date, end_date, type });
-        const url = `${this.API_ENDPOINT}?${params.toString()}`;
-        const res = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
-        if (!res.ok) {
-            const text = await res.text();
-            throw new Error(`HTTP ${res.status}: ${text || res.statusText}`);
+    async fetchCurrentRate() {
+        try {
+            const url = this.API_CONFIG.currentRateEndpoint;
+            const res = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+            if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+            const payload = await res.json();
+            return payload || {};
+        } catch (err) {
+            console.error('Error fetching current default rate:', err);
+            throw err;
         }
-        const payload = await res.json();
-        return payload.data || [];
+    }
+
+    async fetchHistoricalData(start_date, end_date, type) {
+        try {
+            const params = new URLSearchParams({ start_date, end_date, type });
+            const url = `${this.API_CONFIG.historicalDataEndpoint}?${params.toString()}`;
+            const res = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+            if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+            const payload = await res.json();
+            return payload.data || [];
+        } catch (err) {
+            console.error('Error fetching historical default rate data:', err);
+            throw err;
+        }
     }
 
     async loadData() {
         const start = document.getElementById('dr-start-date')?.value;
         const end = document.getElementById('dr-end-date')?.value;
         const type = document.getElementById('dr-period-type')?.value || 'daily';
+
         try {
             if (!start || !end) throw new Error('Selecione datas válidas');
-            const raw = await this.fetchData(start, end, type);
-            const processed = this.process(raw, type);
+
+            // Fetch current default rate
+            const currentRate = await this.fetchCurrentRate();
+            this.updateCurrentMetrics(currentRate);
+
+            // Fetch historical data
+            const historicalData = await this.fetchHistoricalData(start, end, type);
+            const processed = this.processHistoricalData(historicalData, type);
             this.renderChart(processed.labels, processed.values);
         } catch (err) {
             alert(err.message || 'Erro ao carregar dados');
         }
     }
 
-    process(data, type) {
+    updateCurrentMetrics(data) {
+        const overdueDocumentsEl = document.querySelector('.metric-value[data-metric="overdue-documents"]');
+        const openDocumentsEl = document.querySelector('.metric-value[data-metric="open-documents"]');
+        const overdueValueEl = document.querySelector('.metric-value[data-metric="overdue-value"]');
+        const openValueEl = document.querySelector('.metric-value[data-metric="open-value"]');
+        const defaultRatePercentEl = document.querySelector('.metric-rate[data-metric="default-rate-percent"]');
+
+        if (overdueDocumentsEl) overdueDocumentsEl.textContent = data.overdue_documents || 0;
+        if (openDocumentsEl) openDocumentsEl.textContent = data.open_documents || 0;
+        if (overdueValueEl) overdueValueEl.textContent = `R$ ${data.overdue_value?.toFixed(2) || '0.00'}`;
+        if (openValueEl) openValueEl.textContent = `R$ ${data.open_value?.toFixed(2) || '0.00'}`;
+        if (defaultRatePercentEl) defaultRatePercentEl.textContent = `${data.default_rate_percent?.toFixed(2) || '0.00'}%`;
+    }
+
+    processHistoricalData(data, type) {
         const labels = [];
         const values = [];
         data.forEach(item => {
@@ -111,10 +150,19 @@ class DefaultRate {
         return { labels, values };
     }
 
+    getCSSVariable(variableName) {
+        return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
+    }
+
     renderChart(labels, values) {
         const ctx = document.getElementById('default-rate-chart');
         if (!ctx) return;
         if (this.chart) this.chart.destroy();
+
+        const primaryColor = this.getCSSVariable('--primary');
+        const primaryBgColor = this.getCSSVariable('--primary').replace(')', ', 0.1)').replace('rgb', 'rgba');
+        const blueColor = this.getCSSVariable('--blue');
+        const blueBgColor = this.getCSSVariable('--blue').replace(')', ', 0.1)').replace('rgb', 'rgba');
 
         this.chart = new Chart(ctx.getContext('2d'), {
             type: 'bar',
@@ -123,19 +171,27 @@ class DefaultRate {
                 datasets: [{
                     label: 'Taxa de Inadimplência (%)',
                     data: values,
-                    backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--primary') || '#0066CC'
+                    backgroundColor: primaryBgColor,
+                    borderColor: primaryColor,
+                    borderWidth: 2
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
+                plugins: {
+                    legend: { display: false }
+                },
                 scales: {
                     x: { stacked: true },
                     y: {
                         stacked: true,
                         beginAtZero: true,
-                        ticks: { callback: (v) => v + '%' }
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
                     }
                 }
             }
